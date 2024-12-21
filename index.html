@@ -1,36 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Video Annotation Tool</title>
+    <title>Video Annotation Web Project</title>
     <link rel="stylesheet" href="style.css">
+    <script src=".\\loadEnv.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
 </head>
+
 <body>
 
-<header>
-    <h1>Video Annotation Tool</h1>
-</header>
+    <header>
+        <h1>Video Annotation Tool</h1>
+    </header>
+    <script src=".\\driveDownload.js"></script>
 
-<div class="container">
-    <div class="video-container">
-        <iframe src="https://drive.google.com/file/d/1i0Bh9xPx7m1F_hDPxhOu01H5P9VIUKm3/preview" width="640" height="480" allow="autoplay"></iframe>
-        <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="640" height="480" allow="autoplay"></iframe>
+    <div class="container">
+        <div class="video-container">
+            <iframe id="video" src="https://drive.google.com/file/d/1i0Bh9xPx7m1F_hDPxhOu01H5P9VIUKm3/preview" width="640"
+                height="480" allow="autoplay"></iframe>
+            <iframe id="video2" src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="640"
+                height="480" allow="autoplay"></iframe>
+        </div>
+
+        <div class="controls">
+            <button id="addAnnotationBtn">Add Annotation</button>
+            <button id="saveAnnotationsBtn">Save Annotations</button>
+        </div>
+
+        <div class="annotations">
+            <h3>Annotations</h3>
+            <ul id="annotationList" class="annotation-list">
+                <!-- Annotations will appear here -->
+            </ul>
+        </div>
     </div>
 
-    <div class="controls">
-        <button id="addAnnotationBtn">Add Annotation</button>
-        <button id="saveAnnotationsBtn">Save Annotations</button>
-    </div>
-
-    <div class="annotations">
-        <h3>Annotations</h3>
-        <ul id="annotationList" class="annotation-list">
-            <!-- Annotations will appear here -->
-        </ul>
-    </div>
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>

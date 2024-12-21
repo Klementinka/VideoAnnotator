@@ -4,3 +4,4 @@
 !*.js
 !.gitignore
 !*/*.sql
+!*.example
