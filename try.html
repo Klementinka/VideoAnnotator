@@ -9,8 +9,22 @@
 </head>
 <body>
     <h1>Download Video from Google Drive</h1>
-    <button id="authorize">Authorize</button>
-    <button id="downloadFile" disabled>Download Video</button>
+    <button id="downloadFile">Download Video</button>
+    <script>
+        document.getElementById('downloadFile').addEventListener('click', function() {
+            downloadFile('YOUR_FILE_ID');
+        });
+
+        function downloadFile(fileId) {
+            const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'video.mp4';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
     <script src=".\\driveDownload.js"></script>
 </body>
 </html>
