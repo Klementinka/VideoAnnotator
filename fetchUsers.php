@@ -5,14 +5,14 @@ header('Content-Type: application/json'); // Ensure the response is treated as J
 $servername = "localhost";
 $username = "root";
 $password = "";
-$dbname = "my_database";
+$dbname = "videoannotator";
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT id, name, email FROM users";
+$sql = "SELECT id, username, email FROM users";
 $result = $conn->query($sql);
 
 $users = [];
@@ -24,6 +24,5 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 
-// Output JSON response
 echo json_encode($users);
 ?>

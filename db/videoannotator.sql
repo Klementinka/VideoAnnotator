@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Dec 20, 2024 at 05:24 PM
+-- Generation Time: Jan 02, 2025 at 01:33 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,6 +56,13 @@ CREATE TABLE `videos` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Dumping data for table `videos`
+--
+
+INSERT INTO `videos` (`id`, `drive_id`, `owner_id`, `created_on`, `updated_on`) VALUES
+(1, 'this_is_hardcoded_invalid_id', 1010101011, '2025-01-02 12:33:12', '2025-01-02 12:33:12');
+
+--
 -- Indexes for dumped tables
 --
 
@@ -85,7 +92,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `videos`
 --
 ALTER TABLE `videos`
-  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(100) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
