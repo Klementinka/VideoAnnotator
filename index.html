@@ -5,8 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Annotation Web Project</title>
-    <!-- <link rel="stylesheet" href="style.css"> -->
-    <script src=".\\loadEnv.js"></script>
+    <!-- <link rel="stylesheet" href="..\\css\\style.css"> -->
+    <script src="..\\js\\loadEnv.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <script>
         const VIDEO_WIDTH = 320;
@@ -16,15 +16,17 @@
 </head>
 
 <body>
-    <header>
-        <h1>Video Annotation Tool</h1>
-        <div class="header-buttons">
-            <button id="addVideoBtn">Add Video</button>
-            <button id="profileBtn">Profile</button>
-        </div>
-    </header>
 
     <nav class="navbar">
+        <header>
+            <div class="title-container">
+                <h1 class="mainTitle">Video Annotation Tool</h1>
+            </div>
+            <div class="header-buttons">
+                <button id="addVideoBtn">Add Video</button>
+                <button id="profileBtn">Profile</button>
+            </div>
+        </header>
         <ul>
             <li><a href="#">Explore</a></li>
             <li><a href="#">Upload</a></li>
@@ -61,31 +63,23 @@
             <ul id="lastVideosList" class="video-list">
                 <li>
                     <h3>Example Video 1</h3>
-                    <!-- <video width="320" height="240" controls
-                        src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview">
-                        <source src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview"
-                            type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video> -->
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="100"
-                        height="50" allow="autoplay">
+                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
+                        height="36%" allow="autoplay">
                     </iframe>
                     <p>Description of Example Video 1</p>
                 </li>
                 <li>
                     <h3>Example Video 2</h3>
-                    <video width="320" height="240" controls>
-                        <source src="example2.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
+                        height="36%" allow="autoplay">
+                    </iframe>
                     <p>Description of Example Video 2</p>
                 </li>
                 <li>
                     <h3>Example Video 3</h3>
-                    <video width="320" height="240" controls>
-                        <source src="example3.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
+                        height="36%" allow="autoplay">
+                    </iframe>
                     <p>Description of Example Video 3</p>
                 </li>
             </ul>
@@ -96,42 +90,37 @@
             <ul id="bestVideosList" class="video-list">
                 <li>
                     <h3>Video Title 1</h3>
-                    <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
-                        <source src="video1.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
+                        height="36%" allow="autoplay">
+                    </iframe>
                     <p>Description of Video 1</p>
                 </li>
                 <li>
                     <h3>Video Title 4</h3>
-                    <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
-                        <source src="video4.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
+                        height="36%" allow="autoplay">
+                    </iframe>
                     <p>Description of Video 4</p>
                 </li>
                 <li>
                     <h3>Video Title 5</h3>
-                    <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
-                        <source src="video5.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
+                        height="36%" allow="autoplay">
+                    </iframe>
                     <p>Description of Video 5</p>
                 </li>
                 <li>
                     <h3>Video Title 6</h3>
-                    <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
-                        <source src="video6.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
+                        height="36%" allow="autoplay">
+                    </iframe>
                     <p>Description of Video 6</p>
                 </li>
                 <li>
                     <h3>Video Title 2</h3>
-                    <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
-                        <source src="video2.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
+                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
+                        height="36%" allow="autoplay">
+                    </iframe>
                     <p>Description of Video 2</p>
                 </li>
                 <li>
@@ -155,8 +144,20 @@
     </div>
 
     <style>
+        .title-container
+        {
+            display: flex;
+            justify-content: center;
+        }
+
+        .mainTitle {
+            color: white;
+            margin: 10px;
+        }
+
         body {
-            background-color: aquamarine;
+            margin: 0;
+            background-color: #B1F0F7;
         }
 
         .video-list li video {
@@ -173,11 +174,11 @@
         }
 
         .header-buttons button {
-            padding: 10px 20px;
+            padding: 5px 10px;
             margin: 5px;
-            font-size: 16px;
-            background-color: #ff7043;
-            color: white;
+            font-size: 12px;
+            background-color: #FADA7A;
+            color: black;
             border: none;
             cursor: pointer;
             border-radius: 4px;
@@ -189,14 +190,20 @@
         }
 
         .navbar {
-            background-color: #004d40;
-            padding: 10px;
+            position: sticky;
+            top: -10px;
+            z-index: 1000;
+            border-bottom-left-radius: 50% 20px;
+            border-bottom-right-radius: 50% 20px;
+            background-color: #81BFDA;
+            padding: 0px;
+            padding-bottom: 5px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
         }
 
         .navbar ul {
             list-style-type: none;
-            padding: 0;
+            padding: 0 50px;
             display: flex;
             justify-content: space-around;
         }
@@ -208,7 +215,7 @@
         .navbar ul li a {
             color: white;
             text-decoration: none;
-            padding: 10px 20px;
+            padding: 5px 10px;
             display: block;
             transition: background-color 0.3s ease;
         }
@@ -241,7 +248,7 @@
         }
 
         .video-list li {
-            background-color: #ffffff;
+            background-color: #F5F0CD;
             padding: 15px;
             margin: 10px;
             border: 1px solid #ddd;
@@ -251,6 +258,7 @@
             text-align: center;
         }
     </style>
+    <script src="..\\js\\script.js"></script>
 </body>
 
 </html>
