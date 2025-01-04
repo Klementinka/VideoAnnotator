@@ -12,6 +12,7 @@
         const VIDEO_WIDTH = 320;
         const VIDEO_HEIGHT = 240;
     </script>
+    <script src="script.js"></script>
 </head>
 
 <body>
@@ -31,6 +32,28 @@
             <li><a href="#">Edit Videos</a></li>
         </ul>
     </nav>
+
+    <main>
+        <button id="fetchUsersBtn">Fetch Users</button>
+        <ul id="usersList"></ul>
+    </main>
+
+    <script>
+        document.getElementById('fetchUsersBtn').addEventListener('click', function () {
+            fetch('fetchUsers.php')
+                .then(response => response.json())
+                .then(data => {
+                    const usersList = document.getElementById('usersList');
+                    usersList.innerHTML = '';
+                    data.forEach(user => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${user.username} (${user.email})`;
+                        usersList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching users:', error));
+        });
+    </script>
 
     <div class="main-content">
         <section class="video-section">
@@ -228,7 +251,6 @@
             text-align: center;
         }
     </style>
-    <script src="script.js"></script>
 </body>
 
 </html>
