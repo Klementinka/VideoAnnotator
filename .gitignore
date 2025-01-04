@@ -4,3 +4,5 @@
 !*.js
 !.gitignore
 !*/*.sql
+!*.example
+!*.php

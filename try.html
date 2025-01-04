@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Video from Google Drive</title>
+    <script src=".\\loadEnv.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+<body>
+    <h1>Download Video from Google Drive</h1>
+    <button id="downloadFile">Download Video</button>
+    <script>
+        document.getElementById('downloadFile').addEventListener('click', function() {
+            downloadFile('1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc');
+        });
+
+        function downloadFile(fileId) {
+            const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'video.mp4';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+    <!-- <script src=".\\driveDownload.js"></script> -->
+</body>
+</html>
