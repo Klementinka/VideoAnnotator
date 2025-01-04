@@ -1,15 +1,16 @@
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
+    background-color: #e0f7fa;
 }
 
 header {
-    background-color: #333;
+    background-color: #00796b;
     color: white;
-    padding: 10px;
+    padding: 20px;
     text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -26,7 +27,8 @@ header {
 .video-container video {
     width: 80%;
     max-width: 900px;
-    border: 2px solid #333;
+    border: 4px solid #00796b;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .controls {
@@ -38,14 +40,16 @@ header {
     padding: 10px 20px;
     margin: 5px;
     font-size: 16px;
-    background-color: #007bff;
+    background-color: #ff5722;
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
 }
 
 .controls button:hover {
-    background-color: #0056b3;
+    background-color: #e64a19;
 }
 
 .annotations {
@@ -54,6 +58,7 @@ header {
 
 .annotations h3 {
     text-align: center;
+    color: #00796b;
 }
 
 .annotation-list {
@@ -62,12 +67,15 @@ header {
 }
 
 .annotation-item {
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 5px;
+    background-color: #ffffff;
+    padding: 15px;
+    margin-bottom: 10px;
     border: 1px solid #ddd;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .annotation-item span {
     font-weight: bold;
+    color: #00796b;
 }
