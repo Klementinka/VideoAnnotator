@@ -1,10 +1,9 @@
-// Hardcoded function to create a header
 function createHeader() {
 
     return `<nav class="navbar">
         <header>
             <div class="title-container">
-                <h1 class="mainTitle">Video Annotation Tool</h1>
+                <h1 class="mainTitle"><a href="http://localhost/VideoAnnotator/">Video Annotation Tool</a></h1>
             </div>
             <div class="header-buttons">
                 <button id="addVideoBtn">Add Video</button>
@@ -12,10 +11,10 @@ function createHeader() {
             </div>
         </header>
         <ul>
-            <li><a href="#">Explore</a></li>
-            <li><a href="#">Upload</a></li>
-            <li><a href="#">Add Subtitles</a></li>
-            <li><a href="#">Edit Videos</a></li>
+            <li><a href="explore.html">Explore</a></li>
+            <li><a href="upload.html">Upload</a></li>
+            <li><a href="add_subtitles.html">Add Subtitles</a></li>
+            <li><a href="edit_videos.html">Edit Videos</a></li>
         </ul>
     </nav>`
 }
