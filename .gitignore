@@ -6,3 +6,4 @@
 !*/*.sql
 !*.example
 !*.php
+myTest*

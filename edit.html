@@ -15,25 +15,58 @@
 
     <main>
         <h2 id="video-name" class="bigName"></h2>
-        <!-- Your content goes here -->
+
+        <video id="videoPlayer" width="640px" height="480px" controls>
+            <source id="videoSource" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <div class="progress-container">
+            <progress class="progress-bar" id="progress-bar"></progress>
+        </div>
+
+        <div class="button-container">
+            <button id="create-tag-button">Create Tag</button>
+            <button id="download-button">Download First 5 Seconds</button>
+        </div>
+
+        <script>
+            document.getElementById('create-tag-button').addEventListener('click', function() {
+                const video = document.getElementById('videoPlayer');
+                const tagContainer = document.createElement('div');
+                tagContainer.className = 'tag';
+                const videoTag = document.createElement('video');
+                videoTag.id = 'tagged-video';
+                videoTag.width = 320;
+                videoTag.height = 240;
+                videoTag.controls = true;
+                const sourceTag = document.createElement('source');
+                sourceTag.src = document.getElementById('videoSource').src + '#t=0,5';
+                sourceTag.type = 'video/mp4';
+                videoTag.appendChild(sourceTag);
+                tagContainer.appendChild(videoTag);
+                document.querySelector('main').appendChild(tagContainer);
+            });
+
+            document.getElementById('download-button').addEventListener('click', function() {
+                const video = document.getElementById('videoPlayer');
+                const videoSource = document.getElementById('tagged-video').src;
+                const a = document.createElement('a');
+                a.href = videoSource + '#t=0,5';
+                a.download = 'first-5-seconds.mp4';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+        </script>
+
     </main>
 
     <div id="output"></div>
 
-    <script>
-        function getQueryParameter(name) {
-            const urlParams = new URLSearchParams(window.location.search);
-            return urlParams.get(name);
-        }
-        const id = getQueryParameter('id');
-        if (!id) {
-            alert('Required parameters are missing! Going back...');
-            window.history.back();
-        }
-        document.getElementById('video-name').textContent = `Editing video: ${id}`;
-    </script>
-
     <div id="footer"></div>
+
+    <script src="./js/editPageScript.js"></script>
 
     <script src="./js/headerCreator.js"></script>
 
