@@ -81,6 +81,23 @@
             <button id="download-button">Download First 5 Seconds</button>
         </div>
 
+        <div id="timestamp-container"></div>
+            <label for="timestamp">Current Timestamp (ms):</label>
+            <span id="timestamp">0</span>
+        </div>
+
+        <script>
+            const timestampContainer = document.getElementById('timestamp');
+
+            videoPlayer.addEventListener('timeupdate', function () {
+                const minutes = Math.floor(videoPlayer.currentTime / 60);
+                const seconds = Math.floor(videoPlayer.currentTime % 60);
+                const milliseconds = Math.floor((videoPlayer.currentTime % 1) * 1000);
+                const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(3, '0')}`;
+                timestampContainer.textContent = formattedTime;
+            });
+        </script>
+
         <button id="next-frame-button">Next Frame</button>
 
         <div class="slider-container"></div>
