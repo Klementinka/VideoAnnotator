@@ -17,6 +17,23 @@
 
     <div id="title"></div>
 
+    <button id="authButton">Authenticate!!!</button>
+
+    <script>
+        let CLIENT_ID=undefined;
+        fetch('./config.json')
+            .then(response => response.json())
+            .then(config => {
+                console.log('Config', config);
+                CLIENT_ID = config.CLIENT_ID;
+                console.log('Client ID:', CLIENT_ID);
+            })
+            .catch(error => console.error('Error loading config:', error));
+        document.getElementById('authButton').addEventListener('click', function () {
+            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive.readonly`;
+        });
+    </script>
+
     <div class="main-content">
         <section class="video-section">
             <h2>Last Videos</h2>
