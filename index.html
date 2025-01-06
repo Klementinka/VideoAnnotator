@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Annotation Web Project</title>
-    <!-- <link rel="stylesheet" href="..\\css\\style.css"> -->
-    <script src="..\\js\\loadEnv.js"></script>
-    <script src="https://apis.google.com/js/api.js"></script>
+    <link rel="stylesheet" href="./css/style.css">
+    <script src="./js/loadEnv.js"></script>
     <script>
         const VIDEO_WIDTH = 320;
         const VIDEO_HEIGHT = 240;
@@ -16,30 +15,31 @@
 
 <body>
 
-    <nav class="navbar">
-        <header>
-            <div class="title-container">
-                <h1 class="mainTitle">Video Annotation Tool</h1>
-            </div>
-            <div class="header-buttons">
-                <button id="addVideoBtn">Add Video</button>
-                <button id="profileBtn">Profile</button>
-            </div>
-        </header>
-        <ul>
-            <li><a href="#">Explore</a></li>
-            <li><a href="#">Upload</a></li>
-            <li><a href="#">Add Subtitles</a></li>
-            <li><a href="#">Edit Videos</a></li>
-        </ul>
-    </nav>
+    <div id="title"></div>
+
+    <button id="authButton">Authenticate!!!</button>
+
+    <script>
+        let CLIENT_ID=undefined;
+        fetch('./config.json')
+            .then(response => response.json())
+            .then(config => {
+                console.log('Config', config);
+                CLIENT_ID = config.CLIENT_ID;
+                console.log('Client ID:', CLIENT_ID);
+            })
+            .catch(error => console.error('Error loading config:', error));
+        document.getElementById('authButton').addEventListener('click', function () {
+            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive.readonly`;
+        });
+    </script>
 
     <div class="main-content">
         <section class="video-section">
             <h2>Last Videos</h2>
             <ul id="lastVideosList" class="video-list">
                 <li>
-                    <h3>Example Video 1</h3>
+                    <h3><a href='./edit.html?id=1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc'>Example Video 1</a></h3>
                     <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
                         height="36%" allow="autoplay">
                     </iframe>
@@ -100,14 +100,14 @@
                     </iframe>
                     <p>Description of Video 2</p>
                 </li>
-                <li>
+                <!-- <li>
                     <h3>Video Title 3</h3>
                     <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
                         <source src="video3.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <p>Description of Video 3</p>
-                </li>
+                </li> -->
                 <!-- Best videos will appear here -->
             </ul>
         </section>
@@ -120,122 +120,25 @@
         </section>
     </div>
 
-    <style>
-        .title-container
-        {
-            display: flex;
-            justify-content: center;
-        }
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        console.log('Token:', token);
+        document.querySelectorAll('a').forEach(anchor => {
+            anchor.addEventListener('click', function (event) {
+                event.preventDefault();
+                const url = new URL(this.href);
+                url.searchParams.append('token', token);
+                window.location.href = url.toString();
+            });
+        });
+    </script>
 
-        .mainTitle {
-            color: white;
-            margin: 10px;
-        }
+    <div id="footer"></div>
 
-        body {
-            margin: 0;
-            background-color: #B1F0F7;
-        }
-
-        .video-list li video {
-            width: 100%;
-            height: auto;
-        }
-
-        .header-buttons {
-            display: flex;
-            justify-content: space-between;
-            position: absolute;
-            top: 20px;
-            right: 20px;
-        }
-
-        .header-buttons button {
-            padding: 5px 10px;
-            margin: 5px;
-            font-size: 12px;
-            background-color: #FADA7A;
-            color: black;
-            border: none;
-            cursor: pointer;
-            border-radius: 4px;
-            transition: background-color 0.3s ease;
-        }
-
-        .header-buttons button:hover {
-            background-color: #d84315;
-        }
-
-        .navbar {
-            position: sticky;
-            top: -10px;
-            z-index: 1000;
-            border-bottom-left-radius: 50% 20px;
-            border-bottom-right-radius: 50% 20px;
-            background-color: #81BFDA;
-            padding: 0px;
-            padding-bottom: 5px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        .navbar ul {
-            list-style-type: none;
-            padding: 0 50px;
-            display: flex;
-            justify-content: space-around;
-        }
-
-        .navbar ul li {
-            display: inline;
-        }
-
-        .navbar ul li a {
-            color: white;
-            text-decoration: none;
-            padding: 5px 10px;
-            display: block;
-            transition: background-color 0.3s ease;
-        }
-
-        .navbar ul li a:hover {
-            background-color: #d84315;
-            border-radius: 4px;
-        }
-
-        .main-content {
-            padding: 20px;
-        }
-
-        .video-section {
-            margin-bottom: 40px;
-        }
-
-        .video-section h2 {
-            color: #004d40;
-            text-align: center;
-            margin-bottom: 20px;
-        }
-
-        .video-list {
-            list-style-type: none;
-            padding: 0;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-        }
-
-        .video-list li {
-            background-color: #F5F0CD;
-            padding: 15px;
-            margin: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            width: 23%;
-            text-align: center;
-        }
-    </style>
-    <script src="..\\js\\script.js"></script>
+    <script src="./js/script.js"></script>
+    <script src="./js/headerCreator.js"></script>
+    <script src="./js/footerCreator.js"></script>
 </body>
 
 </html>
