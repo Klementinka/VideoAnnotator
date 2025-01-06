@@ -4,9 +4,9 @@ function getQueryParam(param) {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    const videoId = getQueryParam('id'); if
-        (videoId) {
-        const videoUrl = `https://www.googleapis.com/drive/v3/files/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc?alt=media&key=AIzaSyBqb-lZLqa_bSQDFcX89Tu3EVlbU2oyhJY`;
+    const videoId = getQueryParam('id');
+    if (videoId) {
+        const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media&key=AIzaSyBqb-lZLqa_bSQDFcX89Tu3EVlbU2oyhJY`;
         document.getElementById('videoSource').src = videoUrl;
         fetch(videoUrl, { mode: 'no-cors' }).then(response => {
             if (response.status === 403) {

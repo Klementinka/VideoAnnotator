@@ -1,0 +1,5 @@
+https://accounts.google.com/o/oauth2/v2/auth?
+  client_id=207542469934-k8oqld6o88ah3mqom7u8kc5j9hhd8nm6.apps.googleusercontent.com&
+  redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&
+  response_type=code&
+  scope=https://www.googleapis.com/auth/drive

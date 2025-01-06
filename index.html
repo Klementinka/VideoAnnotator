@@ -7,7 +7,6 @@
     <title>Video Annotation Web Project</title>
     <link rel="stylesheet" href="./css/style.css">
     <script src="./js/loadEnv.js"></script>
-    <script src="https://apis.google.com/js/api.js"></script>
     <script>
         const VIDEO_WIDTH = 320;
         const VIDEO_HEIGHT = 240;
@@ -84,14 +83,14 @@
                     </iframe>
                     <p>Description of Video 2</p>
                 </li>
-                <li>
+                <!-- <li>
                     <h3>Video Title 3</h3>
                     <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
                         <source src="video3.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <p>Description of Video 3</p>
-                </li>
+                </li> -->
                 <!-- Best videos will appear here -->
             </ul>
         </section>
@@ -103,6 +102,20 @@
             </ul>
         </section>
     </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        console.log('Token:', token);
+        document.querySelectorAll('a').forEach(anchor => {
+            anchor.addEventListener('click', function (event) {
+                event.preventDefault();
+                const url = new URL(this.href);
+                url.searchParams.append('token', token);
+                window.location.href = url.toString();
+            });
+        });
+    </script>
 
     <div id="footer"></div>
 

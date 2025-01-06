@@ -7,11 +7,62 @@
     <title>Video Annotator - Edit</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/editPageStyle.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 
 <body>
 
     <div id="title"></div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const token = params.get('token');
+        console.log('Token from params:', token);
+
+        if (token) {
+            fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + token)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.aud === '207542469934-k8oqld6o88ah3mqom7u8kc5j9hhd8nm6.apps.googleusercontent.com') {
+                        initializeTokenClient();
+                    } else {
+                        console.error('Invalid token audience.');
+                    }
+                })
+                .catch(error => console.error('Error verifying token:', error));
+        } else {
+            console.error('No token provided in URL.');
+        }
+
+        function fetchVideo() {
+            const videoId = getQueryParam('id'); // Implement getQueryParam to extract 'id' from URL
+            if (!videoId) {
+                document.body.innerHTML += '<p>No video ID provided.</p>';
+                return;
+            }
+
+            const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
+
+            fetch(videoUrl, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        const videoPlayer = document.getElementById('videoPlayer');
+                        videoPlayer.src = videoUrl;
+                        videoPlayer.load();
+                    } else {
+                        document.body.innerHTML += `<p>Error fetching video: ${response.statusText}</p>`;
+                    }
+                })
+                .catch(err => {
+                    document.body.innerHTML += `<p>Error: ${err.message}</p>`;
+                });
+        }
+
+    </script>
 
     <main>
         <h2 id="video-name" class="bigName"></h2>
@@ -30,8 +81,104 @@
             <button id="download-button">Download First 5 Seconds</button>
         </div>
 
+        <button id="next-frame-button">Next Frame</button>
+
+        <div class="slider-container"></div>
+            <label for="speed-slider">Playback Speed:</label>
+            <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
+            <span id="speed-value">1x</span>
+        </div>
+
         <script>
-            document.getElementById('create-tag-button').addEventListener('click', function() {
+            const speedSlider = document.getElementById('speed-slider');
+            const speedValue = document.getElementById('speed-value');
+            const videoPlayer = document.getElementById('videoPlayer');
+
+            speedSlider.addEventListener('input', function () {
+                const speed = speedSlider.value;
+                videoPlayer.playbackRate = speed;
+                speedValue.textContent = speed + 'x';
+            });
+        </script>
+
+        <div class="frame-selection"></div>
+            <label for="start-frame">Start Frame:</label>
+            <input type="number" id="start-frame" min="0" step="1">
+            <label for="end-frame">End Frame:</label>
+            <input type="number" id="end-frame" min="0" step="1">
+            <button id="select-frames-button">Select Frames</button>
+        </div>
+
+        <div id="selected-video-container"></div>
+
+        <button id="download-selected-video-button">Download Selected Video</button>
+
+        <script>
+            document.getElementById('download-selected-video-button').addEventListener('click', function () {
+                const startFrame = parseInt(document.getElementById('start-frame').value);
+                const endFrame = parseInt(document.getElementById('end-frame').value);
+                const frameRate = 30; // Assuming the video has a frame rate of 30 fps
+
+                if (isNaN(startFrame) || isNaN(endFrame) || startFrame < 0 || endFrame < 0 || startFrame >= endFrame) {
+                    alert('Please enter valid start and end frames.');
+                    return;
+                }
+
+                const startTime = startFrame / frameRate;
+                const endTime = endFrame / frameRate;
+
+                const videoSource = document.getElementById('videoSource').src;
+                const downloadLink = document.createElement('a');
+                
+                downloadLink.href = videoSource + `#t=${startTime},${endTime}`;
+                downloadLink.download = `selected-video-${startFrame}-${endFrame}.mp4`;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            });
+        </script>
+
+        <script>
+            document.getElementById('select-frames-button').addEventListener('click', function () {
+                const startFrame = parseInt(document.getElementById('start-frame').value);
+                const endFrame = parseInt(document.getElementById('end-frame').value);
+                const frameRate = 30; // Assuming the video has a frame rate of 30 fps
+
+                if (isNaN(startFrame) || isNaN(endFrame) || startFrame < 0 || endFrame < 0 || startFrame >= endFrame) {
+                    alert('Please enter valid start and end frames.');
+                    return;
+                }
+
+                const startTime = startFrame / frameRate;
+                const endTime = endFrame / frameRate;
+
+                const selectedVideoContainer = document.getElementById('selected-video-container');
+                selectedVideoContainer.innerHTML = ''; // Clear previous selection
+
+                const videoTag = document.createElement('video');
+                videoTag.width = 320;
+                videoTag.height = 240;
+                videoTag.controls = true;
+                const sourceTag = document.createElement('source');
+                sourceTag.src = document.getElementById('videoSource').src + `#t=${startTime},${endTime}`;
+                sourceTag.type = 'video/mp4';
+                videoTag.appendChild(sourceTag);
+
+
+                selectedVideoContainer.appendChild(videoTag);
+            });
+        </script>
+
+        <script>
+            document.getElementById('next-frame-button').addEventListener('click', function () {
+                const video = document.getElementById('videoPlayer');
+                const frameRate = 30; // Assuming the video has a frame rate of 30 fps
+                video.currentTime += 1 / frameRate;
+            });
+        </script>
+
+        <script>
+            document.getElementById('create-tag-button').addEventListener('click', function () {
                 const video = document.getElementById('videoPlayer');
                 const tagContainer = document.createElement('div');
                 tagContainer.className = 'tag';
@@ -48,7 +195,7 @@
                 document.querySelector('main').appendChild(tagContainer);
             });
 
-            document.getElementById('download-button').addEventListener('click', function() {
+            document.getElementById('download-button').addEventListener('click', function () {
                 const video = document.getElementById('videoPlayer');
                 const videoSource = document.getElementById('tagged-video').src;
                 const a = document.createElement('a');

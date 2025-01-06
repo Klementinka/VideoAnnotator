@@ -1,7 +1,7 @@
 function createFooter() {
 
     return `<footer>
-        <p>&copy; 2023 Video Annotator</p>
+        <p>&copy; 2025 Web Technologies Video Annotator</p>
     </footer>`
 }
 
