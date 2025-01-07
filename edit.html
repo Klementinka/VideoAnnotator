@@ -70,7 +70,7 @@
     <main>
         <h2 id="video-name" class="bigName"></h2>
 
-        <video id="videoPlayer" width="640px" height="480px" controls>
+        <video id="videoPlayer" width="640px" height="480px" controls crossOrigin="anonymous">
             <source id="videoSource" type="video/mp4">
             Your browser does not support the video tag.
         </video>
@@ -88,6 +88,27 @@
         <label for="timestamp">Current Timestamp (ms):</label>
         <span id="timestamp">0</span>
         </div>
+
+        <button id="download-frame-button">Download Current Frame</button>
+
+        <script>
+            document.getElementById('download-frame-button').addEventListener('click', function () {
+                const video = document.getElementById('videoPlayer');
+                const canvas = document.createElement('canvas');
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                const context = canvas.getContext('2d');
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                canvas.toDataURL('image/png');
+                const dataURL = canvas.toDataURL('image/png');
+                const a = document.createElement('a');
+                a.href = dataURL;
+                a.download = 'frame-screenshot.png';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            });
+        </script>
 
         <script>
             const timestampContainer = document.getElementById('timestamp');
