@@ -32,8 +32,8 @@ CREATE TABLE `users` (
   `username` varchar(20) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(20) NOT NULL,
-  `video_id` int(100) DEFAULT NULL,
-  FOREIGN KEY (`video_id`) REFERENCES `videos`(`id`)
+  `videos` int(100),
+  FOREIGN KEY (`videos`) REFERENCES `videos`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -54,7 +54,8 @@ CREATE TABLE `videos` (
   `drive_id` varchar(100) NOT NULL,
   `owner_id` int(100) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_on` timestamp NOT NULL DEFAULT current_timestamp()
+  `updated_on` timestamp NOT NULL DEFAULT current_timestamp(),
+  `private` boolean NOT NULL DEFAULT false
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
