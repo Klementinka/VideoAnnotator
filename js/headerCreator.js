@@ -58,6 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('cancelBtn');
     const addVideoBtn = document.getElementById('addVideoBtn');
     const saveBtn = document.getElementById('saveBtn');
+    const form = document.getElementById('addVideoForm');
+    const formData = new FormData(form);
 
     // Function to show the modal
     const showModal = () => {
@@ -100,6 +102,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Save button logic
     if (saveBtn) {
         saveBtn.addEventListener('click', () => {
+            const form = document.getElementById('addVideoForm');
+            const formData = new FormData(form);
+
+            // Make an AJAX POST request to the PHP script
+            fetch('uploadVideo.php', {
+                method: 'POST',
+                body: formData,
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    if (data.success) {
+                        alert('Video uploaded successfully!');
+                    } else {
+                        alert('Error uploading video: ' + data.message);
+                    }
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('An error occurred while uploading the video.');
+                });
             alert('Video saved!');
             hideModal();
         });

@@ -28,6 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `users` (
+  PRIMARY KEY (`id`),
   `id` int(100) NOT NULL,
   `username` varchar(20) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
@@ -50,6 +51,8 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`) VALUES
 --
 
 CREATE TABLE `videos` (
+  PRIMARY KEY (`id`),
+  `name` varchar(100) NOT NULL DEFAULT id,
   `id` int(100) NOT NULL,
   `drive_id` varchar(100) NOT NULL,
   `owner_id` int(100) NOT NULL,
