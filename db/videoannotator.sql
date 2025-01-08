@@ -55,7 +55,7 @@ CREATE TABLE `users` (
   `username` varchar(20) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(20) NOT NULL,
-  `videos` int(100),
+  `videos` int(100) DEFAULT NULL,
   FOREIGN KEY (`videos`) REFERENCES `videos`(`id`)
   `drive_id` int(11) NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -82,18 +82,18 @@ CREATE TABLE `videos` (
   `owner_id` int(100) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_on` timestamp NOT NULL DEFAULT current_timestamp(),
-  `private` boolean NOT NULL DEFAULT false
+  `is_private` boolean NOT NULL DEFAULT false
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `videos`
 --
 
-INSERT INTO `videos` (`id`, `drive_id`, `owner_id`, `created_on`, `updated_on`) VALUES
-( 'this_is_hardcoded_invalid_id', 1010101011, '2025-01-02 12:33:12', '2025-01-02 12:33:12'),
-( '1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc', 3, '2025-01-05 15:21:54', '2025-01-05 15:21:54'),
-( '1i0Bh9xPx7m1F_hDPxhOu01H5P9VIUKm3', 2, '2025-01-05 15:35:50', '2025-01-05 15:35:50'),
-( '1M7_QzcS4ZF_HWcqH6j_9oyXo-SFoarXf', 3, '2025-01-05 15:36:14', '2025-01-05 15:36:14');
+INSERT INTO `videos` (`id`, `drive_id`, `owner_id`, `created_on`, `updated_on`, is_private) VALUES
+( 'this_is_hardcoded_invalid_id', 1010101011, '2025-01-02 12:33:12', '2025-01-02 12:33:12', true),
+( '1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc', 3, '2025-01-05 15:21:54', '2025-01-05 15:21:54', true),
+( '1i0Bh9xPx7m1F_hDPxhOu01H5P9VIUKm3', 2, '2025-01-05 15:35:50', '2025-01-05 15:35:50', false),
+( '1M7_QzcS4ZF_HWcqH6j_9oyXo-SFoarXf', 3, '2025-01-05 15:36:14', '2025-01-05 15:36:14', false);
 
 --
 -- Indexes for dumped tables

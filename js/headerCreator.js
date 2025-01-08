@@ -2,7 +2,7 @@ function createHeader() {
     return `<nav class="navbar">
         <header>
             <div class="title-container">
-                <h1 class="mainTitle"><a href="http://localhost/VideoAnnotator/">Video Annotation Tool</a></h1>
+                <h1 class="mainTitle"><a href="/">Video Annotation Tool</a></h1>
             </div>
             <div class="header-buttons">
                 <button id="addVideoBtn">Add Video</button>
@@ -20,17 +20,17 @@ function createHeader() {
             <div class="modal-content">
                 <span id="closeModal" class="close">&times;</span>
                 <h2>Add New Video</h2>
-                <form id="addVideoForm">
+                <form id="addVideoForm" enctype="multipart/form-data">
                     <label for="videoUpload">Upload Video:</label>
-                    <input type="file" id="videoUpload" accept="video/*" required>
+                    <input type="file" id="videoUpload" name="videoUpload" accept="video/*" required>
 
                     <label for="videoName">Video Name:</label>
-                    <input type="text" id="videoName" placeholder="Enter video name" required>
+                    <input type="text" id="videoName" name="videoName" placeholder="Enter video name" required>
 
                     <label for="videoType">Video Type:</label>
                     <div class="slider-container">
                         <label class="switch">
-                            <input type="checkbox" id="videoType">
+                            <input type="checkbox" id="videoType" name="videoType">
                             <span class="slider"></span>
                         </label>
                         <span id="videoTypeLabel">Public</span>
@@ -58,78 +58,49 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('cancelBtn');
     const addVideoBtn = document.getElementById('addVideoBtn');
     const saveBtn = document.getElementById('saveBtn');
-    const form = document.getElementById('addVideoForm');
-    const formData = new FormData(form);
 
-    // Function to show the modal
+    // Show modal
     const showModal = () => {
-        if (videoModal) {
-            videoModal.style.display = 'block';
-        } else {
-            console.error("Error: videoModal not found.");
-        }
+        videoModal.style.display = 'block';
     };
 
-    // Function to hide the modal
+    // Hide modal
     const hideModal = () => {
-        if (videoModal) {
-            videoModal.style.display = 'none';
-        } else {
-            console.error("Error: videoModal not found.");
-        }
+        videoModal.style.display = 'none';
     };
 
-    // Add event listener to "Add Video" button
-    if (addVideoBtn) {
-        addVideoBtn.addEventListener('click', showModal);
-    } else {
-        console.error("Error: addVideoBtn not found.");
-    }
-
-    // Close modal on close and cancel buttons
-    if (closeModal) {
-        closeModal.addEventListener('click', hideModal);
-    } else {
-        console.error("Error: closeModal not found.");
-    }
-
-    if (cancelBtn) {
-        cancelBtn.addEventListener('click', hideModal);
-    } else {
-        console.error("Error: cancelBtn not found.");
-    }
+    // Event listeners for modal
+    addVideoBtn.addEventListener('click', showModal);
+    closeModal.addEventListener('click', hideModal);
+    cancelBtn.addEventListener('click', hideModal);
 
     // Save button logic
-    if (saveBtn) {
-        saveBtn.addEventListener('click', () => {
-            const form = document.getElementById('addVideoForm');
-            const formData = new FormData(form);
+    saveBtn.addEventListener('click', () => {
+        const form = document.getElementById('addVideoForm');
+        const formData = new FormData(form);
 
-            // Make an AJAX POST request to the PHP script
-            fetch('uploadVideo.php', {
-                method: 'POST',
-                body: formData,
+        // Make an AJAX POST request to the PHP script
+        fetch('uploadVideo.php', {
+            method: 'POST',
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    alert('Video uploaded successfully!');
+                } else {
+                    alert('Error uploading video: ' + data.message);
+                }
             })
-                .then((response) => response.json())
-                .then((data) => {
-                    if (data.success) {
-                        alert('Video uploaded successfully!');
-                    } else {
-                        alert('Error uploading video: ' + data.message);
-                    }
-                })
-                .catch((error) => {
-                    console.error('Error:', error);
-                    alert('An error occurred while uploading the video.');
-                });
-            alert('Video saved!');
-            hideModal();
-        });
-    } else {
-        console.error("Error: saveBtn not found.");
-    }
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('An error occurred while uploading the video.');
+            });
 
-    // Close modal if user clicks outside it
+        hideModal();
+    });
+
+    // Close modal if user clicks outside
     window.addEventListener('click', (event) => {
         if (event.target === videoModal) {
             hideModal();
