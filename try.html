@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Video from Google Drive</title>
+    <script src="./js/loadEnv.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+</head>
+
+<body>
+    <h1>Download Video from Google Drive</h1>
+    <button id="downloadFile">Download Video</button>
+    <script>
+        document.getElementById('downloadFile').addEventListener('click', function () {
+            downloadFile('1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc');
+        });
+
+        function downloadFile(fileId) {
+            const url = `https://drive.google.com/uc?export=download&id=${fileId}`;
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'video.mp4';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+    <!-- <script src="./js/driveDownload.js"></script> -->
+
+    <button id="loadTextButton">Load Text File</button>
+    <div id="textDisplay" style="white-space: pre-wrap; margin-top: 20px;"></div>
+
+    <script>
+        document.getElementById('loadTextButton').addEventListener('click', function () {
+            const fileId = '1yN0gfEE_f5GduoWpX3q7d4HXqBFZcDWL';
+            const fileUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+
+            fetch(fileUrl)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    document.getElementById('textDisplay').textContent = data;
+                })
+                .catch(error => {
+                    console.error('Error fetching file:', error);
+                    document.getElementById('textDisplay').textContent = `Error: ${error.message}`;
+                });
+        });
+    </script>
+</body>
+
+</html>
