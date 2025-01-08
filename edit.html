@@ -75,6 +75,8 @@
             Your browser does not support the video tag.
         </video>
 
+        <canvas id="canvas" style="display: none;"></canvas>
+
         <div class="progress-container">
             <progress class="progress-bar" id="progress-bar"></progress>
         </div>
@@ -142,40 +144,73 @@
             });
         </script>
 
-        <div class="frame-selection"></div>
-        <label for="start-frame">Start Frame:</label>
-        <input type="number" id="start-frame" min="0" step="1">
-        <label for="end-frame">End Frame:</label>
-        <input type="number" id="end-frame" min="0" step="1">
-        <button id="select-frames-button">Select Frames</button>
+        <div class="time-input-container">
+            <label for="start-time">Start Time (mm:ss:ms):</label>
+            <input type="text" id="start-time" placeholder="00:00:000">
+            <label for="end-time">End Time (mm:ss:ms):</label>
+            <input type="text" id="end-time" placeholder="00:00:000">
         </div>
 
         <div id="selected-video-container"></div>
 
-        <button id="download-selected-video-button">Download Selected Video</button>
+        <button id="process">Download Selected Video</button>
+
+        <a id="download" style="display: none;">Download New Video</a>
 
         <script>
-            document.getElementById('download-selected-video-button').addEventListener('click', function () {
-                const startFrame = parseInt(document.getElementById('start-frame').value);
-                const endFrame = parseInt(document.getElementById('end-frame').value);
-                const frameRate = 30; // Assuming the video has a frame rate of 30 fps
+            const video = document.getElementById('videoPlayer');
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+            const processButton = document.getElementById('process');
+            const downloadLink = document.getElementById('download');
+            const startTimeInput = document.getElementById('start-time');
+            const endTimeInput = document.getElementById('end-time');
 
-                if (isNaN(startFrame) || isNaN(endFrame) || startFrame < 0 || endFrame < 0 || startFrame >= endFrame) {
-                    alert('Please enter valid start and end frames.');
-                    return;
+            processButton.addEventListener('click', async () => {
+
+                let startTime = startTimeInput.value.split(':').map(parseFloat);
+                startTime = startTime[0] * 60 + startTime[1] + startTime[2] / 1000;
+                let endTime = endTimeInput.value.split(':').map(parseFloat);
+                endTime = endTime[0] * 60 + endTime[1] + endTime[2] / 1000;
+
+                console.log('start', startTime, 'end', endTime);
+
+                canvas.width = video.videoWidth;
+                canvas.height = video.videoHeight;
+                console.log('canvas', canvas.width, canvas.height);
+
+                const stream = canvas.captureStream(); // Capture canvas stream
+                const mediaRecorder = new MediaRecorder(stream, { mimeType: 'video/webm' });
+                const chunks = [];
+
+                mediaRecorder.ondataavailable = (event) => {
+                    if (event.data.size > 0) chunks.push(event.data);
+                };
+
+                mediaRecorder.onstop = () => {
+                    console.log('stop', chunks.length);
+                    const blob = new Blob(chunks, { type: 'video/webm' });
+                    
+                    const url = URL.createObjectURL(blob);
+
+                    downloadLink.href = url;
+                    downloadLink.download = `${getQueryParam('id')}-${startTime}-${endTime}.webm`;
+                    downloadLink.style.display = 'block';
+                    downloadLink.textContent = 'Download New Video';
+                };
+
+                mediaRecorder.start();
+
+                const frameInterval = Math.floor(video.fps || 30);
+
+                for (let time = Math.max(0, startTime); time < Math.min(endTime, video.duration); time += 1 / frameInterval) {
+                    console.log('frame', time);
+                    video.currentTime = time;
+                    await new Promise(resolve => video.addEventListener('seeked', resolve, { once: true }));
+                    ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
                 }
 
-                const startTime = startFrame / frameRate;
-                const endTime = endFrame / frameRate;
-
-                const videoSource = document.getElementById('videoSource').src;
-                const downloadLink = document.createElement('a');
-
-                downloadLink.href = videoSource + `#t=${startTime},${endTime}`;
-                downloadLink.download = `selected-video-${startFrame}-${endFrame}.mp4`;
-                document.body.appendChild(downloadLink);
-                downloadLink.click();
-                document.body.removeChild(downloadLink);
+                mediaRecorder.stop();
             });
         </script>
 
