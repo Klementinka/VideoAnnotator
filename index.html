@@ -9,27 +9,32 @@
     <script src="./js/loadEnv.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="./js/script.js"></script>
+    <script>
+        const VIDEO_WIDTH = 320;
+        const VIDEO_HEIGHT = 240;
+    </script>
 </head>
 
 <body>
 
-    <nav class="navbar">
-        <header>
-            <div class="title-container">
-                <h1 class="mainTitle">Video Annotation Tool</h1>
-            </div>
-            <div class="header-buttons">
-                <button id="addVideoBtn">Add Video</button>
-                <button id="profileBtn">Profile</button>
-            </div>
-        </header>
-        <ul>
-            <li><a href="#">Explore</a></li>
-            <li><a href="#">Upload</a></li>
-            <li><a href="#">Add Subtitles</a></li>
-            <li><a href="#">Edit Videos</a></li>
-        </ul>
-    </nav>
+    <div id="title"></div>
+
+    <button id="authButton">Authenticate!!!</button>
+
+    <script>
+        let CLIENT_ID=undefined;
+        fetch('./config.json')
+            .then(response => response.json())
+            .then(config => {
+                console.log('Config', config);
+                CLIENT_ID = config.CLIENT_ID;
+                console.log('Client ID:', CLIENT_ID);
+            })
+            .catch(error => console.error('Error loading config:', error));
+        document.getElementById('authButton').addEventListener('click', function () {
+            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive.readonly`;
+        });
+    </script>
 
     <main>
         <button id="fetchUsersBtn">Fetch Users</button>
@@ -58,7 +63,7 @@
             <h2>Last Videos</h2>
             <ul id="lastVideosList" class="video-list">
                 <li>
-                    <h3>Example Video 1</h3>
+                    <h3><a href='./edit.html?id=1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc'>Example Video 1</a></h3>
                     <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
                         height="36%" allow="autoplay">
                     </iframe>
@@ -119,14 +124,14 @@
                     </iframe>
                     <p>Description of Video 2</p>
                 </li>
-                <li>
+                <!-- <li>
                     <h3>Video Title 3</h3>
                     <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
                         <source src="video3.mp4" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
                     <p>Description of Video 3</p>
-                </li>
+                </li> -->
                 <!-- Best videos will appear here -->
             </ul>
         </section>
@@ -138,7 +143,26 @@
             </ul>
         </section>
     </div>
-    <!-- <script src="..\\js\\script.js"></script> -->
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+        console.log('Token:', token);
+        document.querySelectorAll('a').forEach(anchor => {
+            anchor.addEventListener('click', function (event) {
+                event.preventDefault();
+                const url = new URL(this.href);
+                url.searchParams.append('token', token);
+                window.location.href = url.toString();
+            });
+        });
+    </script>
+
+    <div id="footer"></div>
+
+    <script src="./js/script.js"></script>
+    <script src="./js/headerCreator.js"></script>
+    <script src="./js/footerCreator.js"></script>
 </body>
 
 </html>
