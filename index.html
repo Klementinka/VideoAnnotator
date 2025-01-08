@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/uploadVideo.css">
     <script src="./js/loadEnv.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="./js/script.js"></script>
     <script>
         const VIDEO_WIDTH = 320;
         const VIDEO_HEIGHT = 240;
@@ -32,6 +34,28 @@
             .catch(error => console.error('Error loading config:', error));
         document.getElementById('authButton').addEventListener('click', function () {
             window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive.readonly`;
+        });
+    </script>
+
+    <main>
+        <button id="fetchUsersBtn">Fetch Users</button>
+        <ul id="usersList"></ul>
+    </main>
+
+    <script>
+        document.getElementById('fetchUsersBtn').addEventListener('click', function () {
+            fetch('./php/fetchUsers.php')
+                .then(response => response.json())
+                .then(data => {
+                    const usersList = document.getElementById('usersList');
+                    usersList.innerHTML = '';
+                    data.forEach(user => {
+                        const listItem = document.createElement('li');
+                        listItem.textContent = `${user.username} (${user.email})`;
+                        usersList.appendChild(listItem);
+                    });
+                })
+                .catch(error => console.error('Error fetching users:', error));
         });
     </script>
 
