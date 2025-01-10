@@ -1,10 +1,14 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Include Google Drive API
-require '/vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Google\Client as Google_Client;
 use Google\Service\Drive as Google_Service_Drive;
 use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
+
 // Database configuration
 $servername = "localhost";
 $username = "root";
@@ -12,23 +16,31 @@ $password = "";
 $dbname = "videoannotator";
 $folderId = "14IWnQhBfaX7-OfVPC_q7tYc_VqzWLIKz"; // Google Drive folder ID
 
-// Connect to the database
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die(json_encode(['success' => false, 'message' => 'Database connection failed']));
-}
+// Debugging output
+echo "Hello";
+ob_flush();
+flush();
+
+
+echo "Connected successfully";
+ob_flush();
+flush();
 
 // Validate inputs
-$videoName = $_POST['videoName'] ?? '';
-$videoType = isset($_POST['videoType']) && $_POST['videoType'] === 'on' ? 'Public' : 'Private';
+$videoName = $_POST['videoName'];
+$videoType = isset($_POST['videoType']) && $_POST['videoType'] === 'off' ? 'Public' : 'Private';
 
-if (empty($videoName) || empty($_FILES['videoUpload'])) {
+if (empty($videoName) || empty($_POST['videoPath'])) {
     die(json_encode(['success' => false, 'message' => 'Invalid input']));
 }
 
-$file = $_FILES['videoUpload'];
-$fileName = $file['videoName'];
-$fileType = $file['videoType'];
+echo $_POST['videoPath'];
+ob_flush();
+flush();
+
+$filePath = $_POST['videoPath'];
+$fileName = basename($filePath);
+$fileMimeType = mime_content_type($filePath);
 
 // Google Drive API setup
 $client = new Google_Client();
@@ -37,18 +49,23 @@ $client->addScope(Google_Service_Drive::DRIVE_FILE);
 
 $service = new Google_Service_Drive($client);
 
-// File metadata
+// File metadata for upload
 $fileMetadata = new Google_Service_Drive_DriveFile([
-    'name' => $fileName,
-    'parents' => [$folderId],
+    'name' => $fileName, // Use the original file name
 ]);
+
+// Add the file to a folder, if folderId is set
+if (!empty($folderId)) {
+    $fileMetadata->setParents([$folderId]);
+}
 
 // Upload file to Google Drive
 try {
-    $content = file_get_contents($tmpFilePath);
+    $fileContent = file_get_contents($filePath); // Read the file content
+
     $driveFile = $service->files->create($fileMetadata, [
-        'data' => $content,
-        'mimeType' => $fileType,
+        'data' => $fileContent,
+        'mimeType' => $fileMimeType, // Detect MIME type
         'uploadType' => 'multipart',
         'fields' => 'id',
     ]);
@@ -56,18 +73,10 @@ try {
     // Get the file ID
     $fileId = $driveFile->id;
 
-    // Insert into database
-    $stmt = $conn->prepare("INSERT INTO videos (name, drive_id, owner_id, created_on, updated_on, is_private) VALUES (?, ?, ?, NOW(), NOW(), ?)");
-    $ownerId = 1010101011; // Replace with dynamic owner ID if necessary
-    $stmt->bind_param($videoName, $fileId, $ownerId, $videoType);
-    if ($stmt->execute()) {
-        echo json_encode(['success' => true, 'message' => 'Video uploaded successfully']);
-    } else {
-        echo json_encode(['success' => false, 'message' => 'Failed to insert into database']);
-    }
+    echo "Successfully uploaded to Google Drive";
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error uploading to Google Drive: ' . $e->getMessage()]);
 }
 
-$conn->close();
+exit(); // Ensure no further execution
 ?>

@@ -2,7 +2,7 @@ function createHeader() {
     return `<nav class="navbar">
         <header>
             <div class="title-container">
-                <h1 class="mainTitle"><a href="/">Video Annotation Tool</a></h1>
+                <h1 class="mainTitle"><a href="http://localhost/VideoAnnotator/">Video Annotation Tool</a></h1>
             </div>
             <div class="header-buttons">
                 <button id="addVideoBtn">Add Video</button>
@@ -21,8 +21,8 @@ function createHeader() {
                 <span id="closeModal" class="close">&times;</span>
                 <h2>Add New Video</h2>
                 <form id="addVideoForm" enctype="multipart/form-data">
-                    <label for="videoUpload">Upload Video:</label>
-                    <input type="file" id="videoUpload" name="videoUpload" accept="video/*" required>
+                    <label for="videoPath">Upload Video:</label>
+                    <input type="text" id="videoPath" name="videoPath" placeholder="Enter video path" required>
 
                     <label for="videoName">Video Name:</label>
                     <input type="text" id="videoName" name="videoName" placeholder="Enter video name" required>
@@ -80,7 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData(form);
 
         // Make an AJAX POST request to the PHP script
-        fetch('uploadVideo.php', {
+        fetch('php/uploadVideo.php', {
             method: 'POST',
             body: formData,
         })
