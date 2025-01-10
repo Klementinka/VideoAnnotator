@@ -79,14 +79,31 @@
 
         <div class="progress-container">
             <progress class="progress-bar" id="progress-bar"></progress>
+            <span id="timestamp">0</span>
         </div>
 
-        <div id="timestamp-container"></div>
-        <label for="timestamp">Current Timestamp (ms):</label>
-        <span id="timestamp">0</span>
+
+
+        <div class="controls">
+            <button id="previous-frame-button">&#10508</button>
+            <button id="play-button">&#9654</button>
+            <button id="pause-button">&#10073&#10073</button>
+            <button id="next-frame-button">&#10509</button>
         </div>
 
-        <button id="download-frame-button">Download Current Frame</button>
+        <script>
+            document.getElementById('play-button').onclick = function () {
+                const video = document.getElementById('videoPlayer');
+                video.play();
+            };
+
+            document.getElementById('pause-button').onclick = function () {
+                const video = document.getElementById('videoPlayer');
+                video.pause();
+            };
+        </script>
+
+        <button class="download-frame-button"><img src="./assets/screenshot.png" width="15px"></button>
 
         <script>
             document.getElementById('download-frame-button').addEventListener('click', function () {
@@ -119,25 +136,11 @@
             });
         </script>
 
-        <button id="next-frame-button">Next Frame</button>
-
-        <div class="slider-container"></div>
-        <label for="speed-slider">Playback Speed:</label>
-        <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
-        <span id="speed-value">1x</span>
+        <div class="slider-container">
+            <label for="speed-slider">Playback Speed:</label>
+            <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
+            <span id="speed-value">1x</span>
         </div>
-
-        <script>
-            const speedSlider = document.getElementById('speed-slider');
-            const speedValue = document.getElementById('speed-value');
-            const videoPlayer = document.getElementById('videoPlayer');
-
-            speedSlider.addEventListener('input', function () {
-                const speed = speedSlider.value;
-                videoPlayer.playbackRate = speed;
-                speedValue.textContent = speed + 'x';
-            });
-        </script>
 
         <div style="display: flex; justify-content: space-between; width: 50%;">
             <button id="set-start-time-button" style="flex: 1;">Set Start Time</button>
@@ -153,10 +156,46 @@
 
         <div id="selected-video-container"></div>
 
-        <button id="process">Download Selected Video</button>
 
-        <a id="download" style="display: none;">Download New Video</a>
+        <a id="download" style="display: none;">Downloa Video</a>
 
+        <button id="save-timestamp-button">Save Timestamp</button>
+
+        <table id="timestamps-table" border="1">
+            <thead>
+                <tr>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <button id="process"><img src="./assets/download.png" width="20px"></button>
+
+        <script>
+            document.getElementById('save-timestamp-button').addEventListener('click', function () {
+                const startTime = document.getElementById('start-time').value;
+                const endTime = document.getElementById('end-time').value;
+
+                if (startTime && endTime) {
+                    const table = document.getElementById('timestamps-table').getElementsByTagName('tbody')[0];
+                    const newRow = table.insertRow();
+
+                    const startCell = newRow.insertCell(0);
+                    const endCell = newRow.insertCell(1);
+
+                    startCell.textContent = startTime;
+                    endCell.textContent = endTime;
+
+                    document.getElementById('start-time').value = '';
+                    document.getElementById('end-time').value = '';
+                } else {
+                    alert('Please enter both start and end times.');
+                }
+            });
+        </script>
     </main>
 
     <div id="output"></div>

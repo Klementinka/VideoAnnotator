@@ -3,6 +3,7 @@ main {
     flex-direction: column;
     align-items: center;
     margin: 0px 20px;
+    background-color: red;
 }
 
 .bigName {
@@ -24,7 +25,7 @@ main {
     width: 0;
     transition: width 0.4s ease;
     border-radius: 10px;
-    color: #76c7c0;
+    background-color: #76c7c0;
 }
 
 .cut-container {
@@ -35,15 +36,28 @@ main {
     border: 5px solid black;
 }
 
-.download-frame-button {
-    border: none;
-    background-color: transparent;
-}
-
 .slider-container
 {
     display: flex;
     flex-direction: column;
     align-items: center;
     border: 5px solid black;
+}
+
+.controls
+{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+}
+
+.download-frame-button
+{
+    background-color: transparent;
+}
+
+#next-frame-button
+{
+    background-color: red;
 }

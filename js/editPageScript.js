@@ -1,3 +1,5 @@
+const video = document.getElementById('videoPlayer');
+
 function getQueryParam(param) {
     const urlParams = new URLSearchParams(window.location.search);
     return urlParams.get(param);
@@ -76,7 +78,6 @@ document.getElementById('set-end-time-button').addEventListener('click', functio
 });
 
 document.getElementById('set-start-time-button').addEventListener('click', function () {
-    const video = document.getElementById('videoPlayer');
     const currentTime = video.currentTime;
     const minutes = Math.floor(currentTime / 60);
     const seconds = Math.floor(currentTime % 60);
@@ -85,13 +86,18 @@ document.getElementById('set-start-time-button').addEventListener('click', funct
     document.getElementById('start-time').value = formattedTime;
 });
 
-document.getElementById('next-frame-button').addEventListener('click', function () {
+document.getElementById('next-frame-button').onclick = function () {
     const video = document.getElementById('videoPlayer');
     const frameRate = 30; // Assuming the video has a frame rate of 30 fps
     video.currentTime += 1 / frameRate;
-});
+};
 
-const video = document.getElementById('videoPlayer');
+document.getElementById('previous-frame-button').onclick = function () {
+    const video = document.getElementById('videoPlayer');
+    const frameRate = 30; // Assuming the video has a frame rate of 30 fps
+    video.currentTime -= 1 / frameRate;
+};
+
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const processButton = document.getElementById('process');
@@ -105,6 +111,30 @@ processButton.addEventListener('click', async () => {
     startTime = startTime[0] * 60 + startTime[1] + startTime[2] / 1000;
     let endTime = endTimeInput.value.split(':').map(parseFloat);
     endTime = endTime[0] * 60 + endTime[1] + endTime[2] / 1000;
+
+    const timesTable = document.getElementById('timestamps-table');
+    const startTimes = [];
+    for (let row of timesTable.rows) {
+        const cell = row.cells[0];
+        if (cell) {
+            let startTime = cell.textContent.split(':').map(parseFloat);
+            startTime = startTime[0] * 60 + startTime[1] + startTime[2] / 1000;
+            startTimes.push(startTime);
+        }
+    }
+
+    const endTimes = [];
+    for (let row of timesTable.rows) {
+        const cell = row.cells[1];
+        if (cell) {
+            let endTime = cell.textContent.split(':').map(parseFloat);
+            endTime = endTime[0] * 60 + endTime[1] + endTime[2] / 1000;
+            endTimes.push(endTime);
+        }
+    }
+
+    console.log('startTimes', startTimes);
+    console.log('endTimes', endTimes);
 
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
@@ -132,12 +162,24 @@ processButton.addEventListener('click', async () => {
 
     const frameInterval = Math.floor(video.fps || 30);
 
-    for (let time = Math.max(0, startTime); time < Math.min(endTime, video.duration); time += 1 / frameInterval) {
-        console.log('frame', time);
-        video.currentTime = time;
-        await new Promise(resolve => video.addEventListener('seeked', resolve, { once: true }));
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+    for (let i = 0; i < startTimes.length; i++) {
+        for (let time = Math.max(0, startTimes[i]); time < Math.min(endTimes[i], video.duration); time += 1 / frameInterval) {
+            console.log('frame', time);
+            video.currentTime = time;
+            await new Promise(resolve => video.addEventListener('seeked', resolve, { once: true }));
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        }
     }
 
     mediaRecorder.stop();
+});
+
+const speedSlider = document.getElementById('speed-slider');
+const speedValue = document.getElementById('speed-value');
+const videoPlayer = document.getElementById('videoPlayer');
+
+speedSlider.addEventListener('input', function () {
+    const speed = speedSlider.value;
+    videoPlayer.playbackRate = speed;
+    speedValue.textContent = speed + 'x';
 });
