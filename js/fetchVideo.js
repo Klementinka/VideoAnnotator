@@ -32,3 +32,22 @@ function fetchVideo(videoId, token, playerId, sourceId) {
             alert('Error fetching video:', err);
         });
 }
+
+function loadSecondVideo() {
+    const id_db = prompt('Enter id of the second video:');
+
+    fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+        .then(response => response.json())
+        .then(data => {
+            if (data.drive_id) {
+                params.set('id2', data.drive_id);
+                fetchVideo(data.drive_id, params.get('token'), 'videoPlayer2', 'videoSource2');
+                document.getElementById('video-name2').textContent = data.name
+            } else {
+                alert('No drive_id found for the given video id.');
+            }
+        })
+        .catch(error => {
+            alert(error);
+        });
+}

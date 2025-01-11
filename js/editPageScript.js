@@ -101,7 +101,9 @@ document.getElementById('screenshot-btn').onclick = function () {
 };
 
 const canvas = document.getElementById('canvas');
+const canvas2 = document.getElementById('canvas2');
 const ctx = canvas.getContext('2d');
+const ctx2 = canvas.getContext('2d');
 const processButton = document.getElementById('process');
 const downloadLink = document.getElementById('download');
 const startTimeInput = document.getElementById('start-time');
@@ -142,9 +144,6 @@ processButton.addEventListener('click', async () => {
         }
     }
 
-    console.log('startTimes', startTimes);
-    console.log('endTimes', endTimes);
-
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
 
@@ -175,7 +174,6 @@ processButton.addEventListener('click', async () => {
     for (let i = 0; i < startTimes.length; i++) {
         for (let time = Math.max(0, startTimes[i]); time < Math.min(endTimes[i], video.duration); time += 1 / frameInterval) {
             console.log('frame', time);
-            console.log(ids[i]);
             if (ids[i] === '1') {
                 video.currentTime = time;
                 await new Promise(resolve => video.addEventListener('seeked', resolve, { once: true }));
@@ -184,7 +182,7 @@ processButton.addEventListener('click', async () => {
             else {
                 video2.currentTime = time;
                 await new Promise(resolve => video2.addEventListener('seeked', resolve, { once: true }));
-                ctx.drawImage(video2, 0, 0, canvas.width, canvas.height);
+                ctx2.drawImage(video2, 0, 0, canvas.width, canvas.height);
             }
         }
     }
@@ -346,4 +344,36 @@ document.getElementById('play-button2').onclick = function () {
 document.getElementById('pause-button2').onclick = function () {
     const video = document.getElementById('videoPlayer2');
     video.pause();
+};
+
+document.getElementById('add-video').onclick = function () {
+    loadSecondVideo();
+    document.getElementById('secondVideo').style.display = 'flex';
+}
+
+document.getElementById('save-timestamp2').onclick = function () {
+    const startTime = document.getElementById('start-time2').value;
+    const endTime = document.getElementById('end-time2').value;
+
+    if (startTime && endTime) {
+        document.getElementById('process').style.display = 'block';
+        document.getElementById('clear-table-button').style.display = 'block';
+        const tableElement = document.getElementById('timestamps-table');
+        tableElement.style.display = 'block';
+        const table = tableElement.getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow();
+
+        const id = newRow.insertCell(0);
+        const startCell = newRow.insertCell(1);
+        const endCell = newRow.insertCell(2);
+
+        id.textContent = '2';
+        startCell.textContent = startTime;
+        endCell.textContent = endTime;
+
+        document.getElementById('start-time2').value = '';
+        document.getElementById('end-time2').value = '';
+    } else {
+        alert('Please enter both start and end times.');
+    }
 };
