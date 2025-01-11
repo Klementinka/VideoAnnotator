@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jan 05, 2025 at 04:47 PM
+-- Generation Time: Jan 11, 2025 at 03:01 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -78,18 +78,19 @@ CREATE TABLE `videos` (
   `drive_id` varchar(100) NOT NULL,
   `owner_id` int(100) NOT NULL,
   `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_on` timestamp NOT NULL DEFAULT current_timestamp()
+  `updated_on` timestamp NOT NULL DEFAULT current_timestamp(),
+  `name` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `videos`
 --
 
-INSERT INTO `videos` (`id`, `drive_id`, `owner_id`, `created_on`, `updated_on`) VALUES
-(1, 'this_is_hardcoded_invalid_id', 1010101011, '2025-01-02 12:33:12', '2025-01-02 12:33:12'),
-(2, '1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc', 3, '2025-01-05 15:21:54', '2025-01-05 15:21:54'),
-(3, '1i0Bh9xPx7m1F_hDPxhOu01H5P9VIUKm3', 2, '2025-01-05 15:35:50', '2025-01-05 15:35:50'),
-(4, '1M7_QzcS4ZF_HWcqH6j_9oyXo-SFoarXf', 3, '2025-01-05 15:36:14', '2025-01-05 15:36:14');
+INSERT INTO `videos` (`id`, `drive_id`, `owner_id`, `created_on`, `updated_on`, `name`) VALUES
+(1, 'this_is_hardcoded_invalid_id', 1010101011, '2025-01-02 12:33:12', '2025-01-02 12:33:12', NULL),
+(2, '1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc', 3, '2025-01-05 15:21:54', '2025-01-05 15:21:54', '!!!HAPPY BIRTHDAY, DOSI!!!'),
+(3, '1i0Bh9xPx7m1F_hDPxhOu01H5P9VIUKm3', 2, '2025-01-05 15:35:50', '2025-01-05 15:35:50', NULL),
+(4, '1M7_QzcS4ZF_HWcqH6j_9oyXo-SFoarXf', 3, '2025-01-05 15:36:14', '2025-01-05 15:36:14', NULL);
 
 --
 -- Indexes for dumped tables

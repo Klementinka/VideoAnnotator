@@ -8,66 +8,34 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/editPageStyle.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="./js/fetchVideo.js"></script>
 </head>
 
 <body>
 
+    <!-- TODO: if owner not matching with current user, alert and go back -->
+
     <div id="title"></div>
 
-    <script>
-        const params = new URLSearchParams(window.location.search);
-        const token = params.get('token');
-        if (!token || token === 'null') {
-            window.history.back();
-        }
-        console.log('Token from params:', token);
-
-        if (token) {
-            fetch('https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=' + token)
-                .then(response => response.json())
-                .then(data => {
-                    if (data.aud === '207542469934-k8oqld6o88ah3mqom7u8kc5j9hhd8nm6.apps.googleusercontent.com') {
-                        initializeTokenClient();
-                    } else {
-                        console.error('Invalid token audience.');
-                    }
-                })
-                .catch(error => console.error('Error verifying token:', error));
-        } else {
-            console.error('No token provided in URL.');
-        }
-
-        function fetchVideo() {
-            const videoId = getQueryParam('id'); // Implement getQueryParam to extract 'id' from URL
-            if (!videoId) {
-                document.body.innerHTML += '<p>No video ID provided.</p>';
-                return;
-            }
-
-            const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
-
-            fetch(videoUrl, {
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-                .then(response => {
-                    if (response.ok) {
-                        const videoPlayer = document.getElementById('videoPlayer');
-                        videoPlayer.src = videoUrl;
-                        videoPlayer.load();
-                    } else {
-                        document.body.innerHTML += `<p>Error fetching video: ${response.statusText}</p>`;
-                    }
-                })
-                .catch(err => {
-                    document.body.innerHTML += `<p>Error: ${err.message}</p>`;
-                });
-        }
-
-    </script>
-
     <main>
+
+        <table id="timestamps-table" border="1">
+            <thead>
+                <tr>
+                    <th>№</th>
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+        <button id="clear-table-button">Clear</button>
+
+        <button id="process"><img src="./assets/download.png" width="50px"></button>
+
+
         <h2 id="video-name" class="bigName"></h2>
 
         <video id="videoPlayer" width="640px" height="480px" crossOrigin="anonymous">
@@ -75,56 +43,111 @@
             Your browser does not support the video tag.
         </video>
 
+        <script>
+            const params = new URLSearchParams(window.location.search);
+            const token = params.get('token');
+            const id_db = params.get('id');
+            let videoId = undefined;
+            if (!token || token === 'null') {
+                window.history.back();
+            }
+            console.log('Token from params:', token);
+
+            fetch(`./php/drive_id_by_id.php?id=${id_db == null ? prompt('Enter id of video:') : id_db}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.drive_id) {
+                        params.set('id', data.drive_id);
+                        fetchVideo(data.drive_id, params.get('token'), 'videoPlayer', 'videoSource');
+                        document.getElementById('video-name').textContent = data.name
+                    } else {
+                        alert('No drive_id found for the given video id.');
+                    }
+                })
+                .catch(error => {
+                    alert(error);
+                });
+        </script>
+
         <canvas id="canvas" style="display: none;"></canvas>
 
-        <div class="progress-container">
+        <div class="progress-container" style="position: relative;" id="progress-container">
             <progress class="progress-bar" id="progress-bar"></progress>
-            <span id="timestamp">0</span>
+            <span id="timestamp">00:00:000</span>
         </div>
-
-
 
         <div class="controls">
             <button id="previous-frame-button">&#10508</button>
             <button id="play-button">&#9654</button>
+            <button id="screenshot-btn" class="download-frame-button"><img src="./assets/screenshot.png"
+                    width="40px"></button>
             <button id="pause-button">&#10073&#10073</button>
             <button id="next-frame-button">&#10509</button>
+            <div class="playback-container">
+                <label for="speed-slider">Playback Speed:</label>
+                <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
+                <span id="speed-value">1x</span>
+            </div>
         </div>
 
+        <div class="times-container">
+
+            <div class="time-input-container">
+                <div class="start-time-container">
+                    <button id="set-start-time-button">Set Timestamp as start time</button>
+                    <div class="start-time-input">
+                        <label for="start-time">Start Time (mm:ss:ms):</label>
+                        <input type="text" id="start-time" placeholder="00:00:000">
+                    </div>
+                </div>
+
+                <button id="save-timestamp" class="save-timestamp-button">Save Timestamp</button>
+
+                <script>
+                    document.getElementById('save-timestamp').onclick = function () {
+                        const startTime = document.getElementById('start-time').value;
+                        const endTime = document.getElementById('end-time').value;
+
+                        if (startTime && endTime) {
+                            document.getElementById('process').style.display = 'block';
+                            document.getElementById('clear-table-button').style.display = 'block';
+                            const tableElement = document.getElementById('timestamps-table');
+                            tableElement.style.display = 'block';
+                            const table = tableElement.getElementsByTagName('tbody')[0];
+                            const newRow = table.insertRow();
+
+                            const id = newRow.insertCell(0);
+                            const startCell = newRow.insertCell(1);
+                            const endCell = newRow.insertCell(2);
+
+                            id.textContent = '1';
+                            startCell.textContent = startTime;
+                            endCell.textContent = endTime;
+
+                            document.getElementById('start-time').value = '';
+                            document.getElementById('end-time').value = '';
+                        } else {
+                            alert('Please enter both start and end times.');
+                        }
+                    };
+                </script>
+
+                <div class="end-time-container">
+                    <button id="set-end-time-button">Set Timestamp as end time</button>
+                    <div class="end-time-input">
+                        <label for="end-time">End Time (mm:ss:ms):</label>
+                        <input type="text" id="end-time" placeholder="00:00:000">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="selected-video-container"></div>
+
+        <a id="download" style="display: none;">Download Video</a>
+
         <script>
-            document.getElementById('play-button').onclick = function () {
-                const video = document.getElementById('videoPlayer');
-                video.play();
-            };
 
-            document.getElementById('pause-button').onclick = function () {
-                const video = document.getElementById('videoPlayer');
-                video.pause();
-            };
-        </script>
-
-        <button class="download-frame-button"><img src="./assets/screenshot.png" width="15px"></button>
-
-        <script>
-            document.getElementById('download-frame-button').addEventListener('click', function () {
-                const video = document.getElementById('videoPlayer');
-                const canvas = document.createElement('canvas');
-                canvas.width = video.videoWidth;
-                canvas.height = video.videoHeight;
-                const context = canvas.getContext('2d');
-                context.drawImage(video, 0, 0, canvas.width, canvas.height);
-                canvas.toDataURL('image/png');
-                const dataURL = canvas.toDataURL('image/png');
-                const a = document.createElement('a');
-                a.href = dataURL;
-                a.download = 'frame-screenshot.png';
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            });
-        </script>
-
-        <script>
             const timestampContainer = document.getElementById('timestamp');
 
             videoPlayer.addEventListener('timeupdate', function () {
@@ -136,64 +159,130 @@
             });
         </script>
 
-        <div class="slider-container">
-            <label for="speed-slider">Playback Speed:</label>
-            <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
-            <span id="speed-value">1x</span>
-        </div>
+        <div class="divide"></div>
+        <!-- HERE BEGINS VIDEO 2 -->
+        <!-- HERE BEGINS VIDEO 2 -->
+        <!-- HERE BEGINS VIDEO 2 -->
+        <!-- HERE BEGINS VIDEO 2 -->
+        <!-- HERE BEGINS VIDEO 2 -->
+        <!-- HERE BEGINS VIDEO 2 -->
+        <!-- HERE BEGINS VIDEO 2 -->
 
-        <div style="display: flex; justify-content: space-between; width: 50%;">
-            <button id="set-start-time-button" style="flex: 1;">Set Start Time</button>
-            <button id="set-end-time-button" style="flex: 1;">Set End Time</button>
-        </div>
+        <h2 id="video-name2" class="bigName"></h2>
 
-        <div class="time-input-container">
-            <label for="start-time">Start Time (mm:ss:ms):</label>
-            <input type="text" id="start-time" placeholder="00:00:000">
-            <label for="end-time">End Time (mm:ss:ms):</label>
-            <input type="text" id="end-time" placeholder="00:00:000">
-        </div>
-
-        <div id="selected-video-container"></div>
-
-
-        <a id="download" style="display: none;">Downloa Video</a>
-
-        <button id="save-timestamp-button">Save Timestamp</button>
-
-        <table id="timestamps-table" border="1">
-            <thead>
-                <tr>
-                    <th>Start Time</th>
-                    <th>End Time</th>
-                </tr>
-            </thead>
-            <tbody>
-            </tbody>
-        </table>
-
-        <button id="process"><img src="./assets/download.png" width="20px"></button>
+        <video id="videoPlayer2" width="640px" height="480px" crossOrigin="anonymous">
+            <source id="videoSource2" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
 
         <script>
-            document.getElementById('save-timestamp-button').addEventListener('click', function () {
-                const startTime = document.getElementById('start-time').value;
-                const endTime = document.getElementById('end-time').value;
+            let id_db2 = '2';
 
-                if (startTime && endTime) {
-                    const table = document.getElementById('timestamps-table').getElementsByTagName('tbody')[0];
-                    const newRow = table.insertRow();
+            fetch(`./php/drive_id_by_id.php?id=${id_db2 == null ? prompt('Enter id of video:') : id_db2}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.drive_id) {
+                        params.set('id2', data.drive_id);
+                        fetchVideo(data.drive_id, params.get('token'), 'videoPlayer2', 'videoSource2');
+                        document.getElementById('video-name2').textContent = data.name
+                    } else {
+                        alert('No drive_id found for the given video id.');
+                    }
+                })
+                .catch(error => {
+                    alert(error);
+                });
+        </script>
 
-                    const startCell = newRow.insertCell(0);
-                    const endCell = newRow.insertCell(1);
+        <canvas id="canvas2" style="display: none;"></canvas>
 
-                    startCell.textContent = startTime;
-                    endCell.textContent = endTime;
+        <div class="progress-container" style="position: relative;" id="progress-container2">
+            <progress class="progress-bar" id="progress-bar2"></progress>
+            <span id="timestamp2">00:00:000</span>
+        </div>
 
-                    document.getElementById('start-time').value = '';
-                    document.getElementById('end-time').value = '';
-                } else {
-                    alert('Please enter both start and end times.');
-                }
+
+
+        <div class="controls">
+            <button id="previous-frame-button2">&#10508</button>
+            <button id="play-button2">&#9654</button>
+            <button id="screenshot-btn2" class="download-frame-button"><img src="./assets/screenshot.png"
+                    width="40px"></button>
+            <button id="pause-button2">&#10073&#10073</button>
+            <button id="next-frame-button2">&#10509</button>
+            <div class="playback-container">
+                <label for="speed-slider2">Playback Speed:</label>
+                <input type="range" id="speed-slider2" min="0.5" max="2" value="1" step="0.1">
+                <span id="speed-value2">1x</span>
+            </div>
+        </div>
+
+        <div class="times-container">
+
+            <div class="time-input-container">
+                <div class="start-time-container">
+                    <button id="set-start-time-button2">Set Timestamp as start time</button>
+                    <div class="start-time-input">
+                        <label for="start-time">Start Time (MM:SS:mmm):</label>
+                        <input type="text" id="start-time2" placeholder="00:00:000">
+                    </div>
+                </div>
+
+                <button id="save-timestamp2" class="save-timestamp-button">Save Timestamp</button>
+
+                <script>
+                    document.getElementById('save-timestamp2').onclick = function () {
+                        const startTime = document.getElementById('start-time2').value;
+                        const endTime = document.getElementById('end-time2').value;
+
+                        if (startTime && endTime) {
+                            document.getElementById('process').style.display = 'block';
+                            document.getElementById('clear-table-button').style.display = 'block';
+                            const tableElement = document.getElementById('timestamps-table');
+                            tableElement.style.display = 'block';
+                            const table = tableElement.getElementsByTagName('tbody')[0];
+                            const newRow = table.insertRow();
+
+                            const id = newRow.insertCell(0);
+                            const startCell = newRow.insertCell(1);
+                            const endCell = newRow.insertCell(2);
+
+                            id.textContent = '2';
+                            startCell.textContent = startTime;
+                            endCell.textContent = endTime;
+
+                            document.getElementById('start-time2').value = '';
+                            document.getElementById('end-time2').value = '';
+                        } else {
+                            alert('Please enter both start and end times.');
+                        }
+                    };
+                </script>
+
+                <div class="end-time-container">
+                    <button id="set-end-time-button2">Set Timestamp as end time</button>
+                    <div class="end-time-input">
+                        <label for="end-time2">End Time (MM:SS:mmm):</label>
+                        <input type="text" id="end-time2" placeholder="00:00:000">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="selected-video-container2"></div>
+
+        <a id="download2" style="display: none;">Download Video</a>
+
+        <script>
+
+            const timestampContainer2 = document.getElementById('timestamp2');
+
+            videoPlayer2.addEventListener('timeupdate', function () {
+                const minutes = Math.floor(videoPlayer2.currentTime / 60);
+                const seconds = Math.floor(videoPlayer2.currentTime % 60);
+                const milliseconds = Math.floor((videoPlayer2.currentTime % 1) * 1000);
+                const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(3, '0')}`;
+                timestampContainer2.textContent = formattedTime;
             });
         </script>
     </main>

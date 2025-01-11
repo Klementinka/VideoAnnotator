@@ -22,7 +22,7 @@
     <button id="authButton">Authenticate!!!</button>
 
     <script>
-        let CLIENT_ID=undefined;
+        let CLIENT_ID = undefined;
         fetch('./config.json')
             .then(response => response.json())
             .then(config => {
@@ -61,7 +61,12 @@
     <div class="main-content">
         <section class="video-section">
             <h2>Last Videos</h2>
-            <ul id="lastVideosList" class="video-list">
+            <ul>
+                <li>
+                    <h3><a href='./edit.html?id=2'>Go to edit Dosi</a></h3>
+                </li>
+            </ul>
+            <!-- <ul id="lastVideosList" class="video-list">
                 <li>
                     <h3><a href='./edit.html?id=1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc'>Example Video 1</a></h3>
                     <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
@@ -83,12 +88,12 @@
                     </iframe>
                     <p>Description of Example Video 3</p>
                 </li>
-            </ul>
+            </ul> -->
         </section>
 
         <section class="video-section">
             <h2>Best Videos</h2>
-            <ul id="bestVideosList" class="video-list">
+            <!-- <ul id="bestVideosList" class="video-list">
                 <li>
                     <h3>Video Title 1</h3>
                     <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
@@ -124,16 +129,7 @@
                     </iframe>
                     <p>Description of Video 2</p>
                 </li>
-                <!-- <li>
-                    <h3>Video Title 3</h3>
-                    <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
-                        <source src="video3.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <p>Description of Video 3</p>
-                </li> -->
-                <!-- Best videos will appear here -->
-            </ul>
+            </ul> -->
         </section>
 
         <section class="video-section">

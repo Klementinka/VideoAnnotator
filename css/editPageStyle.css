@@ -2,8 +2,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 0px 20px;
-    background-color: red;
+    margin: 0px 30px;
 }
 
 .bigName {
@@ -22,10 +21,9 @@ main {
 
 .progress-bar {
     height: 15px;
-    width: 0;
     transition: width 0.4s ease;
     border-radius: 10px;
-    background-color: #76c7c0;
+    width: 0;
 }
 
 .cut-container {
@@ -36,28 +34,126 @@ main {
     border: 5px solid black;
 }
 
-.slider-container
-{
+.playback-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    border: 5px solid black;
+    justify-content: space-between;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    width: 300px;
 }
 
-.controls
-{
+#speed-value, #speed-value2 {
+    width: 30px;
+    text-align: center;
+}
+
+#process, #process2 {
+    background: transparent;
+    border: none;
+    height: 50px;
+    margin: 20px;
+    display: none;
+}
+
+#timestamp, #timestamp2 {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 2px 2px 4px rgba(250, 218, 122, 0.9);
+}
+
+#timestamps-table, #timestamps-table2 {
+    display: none;
+    margin-top: 20px;
+}
+
+#clear-table-button, #clear-table-button2 {
+    display: none;
+    background-color: #FADA7A;
+    margin: 10px;
+}
+
+.controls {
     display: flex;
     flex-direction: row;
     width: 100%;
     justify-content: space-around;
+    margin: 20px;
+    width: 90%;
 }
 
-.download-frame-button
-{
+.controls button {
+    width: 50px;
+    background: transparent;
+    font-size: 30px;
+    height: 50px;
+    padding: 0px;
+}
+
+.download-frame-button {
     background-color: transparent;
+    padding: 0;
+    border: none;
 }
 
-#next-frame-button
+.times-container {
+    display: flex;
+    flex-direction: column;
+    align-content: start;
+}
+
+.time-buttons-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 20px;
+}
+
+.start-time-container,
+.end-time-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    border: 3px solid #FADA7A;
+    padding: 20px;
+    border-radius: 20px;
+}
+
+.time-input-container {
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    align-items: center;
+    margin: 20px1;
+}
+
+.start-time-input,
+.end-time-input {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+}
+
+.save-timestamp-button {
+    background-color: #FADA7A;
+    height: 50px;
+    border-radius: 10px;
+}
+
+#video-name, #video-name2
 {
-    background-color: red;
+    margin: 10px;
+}
+
+.divide
+{
+    height: 40px;
+    width: 100%;
+    background-color: aquamarine;
+    margin: 30px 0;
 }

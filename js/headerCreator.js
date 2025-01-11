@@ -1,5 +1,8 @@
 function createHeader() {
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const token = urlParams.get('token');
+
     return `<nav class="navbar">
         <header>
             <div class="title-container">
@@ -14,7 +17,7 @@ function createHeader() {
             <li><a href="explore.html">Explore</a></li>
             <li><a href="upload.html">Upload</a></li>
             <li><a href="add_subtitles.html">Add Subtitles</a></li>
-            <li><a href="edit_videos.html">Edit Videos</a></li>
+            <li><a href="edit.html?token=${token}">Edit Videos</a></li>
         </ul>
     </nav>`
 }
