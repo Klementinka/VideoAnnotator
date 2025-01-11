@@ -186,7 +186,6 @@ processButton.addEventListener('click', async () => {
                 await new Promise(resolve => video2.addEventListener('seeked', resolve, { once: true }));
                 ctx.drawImage(video2, 0, 0, canvas.width, canvas.height);
             }
-            await new Promise(resolve => video.addEventListener('seeked', resolve, { once: true }));
         }
     }
 
