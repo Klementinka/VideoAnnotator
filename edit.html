@@ -66,6 +66,10 @@
                 })
                 .catch(error => {
                     alert(error);
+                    const videoPlayer = document.getElementById('videoPlayer');
+                    const videoSource = document.getElementById('videoSource');
+                    videoSource.src = '/videos/1';
+                    videoPlayer.load();
                 });
         </script>
 
