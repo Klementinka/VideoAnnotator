@@ -11,6 +11,12 @@
 body {
     margin: 0;
     background-color: #B1F0F7;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+}
+
+button {
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    cursor: pointer;
 }
 
 .video-list li video {

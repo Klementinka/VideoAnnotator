@@ -160,6 +160,10 @@ main {
     width: 100%;
     background-color: aquamarine;
     margin: 30px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 #secondVideo {
@@ -174,4 +178,19 @@ main {
     display: none;
     flex-direction: column;
     align-items: center;
+}
+
+.videoEditContainer {
+    border: 5px solid black;
+    border-radius: 10px;
+    border-color: #FADA7A;
+    padding: 10px;
+    margin: 10px;
+}
+
+.secondVideoBtn {
+    background: transparent;
+    border: none;
+    height: 100%;
+    text-shadow: 2px 2px 4px rgba(250, 218, 122, 0.9);
 }

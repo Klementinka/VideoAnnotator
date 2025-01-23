@@ -36,18 +36,47 @@ function fetchVideo(videoId, token, playerId, sourceId) {
 function loadSecondVideo() {
     const id_db = prompt('Enter id of the second video:');
 
-    fetch(`./php/drive_id_by_id.php?id=${id_db}`)
-        .then(response => response.json())
-        .then(data => {
-            if (data.drive_id) {
-                params.set('id2', data.drive_id);
-                fetchVideo(data.drive_id, params.get('token'), 'videoPlayer2', 'videoSource2');
-                document.getElementById('video-name2').textContent = data.name
-            } else {
-                alert('No drive_id found for the given video id.');
+    fetch(`videos/${id_db}.mp4`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Video not found');
             }
+            return response.blob();
+        })
+        .then(blob => {
+            const videoPlayer = document.getElementById('videoPlayer2');
+            const videoSource = document.getElementById('videoSource2');
+            videoSource.src = URL.createObjectURL(blob);
+            videoPlayer.load();
+            fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.drive_id) {
+                        document.getElementById('video-name2').textContent = data.name
+                    } else {
+                        alert('No drive_id found for the given video id.');
+                    }
+                })
+                .catch(error => {
+                    alert(error);
+                });
         })
         .catch(error => {
-            alert(error);
+            alert("Not found locally (second video)", error);
+            fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.drive_id) {
+                        params.set('id2', data.drive_id);
+                        fetchVideo(data.drive_id, params.get('token'), 'videoPlayer2', 'videoSource2');
+                        document.getElementById('video-name2').textContent = data.name
+                    } else {
+                        alert('No drive_id found for the given video id.');
+                    }
+                })
+                .catch(error => {
+                    alert(error);
+                });
+
         });
 }
