@@ -23,26 +23,7 @@ $client->addScope(Google_Service_Drive::DRIVE);
 $client->setAccessType('offline');
 $client->setPrompt('consent');
 
-// 2. Retrieve the token from session (most common) or from POST (if your JS sends it)
-if (isset($_POST['access_token'])) {
-    // If your front-end is sending the FULL token JSON, parse it:
-    $tokenJson = $_POST['access_token'];
-
-    $decodedToken = json_decode($tokenJson, true);
-    if (is_array($decodedToken)) {
-        // This array should have access_token, refresh_token, expires_in, etc.
-        $client->setAccessToken($decodedToken);
-        
-        // Optionally also store it in session for future use
-        $_SESSION['access_token'] = $decodedToken;
-    } else {
-        echo json_encode(['success' => false, 'message' => 'No array']);
-    exit;
-        // If not valid JSON, maybe it's just a string of the access token (missing refresh_token, etc.)
-        // This won't help with refreshing. We'll set it anyway, but you'll likely see "no refresh token".
-        $client->setAccessToken($tokenJson);
-    }
-} elseif (isset($_SESSION['access_token'])) {
+if (isset($_SESSION['access_token'])) {
     // Use the entire token array from session
     $client->setAccessToken($_SESSION['access_token']);
 } else {
@@ -52,6 +33,7 @@ if (isset($_POST['access_token'])) {
 }
 
 // 3. If token is expired, try to refresh (only works if we have a refresh_token)
+
 if ($client->isAccessTokenExpired()) {
     $currentToken = $client->getAccessToken(); // array
     $refreshToken = $currentToken['refresh_token'] ?? null;

@@ -54,6 +54,9 @@ if (isset($_GET['code'])) {
     // If access token is present
     if (isset($data['access_token'])) {
         // Store the access token in $_SESSION
+        if(!isset($data['created'])) {
+            $data['created'] = time();
+        }
         $_SESSION['access_token'] = $data;
 
         // If Google provided a refresh token, store it as well

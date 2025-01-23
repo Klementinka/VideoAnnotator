@@ -116,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Retrieve the stored access token (if any)
         const storedAccessToken = localStorage.getItem('access_token');
-
+        console.log('Stored access token:', storedAccessToken);
         // If we have an access token, append it to the formData
         if (storedAccessToken) {
             // We can either append it as a simple string or as JSON
