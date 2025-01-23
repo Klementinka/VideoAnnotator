@@ -11,6 +11,7 @@ if ($conn->connect_error) {
 }
 
 $sql = "SELECT * FROM videos";
+$sql .= " LIMIT 12";
 $result = $conn->query($sql);
 
 $movies = array();

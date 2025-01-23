@@ -23,13 +23,13 @@ function fetchVideo(videoId, token, playerId, sourceId) {
                 const videoPlayer = document.getElementById(playerId);
                 const videoSource = document.getElementById(sourceId);
                 videoSource.src = response.url + '&key=' + API_KEY;
-                videoPlayer.load();
+                if (videoPlayer) videoPlayer.load();
             } else {
-                alert('Error fetching video:', str(response));
+                console.log('Error fetching video:', str(response));
             }
         })
         .catch(err => {
-            alert('Error fetching video:', err);
+            console.log('Error fetching video:', err);
         });
 }
 
