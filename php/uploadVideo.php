@@ -7,50 +7,38 @@ use Google\Client as Google_Client;
 use Google\Service\Drive as Google_Service_Drive;
 use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 
-// ---------------------- CONFIGURE THESE ---------------------- //
-$folderId = "14IWnQhBfaX7-OfVPC_q7tYc_VqzWLIKz"; // The Drive folder ID where you want to upload
-$configPath = '../config_mine.json';           // Path to your Google API credentials
-// ------------------------------------------------------------ //
+// Folder ID in Drive where you want to upload
+$folderId = "14IWnQhBfaX7-OfVPC_q7tYc_VqzWLIKz";
 
-// Set the response to JSON
+// Set the response content type
 header('Content-Type: application/json');
 
-// 1. Initialize Google Client
+// 1) Initialize Google Client (same logic as before)
 $client = new Google_Client();
-$client->setAuthConfig($configPath);
+$client->setAuthConfig('../config_mine.json');  
 $client->setRedirectUri('http://localhost/VideoAnnotator/oauth2callback.php');
 $client->addScope(Google_Service_Drive::DRIVE);
 $client->setAccessType('offline');
 $client->setPrompt('consent');
 
+// 2) Retrieve the token from session (or POST, if you use that approach)
 if (isset($_SESSION['access_token'])) {
-    // Use the entire token array from session
     $client->setAccessToken($_SESSION['access_token']);
 } else {
-    // No token found anywhere
-    echo json_encode(['success' => false, 'message' => 'Access token is missing or expired']);
+    echo json_encode(['success' => false, 'message' => 'Access token missing or expired.']);
     exit;
 }
-
-// 3. If token is expired, try to refresh (only works if we have a refresh_token)
-
+// 3) Refresh token if expired (same logic as before)
 if ($client->isAccessTokenExpired()) {
-    $currentToken = $client->getAccessToken(); // array
+    $currentToken = $client->getAccessToken();
     $refreshToken = $currentToken['refresh_token'] ?? null;
-    
-    // If refresh token is not in $currentToken, check if we stored it separately
     if (!$refreshToken && isset($_SESSION['access_token']['refresh_token'])) {
         $refreshToken = $_SESSION['access_token']['refresh_token'];
     }
-
     if ($refreshToken) {
-        // Refresh the token
         $client->fetchAccessTokenWithRefreshToken($refreshToken);
-        
-        // Save the new token array back to session (it should contain new expiry time)
         $_SESSION['access_token'] = $client->getAccessToken();
     } else {
-        // We cannot refresh, so we must ask the user to reauthorize
         echo json_encode([
             'success' => false,
             'message' => 'Access token expired and no refresh token available. Please reauthorize.'
@@ -59,73 +47,62 @@ if ($client->isAccessTokenExpired()) {
     }
 }
 
-// 4. Validate we have the correct scope
-$token = $client->getAccessToken();
-if (
-    !isset($token['scope']) || 
-    strpos($token['scope'], 'https://www.googleapis.com/auth/drive') === false
-) {
-    echo json_encode([
-        'success' => false,
-        'message' => 'Token has insufficient scopes. Please reauthenticate.'
-    ]);
+// 4) Check if the user actually uploaded a file
+if (!isset($_FILES['videoPath']) || $_FILES['videoPath']['error'] !== UPLOAD_ERR_OK) {
+    echo json_encode(['success' => false, 'message' => 'No video file was uploaded or upload failed.']);
     exit();
 }
 
-// 5. Validate form input (video name, path, etc.)
-$videoName = $_POST['videoName'] ?? null;
-$videoType = (isset($_POST['videoType']) && $_POST['videoType'] === 'off') ? 'Public' : 'Private';
+// 5) Check other form inputs
+$videoName = $_POST['videoName'] ?? '';
+$videoType = (!empty($_POST['videoType']) && $_POST['videoType'] === 'on') ? 'Private' : 'Public';
+// (You can rename or handle this logic as you like)
 
-if (empty($videoName) || empty($_POST['videoPath'])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid input']);
-    exit();
-}
+// 6) Get the uploaded file info
+$tmpFilePath = $_FILES['videoPath']['tmp_name']; // The temporary file path on the server
+$originalName = $_FILES['videoPath']['name'];    // The original name of the file
+$fileMimeType = mime_content_type($tmpFilePath); // Attempt to detect the MIME type
 
-$filePath = $_POST['videoPath'];
-$fileName = basename($filePath);
-
-$fileMimeType = @mime_content_type($filePath);
 if (!$fileMimeType) {
+    // Fallback if MIME detection fails
     $fileMimeType = 'application/octet-stream';
 }
-
-// 6. Attempt the Drive upload
+// 7) Upload to Google Drive
 try {
     $service = new Google_Service_Drive($client);
 
-    // Prepare file metadata
+    // File metadata
+    // If you want to rename the file on Drive to something from $videoName, do:
+    // 'name' => $videoName
+    // or keep the original file name:
     $fileMetadata = new Google_Service_Drive_DriveFile([
-        'name' => $fileName,
+        'name' => $originalName,
     ]);
-    
-    // If we have a folder ID, place file inside it
+
+    // If uploading into a specific folder:
     if (!empty($folderId)) {
         $fileMetadata->setParents([$folderId]);
     }
 
-    // Read the file contents into a variable
-    $fileContent = file_get_contents($filePath);
+    // Read file contents
+    $fileContent = file_get_contents($tmpFilePath);
 
-    // Upload to Drive
-    $driveFile = $service->files->create(
-        $fileMetadata,
-        [
-            'data' => $fileContent,
-            'mimeType' => $fileMimeType,
-            'uploadType' => 'multipart',
-            'fields' => 'id',
-            // If it's a shared drive, you also need:
-            // 'supportsAllDrives' => true,
-        ]
-    );
+    // Create file in Drive
+    $driveFile = $service->files->create($fileMetadata, [
+        'data' => $fileContent,
+        'mimeType' => $fileMimeType,
+        'uploadType' => 'multipart',
+        'fields' => 'id',
+        // If it's a shared drive:
+        // 'supportsAllDrives' => true,
+    ]);
 
-    // Get the file ID
+    // Done
     $fileId = $driveFile->id;
-
     echo json_encode([
         'success' => true,
-        'message' => 'Successfully uploaded to Google Drive',
-        'fileId'   => $fileId,
+        'message' => 'Successfully uploaded to Google Drive.',
+        'fileId' => $fileId
     ]);
 } catch (Exception $e) {
     echo json_encode([

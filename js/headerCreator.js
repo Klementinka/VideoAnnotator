@@ -35,7 +35,7 @@ function createHeader() {
                 <form id="addVideoForm" enctype="multipart/form-data">
                     
                     <label for="videoPath">Upload Video:</label>
-                    <input type="text" id="videoPath" name="videoPath"
+                    <input type="file" id="videoPath" name="videoPath"
                            placeholder="Enter video path" required />
 
                     <label for="videoName">Video Name:</label>
