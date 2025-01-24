@@ -1,8 +1,13 @@
 <?php
 session_start();
 
-require_once __DIR__ . '/../vendor/autoload.php';
 
+$autoloadPath = __DIR__ . '/../vendor/autoload.php';
+if (!file_exists($autoloadPath)) {
+    echo json_encode(['success' => false, 'message' => 'Library not found. Run `composer install` first.']);
+    exit;
+}
+require_once $autoloadPath;
 use Google\Client as Google_Client;
 use Google\Service\Drive as Google_Service_Drive;
 use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
@@ -25,6 +30,7 @@ $client->setPrompt('consent');
 if (isset($_SESSION['access_token'])) {
     $client->setAccessToken($_SESSION['access_token']);
 } else {
+    $conn->close();
     echo json_encode(['success' => false, 'message' => 'Access token missing or expired.']);
     exit;
 }
@@ -39,6 +45,7 @@ if ($client->isAccessTokenExpired()) {
         $client->fetchAccessTokenWithRefreshToken($refreshToken);
         $_SESSION['access_token'] = $client->getAccessToken();
     } else {
+        $conn->close();
         echo json_encode([
             'success' => false,
             'message' => 'Access token expired and no refresh token available. Please reauthorize.'
@@ -49,6 +56,7 @@ if ($client->isAccessTokenExpired()) {
 
 // 4) Check if the user actually uploaded a file
 if (!isset($_FILES['videoPath']) || $_FILES['videoPath']['error'] !== UPLOAD_ERR_OK) {
+    $conn->close();
     echo json_encode(['success' => false, 'message' => 'No video file was uploaded or upload failed.']);
     exit();
 }
@@ -76,7 +84,7 @@ try {
     // 'name' => $videoName
     // or keep the original file name:
     $fileMetadata = new Google_Service_Drive_DriveFile([
-        'name' => $originalName,
+        'name' => $videoName ?: $originalName,
     ]);
 
     // If uploading into a specific folder:
@@ -99,10 +107,62 @@ try {
 
     // Done
     $fileId = $driveFile->id;
+
+    
+    $servername = "localhost";
+    $username = "root";
+    $password = "";
+    $dbname = "videoannotator";
+
+    $conn = new mysqli($servername, $username, $password, $dbname);
+
+    if ($conn->connect_error) {
+        // If connection fails, handle the error (log, echo, etc.)
+        echo json_encode([
+            'success' => false,
+            'message' => 'Database connection failed: ' . $conn->connect_error,
+        ]);
+        exit();
+    }
+
+    $sql = "INSERT INTO videos (name, drive_id, owner_id, created_on, updated_on, is_private)
+            VALUES (?, ?, ?, NOW(), NOW(), ?)";
+
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'DB prepare failed: ' . $conn->error,
+        ]);
+        $conn->close();
+        exit();
+    }
+
+    //Should be changed to the actual owner id
+    $ownerId = 2;
+    $stmt->bind_param("ssib",$videoName, $folderId, $ownerId, $videoType);
+
+    // Execute the query
+    if (!$stmt->execute()) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'DB insert failed: ' . $stmt->error,
+        ]);
+        $stmt->close();
+        $conn->close();
+        exit();
+    }
+
+    $insertedId = $stmt->insert_id;
+
+    $stmt->close();
+    $conn->close();
+
     echo json_encode([
         'success' => true,
         'message' => 'Successfully uploaded to Google Drive.',
-        'fileId' => $fileId
+        'fileId' => $fileId,
+        'dbId'    => $insertedId, 
     ]);
 } catch (Exception $e) {
     echo json_encode([
