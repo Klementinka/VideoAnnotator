@@ -11,7 +11,7 @@
 body {
     margin: 0;
     background-color: #B1F0F7;
-    font-family:'Times New Roman', Times, serif
+    font-family:'Times New Roman', Times, serif;
 }
 
 a
@@ -21,7 +21,7 @@ a
 }
 
 button {
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-family:'Times New Roman', Times, serif;
     cursor: pointer;
 }
 

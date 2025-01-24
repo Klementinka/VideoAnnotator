@@ -1,7 +1,6 @@
 function fetchVideo(videoId, token, playerId, sourceId) {
 
     const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
-    const proxy = 'https://cors-anywhere.herokuapp.com/';
 
     let API_KEY = undefined;
     let CLIENT_ID = undefined;
@@ -14,7 +13,7 @@ function fetchVideo(videoId, token, playerId, sourceId) {
         })
         .catch(error => { alert('Error fetching config:', error); window.history.back(); });
 
-    fetch(proxy + videoUrl, {
+    fetch(videoUrl, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
