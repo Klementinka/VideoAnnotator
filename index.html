@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Annotation Web Project</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/uploadVideo.css">
     <script src="./js/loadEnv.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="./js/script.js"></script>
@@ -32,7 +33,7 @@
             })
             .catch(error => console.error('Error loading config:', error));
         document.getElementById('authButton').addEventListener('click', function () {
-            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive.readonly`;
+            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
         });
     </script>
 
