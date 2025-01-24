@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit video</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div id="title"></div>
+    <style>
+        #popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+
+        #popup-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+    </style>
+
+    <div id="popup-overlay"></div>
+    <div id="popup">
+        <label for="videoIdInput">Enter id of video:</label>
+        <input type="text" id="videoIdInput">
+        <button id="submitIdButton">Submit</button>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const params = new URLSearchParams(window.location.search);
+            if (!params.has('id')) {
+                const popup = document.getElementById('popup');
+                const overlay = document.getElementById('popup-overlay');
+                popup.style.display = 'block';
+                overlay.style.display = 'block';
+
+                document.getElementById('submitIdButton').addEventListener('click', function () {
+                    const videoId = document.getElementById('videoIdInput').value;
+                    if (videoId) {
+                        params.set('id', videoId);
+                        window.location.search = params.toString();
+                        window.location.href = 'edit.html?' + params.toString();
+                    } else {
+                        alert('Video id is required.');
+                    }
+                });
+            }
+        });
+    </script>
+
+    <div id="footer"></div>
+
+    <script src="./js/headerCreator.js"></script>
+
+    <script src="./js/footerCreator.js"></script>
+</body>
+
+</html>

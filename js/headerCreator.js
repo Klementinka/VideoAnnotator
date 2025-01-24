@@ -6,7 +6,7 @@ function createHeader() {
     return `<nav class="navbar">
         <header>
             <div class="title-container">
-                <h1 class="mainTitle"><a href="http://localhost/VideoAnnotator/">Video Annotation Tool</a></h1>
+                <h1 class="mainTitle"><a href="http://localhost/VideoAnnotator/index.html${window.location.search}">Video Annotation Tool</a></h1>
             </div>
             <div class="header-buttons">
                 <button id="addVideoBtn">Add Video</button>
@@ -17,7 +17,7 @@ function createHeader() {
             <li><a href="explore.html">Explore</a></li>
             <li><a href="upload.html">Upload</a></li>
             <li><a href="add_subtitles.html">Add Subtitles</a></li>
-            <li><a href="edit.html?token=${token}">Edit Videos</a></li>
+            <li><a href="editLobby.html?token=${token}">Edit Videos</a></li>
         </ul>
     </nav>`
 }

@@ -1,6 +1,7 @@
 function fetchVideo(videoId, token, playerId, sourceId) {
 
     const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
+    const proxy = 'https://cors-anywhere.herokuapp.com/';
 
     let API_KEY = undefined;
     let CLIENT_ID = undefined;
@@ -13,7 +14,7 @@ function fetchVideo(videoId, token, playerId, sourceId) {
         })
         .catch(error => { alert('Error fetching config:', error); window.history.back(); });
 
-    fetch(videoUrl, {
+    fetch(proxy + videoUrl, {
         headers: {
             'Authorization': `Bearer ${token}`
         }
@@ -25,7 +26,7 @@ function fetchVideo(videoId, token, playerId, sourceId) {
                 videoSource.src = response.url + '&key=' + API_KEY;
                 if (videoPlayer) videoPlayer.load();
             } else {
-                console.log('Error fetching video:', str(response));
+                console.log('Error fetching video:', response);
             }
         })
         .catch(err => {
@@ -62,7 +63,7 @@ function loadSecondVideo() {
                 });
         })
         .catch(error => {
-            alert("Not found locally (second video)", error);
+            alert("Not found locally (second video)");
             fetch(`./php/drive_id_by_id.php?id=${id_db}`)
                 .then(response => response.json())
                 .then(data => {

@@ -53,7 +53,7 @@
                     .catch(error => console.error('Error loading config:', error));
                 const params = new URLSearchParams(window.location.search);
                 const token = params.get('token');
-                const id_db = params.get('id') || prompt('Enter id of video:');
+                const id_db = params.get('id');
                 let videoId = undefined;
                 if (!token || token === 'null') {
                     alert('No token found in params. Please sign in again.');
@@ -87,8 +87,8 @@
                             });
                     })
                     .catch(error => {
-                        alert("Not found locally ", error);
-                        fetch(`./php/drive_id_by_id.php?id=${id_db == null ? prompt('Enter id of video:') : id_db}`)
+                        console.log("Not found locally ");
+                        fetch(`./php/drive_id_by_id.php?id=${id_db}`)
                             .then(response => response.json())
                             .then(data => {
                                 if (data.drive_id) {

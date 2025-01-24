@@ -14,6 +14,7 @@ function fetchVideo(videoId, token, playerId, sourceId) {
         .catch(error => { alert('Error fetching config:', error); window.history.back(); });
 
     fetch(videoUrl, {
+        mode: 'no-cors',
         headers: {
             'Authorization': `Bearer ${token}`
         }

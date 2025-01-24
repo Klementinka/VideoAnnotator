@@ -1,3 +1,5 @@
+// TODO consider this file for deletion, now not used in this branch!
+
 const CLIENT_ID = window.config.CLIENT_ID;
 const API_KEY = window.config.API_KEY;
 const SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
