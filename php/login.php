@@ -24,7 +24,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
-            echo "Login successful. Welcome, $user!";
+            // Redirect to index.html upon successful login
+            header("Location: ../index.html");
+            exit(); // Ensure the script stops execution after redirecting
         } else {
             echo "Invalid username or password.";
         }
@@ -32,5 +34,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         echo "Both username and password are required.";
     }
 }
+
 $conn->close();
 ?>

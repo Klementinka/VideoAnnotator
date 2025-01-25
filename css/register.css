@@ -8,13 +8,14 @@ body {
     margin: 0;
 }
 
-.login-container {
+.register-container {
     background-color: white;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     width: 300px;
     text-align: center;
+    display: block;
 }
 
 h2 {
@@ -24,6 +25,7 @@ h2 {
 .input-group {
     margin-bottom: 15px;
     text-align: left;
+    display: block;
 }
 
 input[type="text"], input[type="password"] {
