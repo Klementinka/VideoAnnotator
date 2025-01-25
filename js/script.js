@@ -1,5 +1,7 @@
 function fetchVideo(videoId, token, playerId, sourceId) {
 
+    console.log(videoId, token, playerId, sourceId);
+
     const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
 
     let API_KEY = undefined;
@@ -13,6 +15,8 @@ function fetchVideo(videoId, token, playerId, sourceId) {
         })
         .catch(error => { alert('Error fetching config:', error); window.history.back(); });
 
+    console.log(videoUrl);
+    console.log(token)
     fetch(videoUrl, {
         mode: 'no-cors',
         headers: {

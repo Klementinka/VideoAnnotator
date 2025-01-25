@@ -25,7 +25,7 @@ function createHeader() {
             <li><a href="explore.html">Explore</a></li>
             <li><a href="upload.html">Upload</a></li>
             <li><a href="add_subtitles.html">Add Subtitles</a></li>
-            <li><a href="editLobby.html?token=${token}">Edit Videos</a></li>
+            <li><a href="editLobby.html">Edit Videos</a></li>
         </ul>
         
         <!-- Modal -->

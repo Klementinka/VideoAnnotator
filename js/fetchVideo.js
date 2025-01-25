@@ -1,5 +1,7 @@
 function fetchVideo(videoId, token, playerId, sourceId) {
 
+    console.log(videoId, token, playerId, sourceId);
+
     const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
 
     let API_KEY = undefined;

@@ -56,10 +56,6 @@
                 const token = localStorage.getItem('access_token');
                 const id_db = params.get('id');
                 let videoId = undefined;
-                if (!token || token === 'null') {
-                    alert('No token found in params. Please sign in again.');
-                    window.history.back();
-                }
                 console.log('Token from localStorage:', token);
 
                 fetch(`videos/${id_db}.mp4`)
