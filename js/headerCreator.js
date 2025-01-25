@@ -144,14 +144,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteVideoBtn = document.getElementById('deleteVideoBtn');
     const deleteOverlay = document.getElementById('delete-overlay');
     const deletePopup = document.getElementById('delete');
+    const submitDelReq = document.getElementById('submitIdButton');
 
     deleteVideoBtn.addEventListener('click', () => {
         deleteOverlay.style.display = 'block';
         deletePopup.style.display = 'flex';
     });
-    
-    submitIdButton.addEventListener('click', () => {
-        const videoId = videoIndexInput.value;
+
+    submitDelReq.addEventListener('click', () => {
+        const videoId = videoIndex.value;
         if (videoId) {
             const storedAccessToken = localStorage.getItem('access_token');
             console.log('Stored access token:', storedAccessToken);

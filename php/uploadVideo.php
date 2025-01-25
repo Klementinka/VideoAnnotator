@@ -12,13 +12,12 @@ use Google\Client as Google_Client;
 use Google\Service\Drive as Google_Service_Drive;
 use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 
-// Folder ID in Drive where you want to upload
+
 $folderId = "14IWnQhBfaX7-OfVPC_q7tYc_VqzWLIKz";
 
-// Set the response content type
 header('Content-Type: application/json');
 
-// 1) Initialize Google Client (same logic as before)
+
 $client = new Google_Client();
 $client->setAuthConfig('../config_mine.json');  
 $client->setRedirectUri('http://localhost/VideoAnnotator/oauth2callback.php');
@@ -26,14 +25,14 @@ $client->addScope(Google_Service_Drive::DRIVE);
 $client->setAccessType('offline');
 $client->setPrompt('consent');
 
-// 2) Retrieve the token from session (or POST, if you use that approach)
+
 if (isset($_SESSION['access_token'])) {
     $client->setAccessToken($_SESSION['access_token']);
 } else {
     echo json_encode(['success' => false, 'message' => 'Access token missing or expired.']);
     exit;
 }
-// 3) Refresh token if expired (same logic as before)
+
 if ($client->isAccessTokenExpired()) {
     $currentToken = $client->getAccessToken();
     $refreshToken = $currentToken['refresh_token'] ?? null;
@@ -52,27 +51,25 @@ if ($client->isAccessTokenExpired()) {
     }
 }
 
-// 4) Check if the user actually uploaded a file
+
 if (!isset($_FILES['videoPath']) || $_FILES['videoPath']['error'] !== UPLOAD_ERR_OK) {
     echo json_encode(['success' => false, 'message' => 'No video file was uploaded or upload failed.']);
     exit();
 }
 
-// 5) Check other form inputs
+
 $videoName = $_POST['videoName'] ?? '';
 $videoType = (!empty($_POST['videoType']) && $_POST['videoType'] === 'on') ? 'Private' : 'Public';
-// (You can rename or handle this logic as you like)
 
-// 6) Get the uploaded file info
-$tmpFilePath = $_FILES['videoPath']['tmp_name']; // The temporary file path on the server
-$originalName = $_FILES['videoPath']['name'];    // The original name of the file
-$fileMimeType = mime_content_type($tmpFilePath); // Attempt to detect the MIME type
+
+
+$tmpFilePath = $_FILES['videoPath']['tmp_name'];
+$originalName = $_FILES['videoPath']['name'];   
+$fileMimeType = mime_content_type($tmpFilePath); 
 
 if (!$fileMimeType) {
-    // Fallback if MIME detection fails
     $fileMimeType = 'application/octet-stream';
 }
-// 7) Upload to Google Drive
 try {
     $service = new Google_Service_Drive($client);
 
@@ -84,15 +81,13 @@ try {
         'name' => $videoName ?: $originalName,
     ]);
 
-    // If uploading into a specific folder:
+
     if (!empty($folderId)) {
         $fileMetadata->setParents([$folderId]);
     }
 
-    // Read file contents
     $fileContent = file_get_contents($tmpFilePath);
 
-    // Create file in Drive
     $driveFile = $service->files->create($fileMetadata, [
         'data' => $fileContent,
         'mimeType' => $fileMimeType,
@@ -102,7 +97,6 @@ try {
         // 'supportsAllDrives' => true,
     ]);
 
-    // Done
     $fileId = $driveFile->id;
 
     
@@ -114,7 +108,7 @@ try {
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     if ($conn->connect_error) {
-        // If connection fails, handle the error (log, echo, etc.)
+    
         echo json_encode([
             'success' => false,
             'message' => 'Database connection failed: ' . $conn->connect_error,
