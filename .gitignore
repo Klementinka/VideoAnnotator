@@ -8,3 +8,6 @@
 !*.php
 myTest*
 !todo/*
+!assets/*
+!*/.placeholder
+!vendor/*
