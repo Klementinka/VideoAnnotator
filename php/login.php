@@ -26,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if ($result->num_rows > 0) {
             // Redirect to index.html upon successful login
             header("Location: ../index.html");
-            exit(); // Ensure the script stops execution after redirecting
+            exit();
         } else {
             echo "Invalid username or password.";
         }
