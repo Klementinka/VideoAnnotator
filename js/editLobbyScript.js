@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.getElementById('videoIdInput').focus();
 
-        document.getElementById('submitIdButton').addEventListener('click', function () {
+        document.getElementById('submitEditIdButton').addEventListener('click', function () {
             const videoId = document.getElementById('videoIdInput').value;
             if (videoId) {
                 params.set('id', videoId);
