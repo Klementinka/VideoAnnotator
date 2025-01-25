@@ -1,8 +1,7 @@
 document.getElementById('exportButton').addEventListener('click', exportSubtitles);
 
 function exportSubtitles() {
-    const format = document.getElementById('exportFormat').value;
-
+    const format = document.getElementById('exportType').value;
     if (subtitles.length === 0) {
         alert("No subtitles to export!");
         return;
@@ -16,7 +15,6 @@ function exportSubtitles() {
         content = generateSUB();
     }
 
-    // Create a blob and download the file
     const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -24,7 +22,6 @@ function exportSubtitles() {
     link.click();
 }
 
-// Generate SRT format
 function generateSRT() {
     let srtContent = '';
     subtitles.forEach((sub, index) => {
@@ -44,12 +41,12 @@ function generateSUB() {
 }
 
 function formatTimeSRT(time) {
-    const [hours, minutes, seconds] = time.split(':');
-    return `${hours}:${minutes}:${seconds},000`;
+    const [minutes, seconds] = time.split(':');
+    return `${minutes}:${seconds},000`;
 }
 
 function convertToFrames(time) {
-    const [hours, minutes, seconds] = time.split(':').map(Number);
-    const totalSeconds = hours * 3600 + minutes * 60 + seconds;
+    const [minutes, seconds] = time.split(':').map(Number);
+    const totalSeconds = minutes * 60 + seconds; 
     return Math.floor(totalSeconds * 25); 
 }
