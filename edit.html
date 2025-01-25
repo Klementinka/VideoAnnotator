@@ -7,6 +7,7 @@
     <title>Video Annotator - Edit</title>
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/editPageStyle.css">
+    <link rel="stylesheet" href="./css/uploadVideo.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="./js/fetchVideo.js"></script>
 </head>
@@ -52,14 +53,14 @@
                     })
                     .catch(error => console.error('Error loading config:', error));
                 const params = new URLSearchParams(window.location.search);
-                const token = params.get('token');
+                const token = localStorage.getItem('access_token');
                 const id_db = params.get('id');
                 let videoId = undefined;
                 if (!token || token === 'null') {
                     alert('No token found in params. Please sign in again.');
                     window.history.back();
                 }
-                console.log('Token from params:', token);
+                console.log('Token from localStorage:', token);
 
                 fetch(`videos/${id_db}.mp4`)
                     .then(response => {
@@ -93,7 +94,7 @@
                             .then(data => {
                                 if (data.drive_id) {
                                     params.set('id', data.drive_id);
-                                    fetchVideo(data.drive_id, params.get('token'), 'videoPlayer', 'videoSource');
+                                    fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer', 'videoSource');
                                     document.getElementById('video-name').textContent = data.name
                                 } else {
                                     alert('No drive_id found for the given video id.');

@@ -67,8 +67,8 @@ function loadSecondVideo() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.drive_id) {
-                        params.set('id2', data.drive_id);
-                        fetchVideo(data.drive_id, params.get('token'), 'videoPlayer2', 'videoSource2');
+                        // params.set('id2', data.drive_id);
+                        fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer2', 'videoSource2');
                         document.getElementById('video-name2').textContent = data.name
                     } else {
                         alert('No drive_id found for the given video id.');

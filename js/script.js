@@ -44,13 +44,10 @@ function fetchVideo(videoId, token, playerId, sourceId) {
 document.addEventListener('DOMContentLoaded', (event) => {
 
     document.getElementById('authButton').addEventListener('click', function () {
-        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive.readonly`;
+        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
     });
-
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get('token');
+    const token = localStorage.getItem('access_token');
     if (token) {
-        console.log(token, "available");
         fetch('./php/fetchVideosNames.php')
             .then(response => response.json())
             .then(data => {
@@ -68,7 +65,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     });
                     listItem.innerHTML = `<h3><video id='last-${video.id}' width='300px' height='200px' crossorigin='anonymous' controls><source type='video/mp4' id=cover-${video.id} src='unknown' alt='thumbnail TODO'></source></video><a href='${url.toString()}'>${video.name}</a></h3>`;
                     listItem.id = `video-${video.id}`;
-                    fetchVideo(video.drive_id, queryParams.get('token'), `last-${video.id}`, `cover-${video.id}`);
+                    fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`, `cover-${video.id}`);
                     videosList.appendChild(listItem);
                 });
             })

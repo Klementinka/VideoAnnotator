@@ -10,3 +10,4 @@ myTest*
 !todo/*
 !assets/*
 !*/.placeholder
+!vendor/*
