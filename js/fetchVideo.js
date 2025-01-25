@@ -1,39 +1,28 @@
-function fetchVideo(videoId, token, playerId, sourceId) {
-
-    console.log(videoId, token, playerId, sourceId);
+function fetchVideo(videoId, token, playerId) {
 
     const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
 
-    let API_KEY = undefined;
-    let CLIENT_ID = undefined;
-
-    fetch('./config.json')
-        .then(response => response.json())
-        .then(config => {
-            API_KEY = config.API_KEY;
-            CLIENT_ID = config.CLIENT_ID;
-        })
-        .catch(error => { alert('Error fetching config:', error); window.history.back(); });
-
     fetch(videoUrl, {
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
         }
     })
         .then(response => {
             if (response.ok) {
                 const videoPlayer = document.getElementById(playerId);
-                const videoSource = document.getElementById(sourceId);
-                videoSource.src = response.url + '&key=' + API_KEY;
-                if (videoPlayer) videoPlayer.load();
+                response.blob().then(blob => {
+                    videoPlayer.src = URL.createObjectURL(blob);
+                });
+                videoPlayer.load();
             } else {
-                console.log('Error fetching video:', response);
+                throw new Error('Response not ok');
             }
         })
         .catch(err => {
             console.log('Error fetching video:', err);
         });
 }
+
 
 function loadSecondVideo() {
     const id_db = prompt('Enter id of the second video:');
@@ -69,8 +58,7 @@ function loadSecondVideo() {
                 .then(response => response.json())
                 .then(data => {
                     if (data.drive_id) {
-                        // params.set('id2', data.drive_id);
-                        fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer2', 'videoSource2');
+                        fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer2');
                         document.getElementById('video-name2').textContent = data.name
                     } else {
                         alert('No drive_id found for the given video id.');

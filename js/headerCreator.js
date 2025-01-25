@@ -63,7 +63,6 @@ function createHeader() {
     `;
 }
 
-// 2. Insert the header HTML into the DOM
 const headerString = createHeader();
 const headerFragment = document.createRange().createContextualFragment(headerString);
 document.getElementById('title').appendChild(headerFragment);

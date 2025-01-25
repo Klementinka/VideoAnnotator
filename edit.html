@@ -90,7 +90,7 @@
                             .then(data => {
                                 if (data.drive_id) {
                                     params.set('id', data.drive_id);
-                                    fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer', 'videoSource');
+                                    fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer');
                                     document.getElementById('video-name').textContent = data.name
                                 } else {
                                     alert('No drive_id found for the given video id.');
@@ -214,9 +214,7 @@
 
             <h2 id="video-name2" class="bigName"></h2>
 
-            <video id="videoPlayer2" width="800px" height="600px" crossOrigin="anonymous">
-                <source id="videoSource2" type="video/mp4">
-            </video>
+            <video id="videoPlayer2" width="800px" height="600px" crossOrigin="anonymous"></video>
 
             <canvas id="canvas2" style="display: none;"></canvas>
 

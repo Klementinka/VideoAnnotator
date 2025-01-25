@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/uploadVideo.css">
     <script src="./js/loadEnv.js"></script>
-    <script src="https://apis.google.com/js/api.js"></script>
     <script src="./js/script.js"></script>
     <script>
         const VIDEO_WIDTH = 320;
@@ -75,20 +74,6 @@
             <div id="mostWatched" class="catalog"></div>
         </section>
     </div>
-
-    <script>
-        const token = localStorage.getItem('token');
-        console.log('Token:', token);
-        // TODO check if needed
-        // document.querySelectorAll('a').forEach(anchor => {
-        //     anchor.addEventListener('click', function (event) {
-        //         event.preventDefault();
-        //         const url = new URL(this.href);
-        //         url.searchParams.append('token', token);
-        //         window.location.href = url.toString();
-        //     });
-        // });
-    </script>
 
     <div id="footer"></div>
 
