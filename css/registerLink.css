@@ -1,0 +1,9 @@
+#registerLink {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+#registerLink:hover {
+    color: darkblue;
+}

@@ -17,6 +17,7 @@ function createHeader() {
             </div>
             <div class="header-buttons">
                 <button id="addVideoBtn">Add Video</button>
+                <button id="deleteVideoBtn">Delete Video</button>
                 <button id="profileBtn">Profile</button>
             </div>
         </header>
@@ -59,6 +60,14 @@ function createHeader() {
                 </form>
             </div>
         </div>
+
+        <div id="delete-overlay"></div>
+        <div id="delete" class="delete">
+            <label for="videoIndex">Enter id of video:</label>
+            <input type="number" id="videoIndex" class="idInput">
+
+            <button id="submitIdButton">Delete</button>
+        </div>
     </nav>
     `;
 }
@@ -67,7 +76,6 @@ const headerString = createHeader();
 const headerFragment = document.createRange().createContextualFragment(headerString);
 document.getElementById('title').appendChild(headerFragment);
 
-// 3. Once the DOM is ready, attach event listeners
 document.addEventListener('DOMContentLoaded', () => {
     const videoModal = document.getElementById('videoModal');
     const closeModal = document.getElementById('closeModal');
@@ -129,5 +137,61 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.target === videoModal) {
             hideModal();
         }
+    });
+
+
+    const deleteVideoBtn = document.getElementById('deleteVideoBtn');
+    const deleteOverlay = document.getElementById('delete-overlay');
+    const deletePopup = document.getElementById('delete');
+    const submitDelReq = document.getElementById('submitIdButton');
+
+    deleteVideoBtn.addEventListener('click', () => {
+        deleteOverlay.style.display = 'block';
+        deletePopup.style.display = 'flex';
+    });
+
+    submitDelReq.addEventListener('click', () => {
+        const videoId = videoIndex.value;
+        if (videoId) {
+            const storedAccessToken = localStorage.getItem('access_token');
+            console.log('Stored access token:', storedAccessToken);
+
+            if (storedAccessToken) {
+                fetch('php/deleteVideo.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        videoId: videoId,
+                        access_token: storedAccessToken,
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            alert(data.message || 'Video deleted successfully!');
+                        } else {
+                            console.error('Error:', data.message || 'Unknown error.');
+                            alert('Error: ' + (data.message || 'Unknown error.'));
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Fetch error:', error);
+                        alert('An error occurred while processing your request.');
+                    });
+            } else {
+                alert('You need to be logged in to delete a video.');
+            }
+        } else {
+            alert('Please enter a valid video ID.');
+        }
+        deleteOverlay.style.display = 'none';
+        deletePopup.style.display = 'none';
+    });
+
+    deleteOverlay.addEventListener('click', () => {
+        deleteOverlay.style.display = 'none';
+        deletePopup.style.display = 'none';
     });
 });
