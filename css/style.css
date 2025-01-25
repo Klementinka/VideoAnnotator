@@ -3,6 +3,12 @@
     justify-content: center;
 }
 
+#title {
+    position: sticky;
+    top: -10px;
+    z-index: 1000;
+}
+
 .mainTitle {
     color: white;
     margin: 10px;
@@ -11,17 +17,16 @@
 body {
     margin: 0;
     background-color: #B1F0F7;
-    font-family:'Times New Roman', Times, serif;
+    font-family: 'Times New Roman', Times, serif;
 }
 
-a
-{
+a {
     text-decoration: none;
     color: black;
 }
 
 button {
-    font-family:'Times New Roman', Times, serif;
+    font-family: 'Times New Roman', Times, serif;
     cursor: pointer;
 }
 
@@ -45,13 +50,43 @@ button {
     transition: background-color 0.3s ease;
 }
 
+.footer {
+    background-color: #81BFDA;
+    padding: 10px;
+    text-align: center;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    font-size: 20px;
+    padding: 20px 0px;
+}
+
+.footer p {
+    text-shadow: 2px 2px 4px #FADA7A;
+    margin: 0;
+}
+
+.footer img {
+    margin: 5px;
+}
+
+.footer a {
+    margin: 0;
+}
+
+.footer-content {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+}
+
 .header-buttons button:hover {
     background-color: #d84315;
 }
 
 .navbar {
-    position: sticky;
-    top: -10px;
     z-index: 1000;
     border-bottom-left-radius: 50% 20px;
     border-bottom-right-radius: 50% 20px;
@@ -99,15 +134,13 @@ button {
     margin-bottom: 20px;
 }
 
-.catalog
-{
+.catalog {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }
 
-.catalog li
-{
+.catalog li {
     list-style-type: none;
     background-color: #FADA7A;
     border-radius: 10px;
@@ -117,8 +150,7 @@ button {
     align-items: center;
 }
 
-.catalog li img
-{
+.catalog li img {
     display: block;
     margin: 10px;
 }

@@ -25,7 +25,7 @@ function createHeader() {
             <li><a href="explore.html">Explore</a></li>
             <li><a href="upload.html">Upload</a></li>
             <li><a href="add_subtitles.html">Add Subtitles</a></li>
-            <li><a href="editLobby.html?token=${token}">Edit Videos</a></li>
+            <li><a href="editLobby.html">Edit Videos</a></li>
         </ul>
         
         <!-- Modal -->
@@ -88,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (incomingToken) {
         localStorage.setItem('access_token', incomingToken);
-
         const url = new URL(window.location.href);
         url.searchParams.delete('token');
         window.history.replaceState({}, '', url);
@@ -164,8 +163,8 @@ document.addEventListener('DOMContentLoaded', () => {
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        videoId: videoId, 
-                        access_token: storedAccessToken, 
+                        videoId: videoId,
+                        access_token: storedAccessToken,
                     }),
                 })
                     .then((response) => response.json())

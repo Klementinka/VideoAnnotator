@@ -1,39 +1,21 @@
-function fetchVideo(videoId, token, playerId, sourceId) {
+function fetchVideo(videoId, token, playerId) {
 
     const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
 
-    let API_KEY = undefined;
-    let CLIENT_ID = undefined;
-
-    fetch('../VideoAnnotator/config.json')
-        .then(response => response.json())
-        .then(config => {
-            API_KEY = config.API_KEY;
-            CLIENT_ID = config.CLIENT_ID;
-        })
-        .catch(error => { alert('Error fetching config:', error); window.history.back(); });
-
     fetch(videoUrl, {
-        mode: 'no-cors',
         headers: {
-            'Authorization': `Bearer ${token}`
+            'Authorization': `Bearer ${token}`,
         }
     })
         .then(response => {
             if (response.ok) {
                 const videoPlayer = document.getElementById(playerId);
-                const videoSource = document.getElementById(sourceId);
-                if (videoSource) {
-                    videoSource.src = response.url + '&key=' + API_KEY;
-                    videoPlayer.load();
-                }
-                else {
-                    console.log(videoPlayer.id);
-                    videoPlayer.src = response.url + '&key=' + API_KEY;
-                    console.log(videoPlayer.src);
-                }
+                response.blob().then(blob => {
+                    videoPlayer.src = URL.createObjectURL(blob);
+                });
+                videoPlayer.load();
             } else {
-                console.log('Error fetching video:', response);
+                throw new Error('Response not ok');
             }
         })
         .catch(err => {
@@ -54,6 +36,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 const videosList = document.getElementById('lastVideos');
                 videosList.innerHTML = '';
                 data.forEach(video => {
+                    console.log(video.name);
                     const listItem = document.createElement('li');
                     const queryParams = new URLSearchParams(window.location.search);
                     queryParams.forEach((value, key) => {
@@ -63,9 +46,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     queryParams.forEach((value, key) => {
                         url.searchParams.append(key, value);
                     });
-                    listItem.innerHTML = `<h3><video id='last-${video.id}' width='300px' height='200px' crossorigin='anonymous' controls><source type='video/mp4' id=cover-${video.id} src='unknown' alt='thumbnail TODO'></source></video><a href='${url.toString()}'>${video.name}</a></h3>`;
+                    listItem.innerHTML = `<h3><video id='last-${video.id}' width='300px' height='200px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name}</a></h3>`;
                     listItem.id = `video-${video.id}`;
-                    fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`, `cover-${video.id}`);
+                    fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`);
                     videosList.appendChild(listItem);
                 });
             })
