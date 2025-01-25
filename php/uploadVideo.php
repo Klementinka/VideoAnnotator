@@ -13,7 +13,8 @@ use Google\Service\Drive as Google_Service_Drive;
 use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 
 
-$folderId = "14IWnQhBfaX7-OfVPC_q7tYc_VqzWLIKz";
+$folderId = "1pGBg7fb9JBal9JKG68MmIkUmmKhW8xM4";
+// TODO remove this hardcoded line and save in the config file
 
 header('Content-Type: application/json');
 

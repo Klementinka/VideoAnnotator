@@ -53,7 +53,7 @@ function loadSecondVideo() {
                 });
         })
         .catch(error => {
-            alert("Not found locally (second video)");
+            console.log("Not found locally (second video)");
             fetch(`./php/drive_id_by_id.php?id=${id_db}`)
                 .then(response => response.json())
                 .then(data => {
