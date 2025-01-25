@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title >Subtitle Editor</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href = "css/subtitlesStyle.css">
+</head>
+<body>
+    <div id="title"></div> 
+    <div class="main-content">
+        <div class="title-container">
+            <h1 class="mainTitle">Subtitle Editor</h1>
+        </div>
+
+        <div class="content-section">
+            <div class="video-section">
+                        <video id="videoPlayer" controls>
+                            <!--Currenlty like this for testign reasons-->
+                            <!-- todo - fetch videos from drive and load them-->
+                            <source src="videos/20230221_185948.mp4" type="video/mp4">
+                        </video>
+            </div>
+
+            <div id="subtitleSection" class="subtitle-input-container">
+                <form id="subtitleForm">
+                    <label for="startTime">Start Time (MM:SS):</label>
+                    <input type="text" id="startTime" placeholder="MM:SS" required>
+
+                    <label for="endTime">End Time (MM:SS):</label>
+                    <input type="text" id="endTime" placeholder="MM:SS" required>
+
+                    <label for="subtitleText">Subtitle Text:</label>
+                    <textarea id="subtitleText" rows="3" required></textarea>
+
+                    <button type="button" id="addSubtitle">Add Subtitle</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="subtitle-table-container">
+            <table id="subtitleTable">
+                <thead>
+                    <tr>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Text</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Subtitle entries will go here -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Subtitle Controls -->
+        <div class="controls">
+            <label for="fontSize">Font Size:</label>
+            <input type="range" id="fontSize" min="10" max="50" value="20">
+
+            <label for="fontColor">Font Color:</label>
+            <input type="color" id="fontColor" value="#ffffff">
+
+            <label for="fontWeight">Font Weight:</label>
+            <select id="fontWeight">
+                <option value="normal">Normal</option>
+                <option value="bold">Bold</option>
+                <option value="lighter">Lighter</option>
+            </select>
+        </div>
+
+        <div class="export-buttons">
+            <label for="exportType">Export as:</label>
+            <select id="exportType">
+                <option value="srt">SRT</option>
+                <option value="sub">SUB</option>
+            </select>
+            <button type="button" id="exportButton">Export Subtitles</button>
+        </div>
+    </div>
+
+    <script src="js/exportSubtitles.js"></script>
+    <script src="js/headerCreator.js"></script>
+    <script src="js/mainPageSubtitles.js"></script>
+    <script src="js/subtitleDisplay.js"></script>
+</body>
+</html>
+

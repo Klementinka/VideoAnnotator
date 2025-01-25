@@ -1,15 +1,12 @@
 const fontSizeInput = document.getElementById('fontSize');
 const fontColorInput = document.getElementById('fontColor');
 const fontWeightInput = document.getElementById('fontWeight');
+const videoSection = document.querySelector('.video-section');
 
 const subtitleOverlay = document.createElement('div');
-subtitleOverlay.style.position = 'absolute';
-subtitleOverlay.style.bottom = '10%';
-subtitleOverlay.style.left = '10%';
-subtitleOverlay.style.textAlign = 'center';
-subtitleOverlay.style.zIndex = 1000;
-document.body.appendChild(subtitleOverlay); 
+subtitleOverlay.classList.add('subtitle-overlay'); 
 
+videoSection.appendChild(subtitleOverlay);
 
 function timeToSeconds(timeStr) {
     const [minutes, seconds] = timeStr.split(':').map(Number);
@@ -35,8 +32,12 @@ function updateGlobalStyles() {
         subtitleOverlay.style.fontSize = `${subtitleToDisplay.fontSize || fontSizeInput.value}px`;
         subtitleOverlay.style.color = subtitleToDisplay.fontColor || fontColorInput.value;
         subtitleOverlay.style.fontWeight = subtitleToDisplay.fontWeight || fontWeightInput.value;
+        
+        subtitleOverlay.style.bottom = '40px'; 
+        subtitleOverlay.style.left = '50%';
+        subtitleOverlay.style.transform = 'translateX(-50%)'; 
     } else {
-        subtitleOverlay.textContent = ''; 
+        subtitleOverlay.textContent = '';  
     }
 }
 
@@ -49,4 +50,4 @@ videoPlayer.addEventListener('timeupdate', () => {
     updateGlobalStyles(); 
 });
 
-updateGlobalStyles();
+updateGlobalStyles(); 
