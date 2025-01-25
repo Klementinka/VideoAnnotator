@@ -5,7 +5,6 @@
  * the access token in local storage.
  */
 
-// 1. Function to generate the header HTML (including the modal form)
 function createHeader() {
     console.log('creating header');
     return `
@@ -77,26 +76,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const addVideoBtn = document.getElementById('addVideoBtn');
     const saveBtn = document.getElementById('saveBtn');
 
-    // ------------------------------------------------------------------------
-    // A) Handle arriving with ?token=XXXX in the URL and storing it
-    // ------------------------------------------------------------------------
     const urlParams = new URLSearchParams(window.location.search);
     const incomingToken = urlParams.get('token');
 
     if (incomingToken) {
-        // Store the token in localStorage for future use
         localStorage.setItem('access_token', incomingToken);
-
-        // Optional: remove the token from the URL to keep things clean
-        // This part just rewrites the URL without the "token" parameter
         const url = new URL(window.location.href);
         url.searchParams.delete('token');
         window.history.replaceState({}, '', url);
     }
 
-    // ------------------------------------------------------------------------
-    // B) Modal show/hide logic
-    // ------------------------------------------------------------------------
     const showModal = () => {
         videoModal.style.display = 'block';
     };
@@ -108,9 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal.addEventListener('click', hideModal);
     cancelBtn.addEventListener('click', hideModal);
 
-    // ------------------------------------------------------------------------
-    // C) "Save" button logic - submit the form via fetch()
-    // ------------------------------------------------------------------------
     saveBtn.addEventListener('click', () => {
         const form = document.getElementById('addVideoForm');
         const formData = new FormData(form);
@@ -140,9 +126,6 @@ document.addEventListener('DOMContentLoaded', () => {
         hideModal();
     });
 
-    // ------------------------------------------------------------------------
-    // D) Close the modal if user clicks outside of it
-    // ------------------------------------------------------------------------
     window.addEventListener('click', (event) => {
         if (event.target === videoModal) {
             hideModal();
