@@ -41,10 +41,8 @@ try {
     $password = "";
     $dbname = "videoannotator";
 
-    // Establish a database connection
     $conn = new mysqli($servername, $username, $password, $dbname);
 
-    // Check for connection errors
     if ($conn->connect_error) {
         echo json_encode([
             'success' => false,
@@ -53,7 +51,6 @@ try {
         exit();
     }
 
-    // Fetch the Google Drive file ID from the database
     $fileIdQuery = "SELECT drive_id FROM videos WHERE id = ?";
     $stmt = $conn->prepare($fileIdQuery);
     if (!$stmt) {
@@ -65,13 +62,12 @@ try {
         exit();
     }
 
-    $stmt->bind_param('i', $videoId); // Assuming $videoId is an integer
+    $stmt->bind_param('i', $videoId); 
     $stmt->execute();
     $stmt->bind_result($fileId);
     $stmt->fetch();
     $stmt->close();
 
-    // Check if the file ID was found
     if (!$fileId) {
         echo json_encode([
             'success' => false,
@@ -81,11 +77,10 @@ try {
         exit();
     }
 
-    // Initialize Google Drive Service (assuming $client is already set up)
     $driveService = new Google_Service_Drive($client);
 
     try {
-        // Delete the file from Google Drive
+
         $driveService->files->delete($fileId);
     } catch (Exception $e) {
         echo json_encode([
@@ -96,7 +91,6 @@ try {
         exit();
     }
 
-    // Delete the corresponding record from the database
     $deleteQuery = "DELETE FROM videos WHERE id = ?";
     $stmt = $conn->prepare($deleteQuery);
     if (!$stmt) {
@@ -113,14 +107,13 @@ try {
     $stmt->close();
     $conn->close();
 
-    // Return a success response
     echo json_encode([
         'success' => true,
         'message' => 'File deleted successfully.',
         'fileId'  => $fileId,
     ]);
 } catch (Exception $e) {
-    // Handle any errors
+    
     echo json_encode([
         'success' => false,
         'message' => 'Error deleting file: ' . $e->getMessage(),
