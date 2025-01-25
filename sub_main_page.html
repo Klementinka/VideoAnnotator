@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subtitle Editor</title>
+    <link rel="stylesheet" href="css/sub-main-page-style.css">
+</head>
+<body>
+
+    <div class="navbar">
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Videos</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+        </ul>
+    </div>
+
+    <div class="main-content">
+        <div class="title-container">
+            <h1 class="mainTitle">Subtitle Editor</h1>
+        </div>
+
+        <div class="header-buttons">
+            <button>Add Subtitle</button>
+        </div>
+
+        <div class="video-section">
+            <ul class="video-list">
+                <li>
+                    <video controls>
+                        <source src="video1.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </li>
+            </ul>
+        </div>
+
+<div id="subtitleEditor">
+    <video id="videoPlayer" controls>
+        <source src="your-video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    
+    <div>
+        <button id="setStartTime">Set Start Time</button>
+        <button id="setEndTime">Set End Time</button>
+    </div>
+
+    <div>
+        <label for="startTime">Start Time:</label>
+        <input type="text" id="startTime" readonly>
+        <label for="endTime">End Time:</label>
+        <input type="text" id="endTime" readonly>
+    </div>
+
+    <div>
+        <label for="subtitleText">Subtitle Text:</label>
+        <input type="text" id="subtitleText">
+        <button id="addSubtitle">Add Subtitle</button>
+    </div>
+
+    <table id="subtitleTable">
+        <thead>
+            <tr>
+                <th>Start Time</th>
+                <th>End Time</th>
+                <th>Text</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Subtitles will be dynamically inserted here -->
+        </tbody>
+    </table>
+</div>
+
+    <div id="exportSection">
+        <label for="exportFormat">Export Format:</label>
+        <select id="exportFormat">
+            <option value="srt">SRT</option>
+            <option value="sub">SUB</option>
+        </select>
+        <button id="exportButton">Export Subtitles</button>
+    </div>
+    
+
+    <script src="js/mainPageSubtitles.js"></script>
+    <script src="js/exportSubtitles.js"></script>
+
+</body>
+</html>
