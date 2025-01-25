@@ -10,56 +10,49 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Check connection
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    die(json_encode(['success' => false, 'message' => 'Database connection failed.']));
 }
 
-$autoloadPath = __DIR__ . '/../vendor/autoload.php';
-if (!file_exists($autoloadPath)) {
-    echo json_encode(['success' => false, 'message' => 'Library not found. Run `composer install` first.']);
-    exit;
-}
-require_once $autoloadPath;
+require_once __DIR__ . '/../vendor/autoload.php';
 use Google\Client as Google_Client;
-use Google\Service\Drive as Google_Service_Drive;
-use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 
-// 1) Initialize Google Client (same logic as before)
+// Initialize Google Client
 $client = new Google_Client();
-$client->setAuthConfig('../config_mine.json');  
+$client->setAuthConfig('../config_mine.json');
 $client->setRedirectUri('http://localhost/VideoAnnotator/oauth2callback.php');
 $client->addScope(Google_Service_Drive::DRIVE);
 $client->setAccessType('offline');
 $client->setPrompt('consent');
 
-// Check if username and password are provided via POST
-if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    if (!empty($_POST['username']) && !empty($_POST['password'])) {
-        $user = $conn->real_escape_string($_POST['username']);
-        $pass = $conn->real_escape_string($_POST['password']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = $conn->real_escape_string($_POST['username'] ?? '');
+    $password = $conn->real_escape_string($_POST['password'] ?? '');
 
-        // Query to check if the user exists with the provided credentials
-        $sql = "SELECT * FROM users WHERE username = '$user' AND password = '$pass'";
-        $result = $conn->query($sql);
+    if (!empty($username) && !empty($password)) {
+        // Check user credentials
+        $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+        $result = $conn->query($query);
 
-        // Found the user in the database
         if ($result->num_rows > 0) {
-            if ($client->isAccessTokenExpired()) {
-                $currentToken = $client->getAccessToken();
-                $refreshToken = $currentToken['refresh_token'] ?? ($_SESSION['access_token']['refresh_token'] ?? null);
-                if ($refreshToken) {
-                    $client->fetchAccessTokenWithRefreshToken($refreshToken);
-                    $_SESSION['access_token'] = $client->getAccessToken();
-                } else {
-                    header("Location: " . $client->createAuthUrl());
-                    exit();
-                }
-            } 
-            header('Location: http://localhost/VideoAnnotator/index.html?token=' . $client->getAccessToken());
-            exit();
+            session_start();
+
+            // Check for existing Google tokens
+            if (isset($_SESSION['access_token']) && !$client->isAccessTokenExpired()) {
+                $accessToken = $_SESSION['access_token']['access_token'];
+                echo json_encode(['success' => true, 'token' => $accessToken]);
+            } else {
+                // Generate Google auth URL
+                $authUrl = $client->createAuthUrl();
+                echo json_encode(['success' => true, 'authUrl' => $authUrl]);
+            }
         } else {
-            echo "Both username and password are required.";
+            echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
         }
+    } else {
+        echo json_encode(['success' => false, 'message' => 'Username and password are required.']);
     }
+} else {
+    echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
 }
 
 $conn->close();
