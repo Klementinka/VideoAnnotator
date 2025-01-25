@@ -30,7 +30,6 @@ $client->setPrompt('consent');
 if (isset($_SESSION['access_token'])) {
     $client->setAccessToken($_SESSION['access_token']);
 } else {
-    $conn->close();
     echo json_encode(['success' => false, 'message' => 'Access token missing or expired.']);
     exit;
 }
@@ -45,7 +44,6 @@ if ($client->isAccessTokenExpired()) {
         $client->fetchAccessTokenWithRefreshToken($refreshToken);
         $_SESSION['access_token'] = $client->getAccessToken();
     } else {
-        $conn->close();
         echo json_encode([
             'success' => false,
             'message' => 'Access token expired and no refresh token available. Please reauthorize.'
@@ -56,7 +54,6 @@ if ($client->isAccessTokenExpired()) {
 
 // 4) Check if the user actually uploaded a file
 if (!isset($_FILES['videoPath']) || $_FILES['videoPath']['error'] !== UPLOAD_ERR_OK) {
-    $conn->close();
     echo json_encode(['success' => false, 'message' => 'No video file was uploaded or upload failed.']);
     exit();
 }
