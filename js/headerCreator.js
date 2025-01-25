@@ -5,7 +5,6 @@
  * the access token in local storage.
  */
 
-// 1. Function to generate the header HTML (including the modal form)
 function createHeader() {
     console.log('creating header');
     return `
@@ -18,6 +17,7 @@ function createHeader() {
             </div>
             <div class="header-buttons">
                 <button id="addVideoBtn">Add Video</button>
+                <button id="deleteVideoBtn">Delete Video</button>
                 <button id="profileBtn">Profile</button>
             </div>
         </header>
@@ -60,16 +60,22 @@ function createHeader() {
                 </form>
             </div>
         </div>
+
+        <div id="delete-overlay"></div>
+        <div id="delete" class="delete">
+            <label for="videoIndex">Enter id of video:</label>
+            <input type="number" id="videoIndex" class="idInput">
+
+            <button id="submitIdButton">Delete</button>
+        </div>
     </nav>
     `;
 }
 
-// 2. Insert the header HTML into the DOM
 const headerString = createHeader();
 const headerFragment = document.createRange().createContextualFragment(headerString);
 document.getElementById('title').appendChild(headerFragment);
 
-// 3. Once the DOM is ready, attach event listeners
 document.addEventListener('DOMContentLoaded', () => {
     const videoModal = document.getElementById('videoModal');
     const closeModal = document.getElementById('closeModal');
@@ -77,26 +83,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const addVideoBtn = document.getElementById('addVideoBtn');
     const saveBtn = document.getElementById('saveBtn');
 
-    // ------------------------------------------------------------------------
-    // A) Handle arriving with ?token=XXXX in the URL and storing it
-    // ------------------------------------------------------------------------
     const urlParams = new URLSearchParams(window.location.search);
     const incomingToken = urlParams.get('token');
 
     if (incomingToken) {
-        // Store the token in localStorage for future use
         localStorage.setItem('access_token', incomingToken);
 
-        // Optional: remove the token from the URL to keep things clean
-        // This part just rewrites the URL without the "token" parameter
         const url = new URL(window.location.href);
         url.searchParams.delete('token');
         window.history.replaceState({}, '', url);
     }
 
-    // ------------------------------------------------------------------------
-    // B) Modal show/hide logic
-    // ------------------------------------------------------------------------
     const showModal = () => {
         videoModal.style.display = 'block';
     };
@@ -108,9 +105,6 @@ document.addEventListener('DOMContentLoaded', () => {
     closeModal.addEventListener('click', hideModal);
     cancelBtn.addEventListener('click', hideModal);
 
-    // ------------------------------------------------------------------------
-    // C) "Save" button logic - submit the form via fetch()
-    // ------------------------------------------------------------------------
     saveBtn.addEventListener('click', () => {
         const form = document.getElementById('addVideoForm');
         const formData = new FormData(form);
@@ -140,12 +134,64 @@ document.addEventListener('DOMContentLoaded', () => {
         hideModal();
     });
 
-    // ------------------------------------------------------------------------
-    // D) Close the modal if user clicks outside of it
-    // ------------------------------------------------------------------------
     window.addEventListener('click', (event) => {
         if (event.target === videoModal) {
             hideModal();
         }
+    });
+
+
+    const deleteVideoBtn = document.getElementById('deleteVideoBtn');
+    const deleteOverlay = document.getElementById('delete-overlay');
+    const deletePopup = document.getElementById('delete');
+
+    deleteVideoBtn.addEventListener('click', () => {
+        deleteOverlay.style.display = 'block';
+        deletePopup.style.display = 'flex';
+    });
+    
+    submitIdButton.addEventListener('click', () => {
+        const videoId = videoIndexInput.value;
+        if (videoId) {
+            const storedAccessToken = localStorage.getItem('access_token');
+            console.log('Stored access token:', storedAccessToken);
+
+            if (storedAccessToken) {
+                fetch('php/deleteVideo.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        videoId: videoId, 
+                        access_token: storedAccessToken, 
+                    }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            alert(data.message || 'Video deleted successfully!');
+                        } else {
+                            console.error('Error:', data.message || 'Unknown error.');
+                            alert('Error: ' + (data.message || 'Unknown error.'));
+                        }
+                    })
+                    .catch((error) => {
+                        console.error('Fetch error:', error);
+                        alert('An error occurred while processing your request.');
+                    });
+            } else {
+                alert('You need to be logged in to delete a video.');
+            }
+        } else {
+            alert('Please enter a valid video ID.');
+        }
+        deleteOverlay.style.display = 'none';
+        deletePopup.style.display = 'none';
+    });
+
+    deleteOverlay.addEventListener('click', () => {
+        deleteOverlay.style.display = 'none';
+        deletePopup.style.display = 'none';
     });
 });

@@ -137,7 +137,7 @@ try {
 
     //Should be changed to the actual owner id
     $ownerId = 2;
-    $stmt->bind_param("ssib",$videoName, $folderId, $ownerId, $videoType);
+    $stmt->bind_param("ssib",$videoName, $fileId, $ownerId, $videoType);
 
     // Execute the query
     if (!$stmt->execute()) {
