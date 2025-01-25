@@ -18,7 +18,7 @@ function createHeader() {
             <div class="header-buttons">
                 <button id="addVideoBtn">Add Video</button>
                 <button id="deleteVideoBtn">Delete Video</button>
-                <button id="profileBtn">Profile</button>
+                <a href="profile.html"><button id="profileBtn">Profile</button></a>
             </div>
         </header>
         <ul>
