@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Video Annotation Web Project</title>
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/uploadVideo.css">
     <script src="./js/loadEnv.js"></script>
     <script src="https://apis.google.com/js/api.js"></script>
     <script src="./js/script.js"></script>
@@ -22,7 +23,7 @@
     <button id="authButton">Authenticate!!!</button>
 
     <script>
-        let CLIENT_ID=undefined;
+        let CLIENT_ID = undefined;
         fetch('./config.json')
             .then(response => response.json())
             .then(config => {
@@ -32,7 +33,7 @@
             })
             .catch(error => console.error('Error loading config:', error));
         document.getElementById('authButton').addEventListener('click', function () {
-            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive.readonly`;
+            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
         });
     </script>
 
@@ -61,101 +62,32 @@
     <div class="main-content">
         <section class="video-section">
             <h2>Last Videos</h2>
-            <ul id="lastVideosList" class="video-list">
-                <li>
-                    <h3><a href='./edit.html?id=1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc'>Example Video 1</a></h3>
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
-                        height="36%" allow="autoplay">
-                    </iframe>
-                    <p>Description of Example Video 1</p>
-                </li>
-                <li>
-                    <h3>Example Video 2</h3>
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
-                        height="36%" allow="autoplay">
-                    </iframe>
-                    <p>Description of Example Video 2</p>
-                </li>
-                <li>
-                    <h3>Example Video 3</h3>
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
-                        height="36%" allow="autoplay">
-                    </iframe>
-                    <p>Description of Example Video 3</p>
-                </li>
-            </ul>
+            <div id="lastVideos" class="catalog"></div>
         </section>
 
         <section class="video-section">
             <h2>Best Videos</h2>
-            <ul id="bestVideosList" class="video-list">
-                <li>
-                    <h3>Video Title 1</h3>
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
-                        height="36%" allow="autoplay">
-                    </iframe>
-                    <p>Description of Video 1</p>
-                </li>
-                <li>
-                    <h3>Video Title 4</h3>
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
-                        height="36%" allow="autoplay">
-                    </iframe>
-                    <p>Description of Video 4</p>
-                </li>
-                <li>
-                    <h3>Video Title 5</h3>
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
-                        height="36%" allow="autoplay">
-                    </iframe>
-                    <p>Description of Video 5</p>
-                </li>
-                <li>
-                    <h3>Video Title 6</h3>
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
-                        height="36%" allow="autoplay">
-                    </iframe>
-                    <p>Description of Video 6</p>
-                </li>
-                <li>
-                    <h3>Video Title 2</h3>
-                    <iframe src="https://drive.google.com/file/d/1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc/preview" width="84%"
-                        height="36%" allow="autoplay">
-                    </iframe>
-                    <p>Description of Video 2</p>
-                </li>
-                <!-- <li>
-                    <h3>Video Title 3</h3>
-                    <video width="${VIDEO_WIDTH}" height="${VIDEO_HEIGHT}" controls>
-                        <source src="video3.mp4" type="video/mp4">
-                        Your browser does not support the video tag.
-                    </video>
-                    <p>Description of Video 3</p>
-                </li> -->
-                <!-- Best videos will appear here -->
-            </ul>
+            <div id="bestVideos" class="catalog"></div>
         </section>
 
         <section class="video-section">
             <h2>Most Watched Videos</h2>
-            <ul id="mostWatchedVideosList" class="video-list">
-                <!-- Most watched videos will appear here -->
-            </ul>
+            <div id="mostWatched" class="catalog"></div>
         </section>
     </div>
 
     <script>
-        const urlParams = new URLSearchParams(window.location.search);
-        const token = urlParams.get('token');
+        const token = localStorage.getItem('token');
         console.log('Token:', token);
-        document.querySelectorAll('a').forEach(anchor => {
-            anchor.addEventListener('click', function (event) {
-                event.preventDefault();
-                const url = new URL(this.href);
-                url.searchParams.append('token', token);
-                window.location.href = url.toString();
-            });
-        });
+        // TODO check if needed
+        // document.querySelectorAll('a').forEach(anchor => {
+        //     anchor.addEventListener('click', function (event) {
+        //         event.preventDefault();
+        //         const url = new URL(this.href);
+        //         url.searchParams.append('token', token);
+        //         window.location.href = url.toString();
+        //     });
+        // });
     </script>
 
     <div id="footer"></div>

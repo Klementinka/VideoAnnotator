@@ -11,11 +11,18 @@
 body {
     margin: 0;
     background-color: #B1F0F7;
+    font-family:'Times New Roman', Times, serif;
 }
 
-.video-list li video {
-    width: 100%;
-    height: auto;
+a
+{
+    text-decoration: none;
+    color: black;
+}
+
+button {
+    font-family:'Times New Roman', Times, serif;
+    cursor: pointer;
 }
 
 .header-buttons {
@@ -90,6 +97,30 @@ body {
     color: #004d40;
     text-align: center;
     margin-bottom: 20px;
+}
+
+.catalog
+{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.catalog li
+{
+    list-style-type: none;
+    background-color: #FADA7A;
+    border-radius: 10px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.catalog li img
+{
+    display: block;
+    margin: 10px;
 }
 
 .video-list {

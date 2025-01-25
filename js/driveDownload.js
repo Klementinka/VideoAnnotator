@@ -1,8 +1,10 @@
+// TODO consider this file for deletion, now not used in this branch!
+
 const CLIENT_ID = window.config.CLIENT_ID;
 const API_KEY = window.config.API_KEY;
 const SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
 const FILE_ID = '1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc';
-// the above line hard codes the Dosi video
+// the above line hard codes the DOSI video
 
 function loadGapi() {
     gapi.load('client:auth2', initializeGapi);
