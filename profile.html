@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile Page</title>
+    <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+    <div class="profile-container">
+        <h2>Profile</h2>
+        <p><strong>Username:</strong> <span id="username"></span></p>
+        <p><strong>Email:</strong> <span id="email"></span></p>
+        <form action="php/logout.php" method="POST">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+    <script>
+        // Fetch user data from profile.php
+        fetch('php/profile.php')
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    // Redirect to login if the user is not logged in
+                    window.location.href = "login.html";
+                }
+            })
+            .then(data => {
+                // Populate the profile page
+                document.getElementById('username').textContent = data.username;
+                document.getElementById('email').textContent = data.email;
+            })
+            .catch(error => console.error('Error fetching profile data:', error));
+    </script>
+</body>
+</html>

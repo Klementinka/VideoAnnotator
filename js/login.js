@@ -12,18 +12,7 @@ document.getElementById("login-form").addEventListener("submit", async function 
         body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
     });
 
-    // Log the `response` object directly
-console.log(response);
-
-// Log specific properties of the `response` object
-console.log("Status:", response.status); // HTTP status code (e.g., 200, 404)
-console.log("Status Text:", response.statusText); // Text associated with the status (e.g., OK, Not Found)
-console.log("Headers:", response.headers); // Headers object
-
-// Log the response body as JSON (if the server response is in JSON format)
-
     const result = await response.json();
-    console.log(result);
 
     if (result.success) {
         // Redirect to the main page
