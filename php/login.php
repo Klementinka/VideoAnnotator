@@ -1,59 +1,51 @@
 <?php
-// Establish a connection to the database
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "videoannotator";
+session_start();
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+$host = 'localhost';
+$db = 'videoannotator';
+$user = 'root';
+$pass = '';
 
-// Check connection
+$conn = new mysqli($host, $user, $pass, $db);
+
 if ($conn->connect_error) {
-    die(json_encode(['success' => false, 'message' => 'Database connection failed.']));
+    die('Database connection error: ' . $conn->connect_error);
 }
 
-require_once __DIR__ . '/../vendor/autoload.php';
-use Google\Client as Google_Client;
-
-// Initialize Google Client
-$client = new Google_Client();
-$client->setAuthConfig('../config_mine.json');
-$client->setRedirectUri('http://localhost/VideoAnnotator/oauth2callback.php');
-$client->addScope(Google_Service_Drive::DRIVE);
-$client->setAccessType('offline');
-$client->setPrompt('consent');
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = $conn->real_escape_string($_POST['username'] ?? '');
-    $password = $conn->real_escape_string($_POST['password'] ?? '');
+    $username = trim($_POST['username']);
+    $password = trim($_POST['password']);
 
-    if (!empty($username) && !empty($password)) {
-        // Check user credentials
-        $query = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
-        $result = $conn->query($query);
+    // Check if the username and password are provided
+    if (empty($username) || empty($password)) {
+        echo json_encode(['success' => false, 'message' => 'All fields are required.']);
+        exit;
+    }
 
-        if ($result->num_rows > 0) {
-            session_start();
+    // Query the database to check credentials
+    $stmt = $conn->prepare("SELECT * FROM users WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
 
-            // Check for existing Google tokens
-            if (isset($_SESSION['access_token']) && !$client->isAccessTokenExpired()) {
-                $accessToken = $_SESSION['access_token']['access_token'];
-                echo json_encode(['success' => true, 'token' => $accessToken]);
-            } else {
-                // Generate Google auth URL
-                $authUrl = $client->createAuthUrl();
-                echo json_encode(['success' => true, 'authUrl' => $authUrl]);
-            }
+    if ($result->num_rows === 1) {
+        $user = $result->fetch_assoc();
+
+        // Verify password
+        if ($password === $user['password']) { // Ideally, use password hashing in production
+            $_SESSION['user'] = [
+                'id' => $user['id'],
+                'username' => $user['username'],
+                'email' => $user['email'],
+            ];
+            echo json_encode(['success' => true]);
         } else {
-            echo json_encode(['success' => false, 'message' => 'Invalid username or password.']);
+            echo json_encode(['success' => false, 'message' => 'Incorrect password.']);
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Username and password are required.']);
+        echo json_encode(['success' => false, 'message' => 'User not found.']);
     }
 } else {
     echo json_encode(['success' => false, 'message' => 'Invalid request method.']);
 }
-
-$conn->close();
 ?>

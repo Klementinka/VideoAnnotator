@@ -1,42 +1,35 @@
-document.getElementById('login-form').addEventListener('submit', async function (event) {
-    event.preventDefault(); // Prevent the default form submission
+document.getElementById("login-form").addEventListener("submit", async function (e) {
+    e.preventDefault(); // Prevent default form submission
 
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    const errorMessage = document.getElementById('error-message');
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
 
-    try {
-        // Send login credentials to the server
-        const response = await fetch('php/login.php', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            body: new URLSearchParams({
-                username: username,
-                password: password,
-            }),
-        });
+    const response = await fetch("php/login.php", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: `username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`,
+    });
 
-        if (response.ok) {
-            const result = await response.json();
+    // Log the `response` object directly
+console.log(response);
 
-            if (result.success) {
-                // If Google authentication is required, redirect to the Google auth URL
-                if (result.authUrl) {
-                    window.location.href = result.authUrl;
-                } else {
-                    // Otherwise, redirect to the application dashboard
-                    window.location.href = 'http://localhost/VideoAnnotator/index.html?token=' + result.token;
-                }
-            } else {
-                errorMessage.textContent = result.message || 'Login failed. Please try again.';
-            }
-        } else {
-            errorMessage.textContent = 'Error connecting to the server. Please try again later.';
-        }
-    } catch (error) {
-        console.error('Login error:', error);
-        errorMessage.textContent = 'An unexpected error occurred. Please try again.';
+// Log specific properties of the `response` object
+console.log("Status:", response.status); // HTTP status code (e.g., 200, 404)
+console.log("Status Text:", response.statusText); // Text associated with the status (e.g., OK, Not Found)
+console.log("Headers:", response.headers); // Headers object
+
+// Log the response body as JSON (if the server response is in JSON format)
+
+    const result = await response.json();
+    console.log(result);
+
+    if (result.success) {
+        // Redirect to the main page
+        window.location.href = "index.html";
+    } else {
+        // Show error message
+        document.getElementById("error-message").textContent = result.message;
     }
 });
