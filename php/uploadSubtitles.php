@@ -1,7 +1,6 @@
 <?php
 session_start();
 
-
 $autoloadPath = __DIR__ . '/../vendor/autoload.php';
 if (!file_exists($autoloadPath)) {
     echo json_encode(['success' => false, 'message' => 'Library not found. Run `composer install` first.']);
@@ -12,20 +11,17 @@ use Google\Client as Google_Client;
 use Google\Service\Drive as Google_Service_Drive;
 use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 
-
-$folderId = "1pGBg7fb9JBal9JKG68MmIkUmmKhW8xM4";
-// TODO remove this hardcoded line and save in the config file
-
 header('Content-Type: application/json');
 
 
+$folderId = "107iWLIPK0Ooydvyr7D281w3eK4g_g3x9"; 
+
 $client = new Google_Client();
-$client->setAuthConfig('../config_mine.json');  
+$client->setAuthConfig('../config_mine.json');
 $client->setRedirectUri('http://localhost/VideoAnnotator/oauth2callback.php');
 $client->addScope(Google_Service_Drive::DRIVE);
 $client->setAccessType('offline');
 $client->setPrompt('consent');
-
 
 if (isset($_SESSION['access_token'])) {
     $client->setAccessToken($_SESSION['access_token']);
@@ -52,53 +48,48 @@ if ($client->isAccessTokenExpired()) {
     }
 }
 
-
-if (!isset($_FILES['videoPath']) || $_FILES['videoPath']['error'] !== UPLOAD_ERR_OK) {
-    echo json_encode(['success' => false, 'message' => 'No video file was uploaded or upload failed.']);
+if (!isset($_FILES['subtitlesFile']) || $_FILES['subtitlesFile']['error'] !== UPLOAD_ERR_OK) {
+    echo json_encode(['success' => false, 'message' => 'No subtitle file was uploaded or upload failed.']);
     exit();
 }
 
-
-$videoName = $_POST['videoName'] ?? '';
-$videoType = (!empty($_POST['videoType']) && $_POST['videoType'] === 'on') ? true : false;
-
-$tmpFilePath = $_FILES['videoPath']['tmp_name'];
-$originalName = $_FILES['videoPath']['name'];   
-$fileMimeType = mime_content_type($tmpFilePath); 
-
-if (!$fileMimeType) {
-    $fileMimeType = 'application/octet-stream';
+$videoId = $_POST['videoId'] ?? null;
+if (!$videoId) {
+    echo json_encode(['success' => false, 'message' => 'No video ID provided.']);
+    exit();
 }
+
+$subtitlesTmpPath = $_FILES['subtitlesFile']['tmp_name'];
+$originalName = $_FILES['subtitlesFile']['name'];   
+$fileMimeType = mime_content_type($subtitlesTmpPath); 
+
+if (!in_array($fileMimeType, ['text/plain', 'application/octet-stream', 'text/x-srt', 'text/vtt'])) {
+    echo json_encode(['success' => false, 'message' => 'Invalid subtitle file format. Only .srt, .vtt, or .txt files are allowed.']);
+    exit();
+}
+
 try {
     $service = new Google_Service_Drive($client);
 
-    // File metadata
-    // If you want to rename the file on Drive to something from $videoName, do:
-    // 'name' => $videoName
-    // or keep the original file name:
     $fileMetadata = new Google_Service_Drive_DriveFile([
-        'name' => $videoName ?: $originalName,
+        'name' => $originalName,
     ]);
-
 
     if (!empty($folderId)) {
         $fileMetadata->setParents([$folderId]);
     }
 
-    $fileContent = file_get_contents($tmpFilePath);
+    $fileContent = file_get_contents($subtitlesTmpPath);
 
     $driveFile = $service->files->create($fileMetadata, [
         'data' => $fileContent,
         'mimeType' => $fileMimeType,
         'uploadType' => 'multipart',
         'fields' => 'id',
-        // If it's a shared drive:
-        // 'supportsAllDrives' => true,
     ]);
 
     $fileId = $driveFile->id;
 
-    
     $servername = "localhost";
     $username = "root";
     $password = "";
@@ -107,7 +98,6 @@ try {
     $conn = new mysqli($servername, $username, $password, $dbname);
 
     if ($conn->connect_error) {
-    
         echo json_encode([
             'success' => false,
             'message' => 'Database connection failed: ' . $conn->connect_error,
@@ -115,8 +105,8 @@ try {
         exit();
     }
 
-    $sql = "INSERT INTO videos (name, drive_id, owner_id, created_on, updated_on, is_private)
-            VALUES (?, ?, ?, NOW(), NOW(), ?)";
+    $sql = "INSERT INTO subtitles (video_id, subtitle_name, drive_id, created_on)
+            VALUES (?, ?, ?, NOW())";
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -128,8 +118,7 @@ try {
         exit();
     }
 
-    $ownerId = 2;
-    $stmt->bind_param("ssib",$videoName, $fileId, $ownerId, $videoType);
+    $stmt->bind_param("iss", $videoId, $originalName, $fileId);
 
     if (!$stmt->execute()) {
         echo json_encode([
@@ -148,7 +137,7 @@ try {
 
     echo json_encode([
         'success' => true,
-        'message' => 'Successfully uploaded to Google Drive.',
+        'message' => 'Subtitle uploaded and linked to video successfully.',
         'fileId' => $fileId,
         'dbId'    => $insertedId, 
     ]);

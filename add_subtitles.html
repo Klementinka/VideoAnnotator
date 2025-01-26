@@ -6,9 +6,15 @@
     <title >Subtitle Editor</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href = "css/subtitlesStyle.css">
+    <link rel="stylesheet" href="./css/uploadVideo.css">
+    <link rel="stylesheet" href="./css/deleteVideo.css">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="./js/fetchVideo.js"></script>
+
 </head>
 <body>
     <div id="title"></div> 
+
     <div class="main-content">
         <div class="title-container">
             <h1 class="mainTitle">Subtitle Editor</h1>
@@ -17,10 +23,71 @@
         <div class="content-section">
             <div class="video-section">
                         <video id="videoPlayer" controls>
-                            <!--Currenlty like this for testign reasons-->
-                            <!-- todo - fetch videos from drive and load them-->
-                            <source src="videos/20230221_185948.mp4" type="video/mp4">
+                            <source id="videoSource" type="video/mp4">
                         </video>
+                        <script>
+                            let CLIENT_ID;
+                            fetch('./config.json')
+                                .then(response => response.json())
+                                .then(config => {
+                                    CLIENT_ID = config.CLIENT_ID;
+                                })
+                                .catch(error => console.error('Error loading config:', error));
+                            const params = new URLSearchParams(window.location.search);
+                            const token = localStorage.getItem('access_token');
+                            const id_db = params.get('id');
+                            let videoId = undefined;
+                            console.log('Token from localStorage:', token);
+        
+                            fetch(`videos/${id_db}.mp4`)
+                                .then(response => {
+                                    if (!response.ok) {
+                                        throw new Error('Video not found');
+                                    }
+                                    return response.blob();
+                                })
+                                .then(blob => {
+                                    const videoPlayer = document.getElementById('videoPlayer');
+                                    const videoSource = document.getElementById('videoSource');
+                                    videoSource.src = URL.createObjectURL(blob);
+                                    videoPlayer.load();
+                                    fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.drive_id) {
+                                                document.getElementById('video-name').textContent = data.name
+                                            } else {
+                                                alert('No drive_id found for the given video id.');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            alert(error);
+                                        });
+                                })
+                                .catch(error => {
+                                    console.log("Not found locally ");
+                                    fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                                        .then(response => response.json())
+                                        .then(data => {
+                                            if (data.drive_id) {
+                                                params.set('id', data.drive_id);
+                                                fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer');
+                                                document.getElementById('video-name').textContent = data.name
+                                            } else {
+                                                alert('No drive_id found for the given video id.');
+                                            }
+                                        })
+                                        .catch(error => {
+                                            alert(error);
+                                            const videoPlayer = document.getElementById('videoPlayer');
+                                            const videoSource = document.getElementById('videoSource');
+                                            videoSource.src = '/videos/not_found.mp4';
+                                            videoPlayer.load();
+                                        });
+                                });
+                        </script>
+        
+
             </div>
 
             <div id="subtitleSection" class="subtitle-input-container">
@@ -56,28 +123,40 @@
         
         <!-- Subtitle Controls -->
         <div class="controls">
-            <label for="fontSize">Font Size:</label>
-            <input type="range" id="fontSize" min="10" max="50" value="20">
-
-            <label for="fontColor">Font Color:</label>
-            <input type="color" id="fontColor" value="#ffffff">
-
-            <label for="fontWeight">Font Weight:</label>
-            <select id="fontWeight">
-                <option value="normal">Normal</option>
-                <option value="bold">Bold</option>
-                <option value="lighter">Lighter</option>
-            </select>
+            <div class="control-item">
+                <label for="fontSize">Font Size:</label>
+                <input id="fontSize" type="range" min="10" max="36" step="1" value="24">
+                <span id="fontSizeValue">24</span>
+            </div>
+            <div class="control-item">
+                <label for="fontColor">Font Color:</label>
+                <input id="fontColor" type="color" value="#FFFFFF">
+            </div>
+            <div class="control-item">
+                <label for="fontWeight">Font Weight:</label>
+                <select id="fontWeight">
+                    <option value="normal">Normal</option>
+                    <option value="bold">Bold</option>
+                    <option value="lighter">Lighter</option>
+                </select>
+            </div>
         </div>
 
         <div class="export-buttons">
-            <label for="exportType">Export as:</label>
-            <select id="exportType">
-                <option value="srt">SRT</option>
-                <option value="sub">SUB</option>
-            </select>
-            <button type="button" id="exportButton">Export Subtitles</button>
+            <div class="left-section">
+                <label for="exportType">Export as:</label>
+                <select id="exportType">
+                    <option value="srt">SRT</option>
+                    <option value="sub">SUB</option>
+                </select>
+                <button type="button" id="exportButton">Export Subtitles</button>
+            </div>
+        
+            <div class="right-section">
+                <button type="button" id="uploadSubs">Load Existing Subtitles</button>
+            </div>
         </div>
+
     </div>
 
     <script src="js/exportSubtitles.js"></script>

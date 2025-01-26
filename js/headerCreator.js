@@ -24,7 +24,7 @@ function createHeader() {
         <ul>
             <li><a href="explore.html">Explore</a></li>
             <li><a href="upload.html">Upload</a></li>
-            <li><a href="add_subtitles.html">Add Subtitles</a></li>
+            <li><a href="editSubtitlesLobby.html">Add Subtitles</a></li>
             <li><a href="editLobby.html">Edit Videos</a></li>
         </ul>
         
