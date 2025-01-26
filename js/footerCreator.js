@@ -4,7 +4,7 @@ function createFooter() {
         <div class='footer-content'>
             <p>&copy; 2025 Web Technologies Video Annotator</p>
             <a href='https://github.com/Klementinka/VideoAnnotator' target='_blank'>
-                <img src='assets/github_logo.png' width='20px'>
+                <img src='assets/github_logo.png' alt='GitHub repository' width='20px'>
             </a>
         </div>
         <p>With love by team <span>Clementinka &#x2764</span></p>
