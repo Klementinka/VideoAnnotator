@@ -194,4 +194,4 @@ document.addEventListener('DOMContentLoaded', () => {
         deleteOverlay.style.display = 'none';
         deletePopup.style.display = 'none';
     });
-}); 
+});
