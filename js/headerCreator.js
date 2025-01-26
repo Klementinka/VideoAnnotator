@@ -16,10 +16,10 @@ function createHeader() {
                 </h1>
             </div>
             <div class="header-buttons">
-                <button id="addSubsBtn">Add Subtitles</button>
+                <button id="addSubBtn">Add Subtitle</button>
                 <button id="addVideoBtn">Add Video</button>
                 <button id="deleteVideoBtn">Delete Video</button>
-                <a href="profile.html"><button id="profileBtn">Profile</button></a>
+                <button id="profileBtn">Profile</button>
             </div>
         </header>
         <ul>
@@ -29,20 +29,17 @@ function createHeader() {
             <li><a href="editLobby.html">Edit Videos</a></li>
         </ul>
         
-        <!-- Modal -->
+        <!-- Video Modal -->
         <div id="videoModal" class="modal" style="display: none;">
             <div class="modal-content">
                 <span id="closeModal" class="close">&times;</span>
                 <h2>Add New Video</h2>
                 <form id="addVideoForm" enctype="multipart/form-data">
-                    
                     <label for="videoPath">Upload Video:</label>
-                    <input type="file" id="videoPath" name="videoPath"
-                           placeholder="Enter video path" required />
-
+                    <input type="file" id="videoPath" name="videoPath" placeholder="Enter video path" required />
+                    
                     <label for="videoName">Video Name:</label>
-                    <input type="text" id="videoName" name="videoName"
-                           placeholder="Enter video name" required />
+                    <input type="text" id="videoName" name="videoName" placeholder="Enter video name" required />
 
                     <label for="videoType">Video Type:</label>
                     <div class="slider-container">
@@ -62,11 +59,30 @@ function createHeader() {
             </div>
         </div>
 
+        <!-- Subtitle Modal -->
+        <div id="subtitlesModal" class="modal" style="display: none;">
+            <div class="modal-content">
+                <span id="closeSubtitlesModal" class="close">&times;</span>
+                <h2>Add Subtitles</h2>
+                <form id="addSubtitlesForm" enctype="multipart/form-data">
+                    <label for="subtitlesFile">Upload Subtitles:</label>
+                    <input type="file" id="subtitlesFile" name="subtitlesFile" accept=".srt,.vtt,.txt" required />
+
+                    <label for="videoId">Video ID:</label>
+                    <input type="text" id="videoId" name="videoId" placeholder="Enter associated Video ID" required />
+
+                    <div class="modal-buttons">
+                        <button type="button" id="saveSubBtn">Save</button>
+                        <button type="button" id="cancelSubBtn">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <div id="delete-overlay"></div>
         <div id="delete" class="delete">
             <label for="videoIndex">Enter id of video:</label>
             <input type="number" id="videoIndex" class="idInput">
-
             <button id="submitIdButton">Delete</button>
         </div>
     </nav>
@@ -79,27 +95,23 @@ document.getElementById('title').appendChild(headerFragment);
 
 document.addEventListener('DOMContentLoaded', () => {
     const videoModal = document.getElementById('videoModal');
+    const subtitlesModal = document.getElementById('subtitlesModal');
     const closeModal = document.getElementById('closeModal');
+    const closeSubtitlesModal = document.getElementById('closeSubtitlesModal');
     const cancelBtn = document.getElementById('cancelBtn');
+    const cancelSubBtn = document.getElementById('cancelSubBtn');
     const addVideoBtn = document.getElementById('addVideoBtn');
+    const addSubBtn = document.getElementById('addSubBtn');
     const saveBtn = document.getElementById('saveBtn');
+    const saveSubBtn = document.getElementById('saveSubBtn');
+    const deleteVideoBtn = document.getElementById('deleteVideoBtn');
+    const deleteOverlay = document.getElementById('delete-overlay');
+    const deletePopup = document.getElementById('delete');
+    const submitDelReq = document.getElementById('submitIdButton');
 
-    const urlParams = new URLSearchParams(window.location.search);
-    const incomingToken = urlParams.get('token');
-
-    if (incomingToken) {
-        localStorage.setItem('access_token', incomingToken);
-        const url = new URL(window.location.href);
-        url.searchParams.delete('token');
-        window.history.replaceState({}, '', url);
-    }
-
-    const showModal = () => {
-        videoModal.style.display = 'block';
-    };
-    const hideModal = () => {
-        videoModal.style.display = 'none';
-    };
+    // Handle Add Video Modal
+    const showModal = () => videoModal.style.display = 'block';
+    const hideModal = () => videoModal.style.display = 'none';
 
     addVideoBtn.addEventListener('click', showModal);
     closeModal.addEventListener('click', hideModal);
@@ -109,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('addVideoForm');
         const formData = new FormData(form);
         const storedAccessToken = localStorage.getItem('access_token');
-        console.log('Stored access token:', storedAccessToken);
         if (storedAccessToken) {
             formData.append('access_token', storedAccessToken);
         }
@@ -123,29 +134,46 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (data.success) {
                     alert(data.message || 'Video uploaded successfully!');
                 } else {
-                    console.error('Error:', data.message || 'Unknown error.');
                     alert('Error: ' + (data.message || 'Unknown error.'));
                 }
             })
-            .catch((error) => {
-                console.error('Fetch error:', error);
-                alert('An error occurred while processing your request.');
-            });
+            .catch((error) => alert('An error occurred while processing your request.'));
         hideModal();
     });
 
-    window.addEventListener('click', (event) => {
-        if (event.target === videoModal) {
-            hideModal();
+    // Handle Add Subtitle Modal
+    const showSubtitlesModal = () => subtitlesModal.style.display = 'block';
+    const hideSubtitlesModal = () => subtitlesModal.style.display = 'none';
+
+    addSubBtn.addEventListener('click', showSubtitlesModal);
+    closeSubtitlesModal.addEventListener('click', hideSubtitlesModal);
+    cancelSubBtn.addEventListener('click', hideSubtitlesModal);
+
+    saveSubBtn.addEventListener('click', () => {
+        const form = document.getElementById('addSubtitlesForm');
+        const formData = new FormData(form);
+        const storedAccessToken = localStorage.getItem('access_token');
+        if (storedAccessToken) {
+            formData.append('access_token', storedAccessToken);
         }
+
+        fetch('php/uploadSubtitles.php', {
+            method: 'POST',
+            body: formData,
+        })
+            .then((response) => response.json())
+            .then((data) => {
+                if (data.success) {
+                    alert(data.message || 'Subtitles uploaded successfully!');
+                } else {
+                    alert('Error: ' + (data.message || 'Unknown error.'));
+                }
+            })
+            .catch((error) => alert('An error occurred while processing your request.'));
+        hideSubtitlesModal();
     });
 
-
-    const deleteVideoBtn = document.getElementById('deleteVideoBtn');
-    const deleteOverlay = document.getElementById('delete-overlay');
-    const deletePopup = document.getElementById('delete');
-    const submitDelReq = document.getElementById('submitIdButton');
-
+    // Handle Delete Video Modal
     deleteVideoBtn.addEventListener('click', () => {
         deleteOverlay.style.display = 'block';
         deletePopup.style.display = 'flex';
@@ -155,8 +183,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoId = videoIndex.value;
         if (videoId) {
             const storedAccessToken = localStorage.getItem('access_token');
-            console.log('Stored access token:', storedAccessToken);
-
             if (storedAccessToken) {
                 fetch('php/deleteVideo.php', {
                     method: 'POST',
@@ -173,16 +199,10 @@ document.addEventListener('DOMContentLoaded', () => {
                         if (data.success) {
                             alert(data.message || 'Video deleted successfully!');
                         } else {
-                            console.error('Error:', data.message || 'Unknown error.');
                             alert('Error: ' + (data.message || 'Unknown error.'));
                         }
                     })
-                    .catch((error) => {
-                        console.error('Fetch error:', error);
-                        alert('An error occurred while processing your request.');
-                    });
-            } else {
-                alert('You need to be logged in to delete a video.');
+                    .catch((error) => alert('An error occurred while processing your request.'));
             }
         } else {
             alert('Please enter a valid video ID.');
