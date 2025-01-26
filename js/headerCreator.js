@@ -16,16 +16,14 @@ function createHeader() {
                 </h1>
             </div>
             <div class="header-buttons">
-                <button id="addVideoBtn">Add Video</button>
-                <button id="deleteVideoBtn">Delete Video</button>
                 <a href="profile.html"><button id="profileBtn">Profile</button></a>
             </div>
         </header>
         <ul>
-            <li><a href="explore.html">Explore</a></li>
-            <li><a href="upload.html">Upload</a></li>
-            <li><a href="editSubtitlesLobby.html">Add Subtitles</a></li>
-            <li><a href="editLobby.html">Edit Videos</a></li>
+            <li><button id="addVideoBtn" class="navbar-menu">Upload Video</button></li>
+            <li><button id="deleteVideoBtn" class="navbar-menu">Delete Video</button></li>
+            <li><button id="subtitlesBtn" class="navbar-menu">Add Subtitles</button></li>
+            <li><button id="editVideoBtn" class="navbar-menu">Edit Video</button></li>
         </ul>
         
         <!-- Modal -->
@@ -77,6 +75,14 @@ const headerFragment = document.createRange().createContextualFragment(headerStr
 document.getElementById('title').appendChild(headerFragment);
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("subtitlesBtn").onclick = function () {
+        location.href = "editSubtitlesLobby.html";
+    };
+
+    document.getElementById("editVideoBtn").onclick = function () {
+        location.href = "editLobby.html";
+    };
+
     const videoModal = document.getElementById('videoModal');
     const closeModal = document.getElementById('closeModal');
     const cancelBtn = document.getElementById('cancelBtn');

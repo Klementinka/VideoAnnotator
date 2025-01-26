@@ -1,3 +1,8 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 .title-container {
     display: flex;
     justify-content: center;
@@ -7,22 +12,31 @@
     position: sticky;
     top: -10px;
     z-index: 1000;
+    position: aboslute;
+}
+
+.navbar-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #b2bdfe;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 .mainTitle {
     color: white;
     margin: 10px;
+    color: #4762ff;
+    text-decoration: none;
 }
 
 body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #b2bdfe, #706d8b);
+    justify-content: center;
+    height: 100vh;
     margin: 0;
-    background-color: #B1F0F7;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-a {
-    text-decoration: none;
-    color: black;
 }
 
 button {
@@ -34,6 +48,10 @@ button {
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.videoContainerTemp a {
+    margin-top: 10px;
 }
 
 .header-buttons {
@@ -88,15 +106,9 @@ button {
     gap: 5px;
 }
 
-.header-buttons button:hover {
-    background-color: #d84315;
-}
-
 .navbar {
     z-index: 1000;
-    border-bottom-left-radius: 50% 20px;
-    border-bottom-right-radius: 50% 20px;
-    background-color: #81BFDA;
+    background-color: #ffffff;
     padding: 0px;
     padding-bottom: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -113,29 +125,39 @@ button {
     display: inline;
 }
 
-.navbar ul li a {
-    color: white;
+.navbar ul li button {
     text-decoration: none;
-    padding: 5px 10px;
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(180deg, #b2bdfe, #706d8b);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
     display: block;
-    transition: background-color 0.3s ease;
 }
 
-.navbar ul li a:hover {
-    background-color: #d84315;
-    border-radius: 4px;
+.navbar ul li button:hover {
+    background: linear-gradient(0deg, #b2bdfe, #706d8b);
 }
 
 .main-content {
     padding: 20px;
+    background: linear-gradient(135deg, #b2bdfe, #706d8b);
 }
 
 .video-section {
     margin-bottom: 40px;
+    background: linear-gradient(135deg, #b2bdfe, #706d8b);
 }
 
 .video-section h2 {
-    color: #004d40;
+    color: #4762ff;
+    font-weight: bold;
+    text-decoration: none;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -148,12 +170,12 @@ button {
 
 .catalog li {
     list-style-type: none;
-    background-color: #FADA7A;
-    border-radius: 10px;
+    background-color: #ffffff;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeIn 1s ease;
 }
 
 .catalog li img {
