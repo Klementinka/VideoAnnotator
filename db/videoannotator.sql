@@ -47,6 +47,31 @@ INSERT INTO `subtitles` (`drive_id`, `video_drive_id`, `format`, `language`, `cr
 
 -- --------------------------------------------------------
 
+
+--
+-- Table structure for table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(100) NOT NULL AUTO_INCREMENT,
+  `username` varchar(20) NOT NULL,
+  `email` varchar(100) DEFAULT NULL,
+  `password` varchar(20) NOT NULL,
+  `drive_id` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`username`, `email`, `password`, `drive_id`) VALUES
+( 'radkoPiratko', 'karata', 'karaoivwnniw',  0),
+( 'gergana-pile-shareno', 'gergana.yordanovaa03@gmail.com', 'gericyrk',  0),
+( 'KaloyanTs25', 'kaloyants25@gmail.com', 'kalacyrk', 0);
+
+-- --------------------------------------------------------
+
 --
 -- Table structure for table `videos`
 --
@@ -59,7 +84,8 @@ CREATE TABLE `videos` (
   `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
   `updated_on` timestamp NOT NULL DEFAULT current_timestamp(),
   `is_private` boolean NOT NULL DEFAULT false,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`owner_id`) REFERENCES `users`(`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -67,37 +93,10 @@ CREATE TABLE `videos` (
 --
 
 INSERT INTO `videos` (`name`, `drive_id`, `owner_id`, `created_on`, `updated_on`, `is_private`) VALUES
-( 'name 1', 'this_is_hardcoded_invalid_id', 4, '2025-01-02 12:33:12', '2025-01-02 12:33:12', true),
+( 'name 1', 'this_is_hardcoded_invalid_id', 1, '2025-01-02 12:33:12', '2025-01-02 12:33:12', true),
 ( 'name 2','1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc', 3, '2025-01-05 15:21:54', '2025-01-05 15:21:54', true),
 ('name 3', '1i0Bh9xPx7m1F_hDPxhOu01H5P9VIUKm3', 2, '2025-01-05 15:35:50', '2025-01-05 15:35:50', false),
 ( 'name 4','1M7_QzcS4ZF_HWcqH6j_9oyXo-SFoarXf', 3, '2025-01-05 15:36:14', '2025-01-05 15:36:14', false);
-
---
--- Table structure for table `users`
---
-
-CREATE TABLE `users` (
-  `id` int(100) NOT NULL AUTO_INCREMENT,
-  `username` varchar(20) NOT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `password` varchar(20) NOT NULL,
-  `videos` int(100) DEFAULT NULL,
-  `drive_id` int(11) NOT NULL DEFAULT 0,
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`videos`) REFERENCES `videos`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `users`
---
-
-INSERT INTO `users` (`username`, `email`, `password`, `videos`, `drive_id`) VALUES
-( 'radkoPiratko', 'karata', 'karaoivwnniw', NULL, 0),
-( 'gergana-pile-shareno', 'gergana.yordanovaa03@gmail.com', 'gericyrk', NULL, 0),
-( 'KaloyanTs25', 'kaloyants25@gmail.com', 'kalacyrk', NULL, 0);
-
--- --------------------------------------------------------
-
 
 
 --
