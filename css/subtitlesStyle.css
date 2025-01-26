@@ -1,0 +1,218 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #B1F0F7;
+    margin: 0;
+    padding: 0;
+    color: #333;
+}
+.mainTitle{
+    color: black; 
+}
+.content-section {
+    display: flex;
+    justify-content: flex-start; 
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.video-section {
+    position: relative;
+    flex: 0 0 60%; 
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+    border-color: #FADA7A;
+    border-width:30xp;
+    border-style: solid;
+}
+.subtitle-overlay {
+    position: absolute;  
+    text-align: center;  
+    font-size: 24px;    
+    color: #FFFFFF;     
+    font-weight: normal; 
+    z-index: 1000;     
+    pointer-events: none; 
+}
+
+.video-section video {
+    position: relative;
+    width: 100%; 
+    max-width: 1200px; 
+    max-height: 1100px; 
+    height: auto; 
+    border-radius: 5px;
+}
+
+.subtitle-input-container {
+    flex: 0 0 35%;
+    height: 0;
+    margin-top:10px;
+    padding-bottom: 35%; 
+    position: relative;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#subtitleForm {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#subtitleForm input,
+#subtitleForm textarea,
+#subtitleForm button {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+}
+
+#subtitleForm button {
+    background-color: #FADA7A;
+    color: black;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    padding: 15px; 
+    font-size: 20px; 
+}
+#subtitleForm label {
+    font-size: 18px; 
+    margin-bottom: 5px; 
+    margin-top:40px;
+}
+
+#subtitleForm button:hover {
+    background-color: #d84315;
+}
+
+.subtitle-table-container {
+    width: 100%;
+    margin-top: 20px;
+}
+
+#subtitleTable {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#subtitleTable th,
+#subtitleTable td {
+    padding: 10px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+#subtitleTable th {
+    background-color: #81BFDA;
+    color: white;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.controls input,
+.controls select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+
+.export-buttons button:hover {
+    background-color: #005bb5;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between; /* Spread controls across the container */
+    align-items: center; /* Vertically align controls */
+    padding: 10px 20px;
+    background-color: #B1F0F7; /* Match your background or leave as needed */
+}
+
+.control-item {
+    display: flex;
+    align-items: center; /* Align label and input on the same row */
+    gap: 10px; /* Add spacing between label, input, and text */
+}
+
+.control-item input[type="range"] {
+    flex: 1; /* Make the slider take up available space */
+}
+
+.control-item label {
+    font-size: 14px; /* Adjust font size for clarity */
+}
+
+.control-item select,
+.control-item input[type="color"] {
+    width: 100px; /* Make color input and dropdown consistent in width */
+}
+
+#fontSizeValue {
+    font-size: 14px; /* Font size for the value displayed next to the slider */
+    color: #333;
+}
+
+.export-buttons {
+    display: flex;
+    justify-content: space-between; /* Space between left and right sections */
+    align-items: center; /* Align vertically */
+    width: 100%; /* Full-width container */
+    margin-top: 20px;
+}
+
+.left-section {
+    display: flex; /* Arrange items horizontally */
+    gap: 10px; /* Space between label, dropdown, and button */
+    align-items: center; /* Align items vertically */
+}
+
+.right-section {
+    display: flex; /* Keep Save Subtitles button aligned */
+    justify-content: flex-end; /* Align to the far right */
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #005bb5;
+}
+
+select {
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
