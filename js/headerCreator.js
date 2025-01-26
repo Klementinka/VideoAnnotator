@@ -23,7 +23,7 @@ function createHeader() {
         </header>
         <ul>
             <li><a href="explore.html">Explore</a></li>
-            <li><a href="censor.html">Censor</a></li>
+            <li><a href="censorLobby.html">Censor</a></li>
             <li><a href="add_subtitles.html">Add Subtitles</a></li>
             <li><a href="editLobby.html">Edit Videos</a></li>
         </ul>
