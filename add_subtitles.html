@@ -153,13 +153,20 @@
             </div>
         
             <div class="right-section">
-                <button type="button" id="uploadSubs">Load Existing Subtitles</button>
-            </div>
+                <button type="button" id="loadSubs">Load Existing Subtitles</button>  
         </div>
-
+    </div>
+    <div id="subtitleModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Enter Subtitle ID</h2>
+            <input type="text" id="subtitleIdInput" placeholder="Enter Subtitle File ID">
+            <button id="fetchSubtitles">Load Subtitles</button>
+            <button id="closeModal">Cancel</button>
+        </div>
     </div>
 
     <script src="js/exportSubtitles.js"></script>
+    <script src="js/subsLoaderDB.js"></script>
     <script src="js/headerCreator.js"></script>
     <script src="js/mainPageSubtitles.js"></script>
     <script src="js/subtitleDisplay.js"></script>
