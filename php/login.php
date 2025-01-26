@@ -30,9 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if ($result->num_rows === 1) {
         $user = $result->fetch_assoc();
+        $hashedPassword = $user['password']; // Get the hashed password from the database
 
-        // Verify password
-        if ($password === $user['password']) { // Ideally, use password hashing in production
+        if (password_verify($password, $hashedPassword)) {
             $_SESSION['user'] = [
                 'id' => $user['id'],
                 'username' => $user['username'],
