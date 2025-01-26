@@ -11,176 +11,133 @@
     <link rel="stylesheet" href="./css/deleteVideo.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="./js/fetchVideo.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
+    
 </head>
 
 <body>
 
     <div id="title"></div>
 
-    <div class="videoEditContainer">
+        <div class="videoEditContainer">
 
-                <h2 id="video-name" class="bigName"></h2>
+            <h2 id="video-name" class="bigName"></h2>
 
-                <video id="videoPlayer" width="800px" height="600px" crossOrigin="anonymous">
-                    <source id="videoSource" type="video/mp4">
-                </video>
+            <video id="videoPlayer" width="800px" height="600px" crossOrigin="anonymous">
+                <source id="videoSource" type="video/mp4">
+            </video>
 
-                <script>
-                    let CLIENT_ID;
-                    fetch('./config.json')
-                        .then(response => response.json())
-                        .then(config => {
-                            CLIENT_ID = config.CLIENT_ID;
-                        })
-                        .catch(error => console.error('Error loading config:', error));
-                    const params = new URLSearchParams(window.location.search);
-                    const token = localStorage.getItem('access_token');
-                    const id_db = params.get('id');
-                    let videoId = undefined;
-                    console.log('Token from localStorage:', token);
+            <canvas id="overlayCanvas" style="position: absolute; top: 0; left: 0;"></canvas>
+            <script>
+                let CLIENT_ID;
+                fetch('./config.json')
+                    .then(response => response.json())
+                    .then(config => {
+                        CLIENT_ID = config.CLIENT_ID;
+                    })
+                    .catch(error => console.error('Error loading config:', error));
+                const params = new URLSearchParams(window.location.search);
+                const token = localStorage.getItem('access_token');
+                const id_db = params.get('id');
+                let videoId = undefined;
 
-                    fetch(`videos/${id_db}.mp4`)
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('Video not found');
-                            }
-                            return response.blob();
-                        })
-                        .then(blob => {
-                            const videoPlayer = document.getElementById('videoPlayer');
-                            const videoSource = document.getElementById('videoSource');
-                            videoSource.src = URL.createObjectURL(blob);
-                            videoPlayer.load();
-                            fetch(`./php/drive_id_by_id.php?id=${id_db}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.drive_id) {
-                                        document.getElementById('video-name').textContent = data.name
-                                    } else {
-                                        alert('No drive_id found for the given video id.');
-                                    }
-                                })
-                                .catch(error => {
-                                    alert(error);
-                                });
-                        })
-                        .catch(error => {
-                            console.log("Not found locally ");
-                            fetch(`./php/drive_id_by_id.php?id=${id_db}`)
-                                .then(response => response.json())
-                                .then(data => {
-                                    if (data.drive_id) {
-                                        params.set('id', data.drive_id);
-                                        fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer');
-                                        document.getElementById('video-name').textContent = data.name
-                                    } else {
-                                        alert('No drive_id found for the given video id.');
-                                    }
-                                })
-                                .catch(error => {
-                                    alert(error);
-                                    const videoPlayer = document.getElementById('videoPlayer');
-                                    const videoSource = document.getElementById('videoSource');
-                                    videoSource.src = '/videos/not_found.mp4';
-                                    videoPlayer.load();
-                                });
-                        });
-                </script>
-
-                <canvas id="canvas" style="display: none;"></canvas>
-
-                <div class="progress-container" style="position: relative;" id="progress-container">
-                    <progress class="progress-bar" id="progress-bar"></progress>
-                    <span id="timestamp">00:00:000</span>
-                </div>
-
-                <div class="controls">
-                    <button id="previous-frame-button">&#10508</button>
-                    <button id="play-button">&#9654</button>
-                    <button id="screenshot-btn" class="download-frame-button"><img src="./assets/screenshot.png"
-                            width="40px"></button>
-                    <button id="pause-button">&#10073&#10073</button>
-                    <button id="next-frame-button">&#10509</button>
-                    <div class="playback-container">
-                        <label for="speed-slider">Playback Speed:</label>
-                        <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
-                        <span id="speed-value">1x</span>
-                    </div>
-                </div>
-
-                <div class="times-container">
-
-                    <div class="time-input-container">
-                        <div class="start-time-container">
-                            <button id="set-start-time-button">Set Timestamp as start time</button>
-                            <div class="start-time-input">
-                                <label for="start-time">Start Time (mm:ss:ms):</label>
-                                <input type="text" id="start-time" placeholder="00:00:000">
-                            </div>
-                        </div>
-
-                        <button id="save-timestamp" class="save-timestamp-button">Save Timestamp</button>
-
-                        <script>
-                            document.getElementById('save-timestamp').onclick = function () {
-                                const startTime = document.getElementById('start-time').value;
-                                const endTime = document.getElementById('end-time').value;
-
-                                if (startTime && endTime) {
-                                    document.getElementById('process').style.display = 'block';
-                                    document.getElementById('clear-table-button').style.display = 'block';
-                                    const tableElement = document.getElementById('timestamps-table');
-                                    tableElement.style.display = 'block';
-                                    const table = tableElement.getElementsByTagName('tbody')[0];
-                                    const newRow = table.insertRow();
-
-                                    const id = newRow.insertCell(0);
-                                    const startCell = newRow.insertCell(1);
-                                    const endCell = newRow.insertCell(2);
-
-                                    id.textContent = '1';
-                                    startCell.textContent = startTime;
-                                    endCell.textContent = endTime;
-
-                                    document.getElementById('start-time').value = '';
-                                    document.getElementById('end-time').value = '';
+                fetch(`videos/${id_db}.mp4`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Video not found');
+                        }
+                        return response.blob();
+                    })
+                    .then(blob => {
+                        const videoPlayer = document.getElementById('videoPlayer');
+                        const videoSource = document.getElementById('videoSource');
+                        videoSource.src = URL.createObjectURL(blob);
+                        videoPlayer.load();
+                        fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.drive_id) {
+                                    document.getElementById('video-name').textContent = data.name
                                 } else {
-                                    alert('Please enter both start and end times.');
+                                    alert('No drive_id found for the given video id.');
                                 }
-                            };
-                        </script>
-
-                        <div class="end-time-container">
-                            <button id="set-end-time-button">Set Timestamp as end time</button>
-                            <div class="end-time-input">
-                                <label for="end-time">End Time (mm:ss:ms):</label>
-                                <input type="text" id="end-time" placeholder="00:00:000">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div id="selected-video-container"></div>
-
-                <a id="download" style="display: none;">Download Video</a>
-
-                <script>
-
-                    const timestampContainer = document.getElementById('timestamp');
-
-                    videoPlayer.addEventListener('timeupdate', function () {
-                        const minutes = Math.floor(videoPlayer.currentTime / 60);
-                        const seconds = Math.floor(videoPlayer.currentTime % 60);
-                        const milliseconds = Math.floor((videoPlayer.currentTime % 1) * 1000);
-                        const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(3, '0')}`;
-                        timestampContainer.textContent = formattedTime;
+                            })
+                            .catch(error => {
+                                alert(error);
+                            });
+                    })
+                    .catch(error => {
+                        console.log("Not found locally ");
+                        fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.drive_id) {
+                                    params.set('id', data.drive_id);
+                                    fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer');
+                                    document.getElementById('video-name').textContent = data.name
+                                } else {
+                                    alert('No drive_id found for the given video id.');
+                                }
+                            })
+                            .catch(error => {
+                                alert(error);
+                                const videoPlayer = document.getElementById('videoPlayer');
+                                const videoSource = document.getElementById('videoSource');
+                                videoSource.src = '/videos/not_found.mp4';
+                                videoPlayer.load();
+                            });
                     });
-                </script>
+            </script>
 
+            <canvas id="canvas" style="display: none;"></canvas>
+
+            <div class="progress-container" style="position: relative;" id="progress-container">
+                <progress class="progress-bar" id="progress-bar"></progress>
+                <span id="timestamp">00:00:000</span>
             </div>
 
+            <div class="controls">
+                <button id="previous-frame-button">&#10508</button>
+                <button id="play-button">&#9654</button>
+                <button id="screenshot-btn" class="download-frame-button"><img src="./assets/screenshot.png"
+                        width="40px"></button>
+                <button id="pause-button">&#10073&#10073</button>
+                <button id="next-frame-button">&#10509</button>
+                <button id="brushButton">🖌️</button>
+                <div class="playback-container">
+                    <label for="size-slider">Brush Size:</label>
+                    <input type="range" id="size-slider" min="0.5" max="2" value="1" step="0.1">
+                    <span id="size-value">1x</span>
+                </div>
+                <button id="saveButton">💾</button>
+                <div class="playback-container">
+                    <label for="speed-slider">Playback Speed:</label>
+                    <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
+                    <span id="speed-value">1x</span>
+                </div>
+            </div>
+
+            <div id="selected-video-container"></div>
+
+            <a id="download" style="display: none;">Download Video</a>
+
+            <script>
+
+                const timestampContainer = document.getElementById('timestamp');
+
+                videoPlayer.addEventListener('timeupdate', function () {
+                    const minutes = Math.floor(videoPlayer.currentTime / 60);
+                    const seconds = Math.floor(videoPlayer.currentTime % 60);
+                    const milliseconds = Math.floor((videoPlayer.currentTime % 1) * 1000);
+                    const formattedTime = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}:${milliseconds.toString().padStart(3, '0')}`;
+                    timestampContainer.textContent = formattedTime;
+                });
+            </script>
+
+        </div>
     <div id="footer"></div>
+    <script src="./js/censorPageScript.js"></script>
+
     <script src="./js/headerCreator.js"></script>
 
     <script src="./js/footerCreator.js"></script>

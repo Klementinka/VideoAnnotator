@@ -6,7 +6,6 @@
  */
 
 function createHeader() {
-    console.log('creating header');
     return `
     <nav class="navbar">
         <header>
