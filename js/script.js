@@ -1,6 +1,6 @@
-function fetchVideo(videoId, token, playerId) {
+function fetchVideo(videoId, token, playerId, API_KEY) {
 
-    const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
+    const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media&key=${API_KEY}`;
 
     fetch(videoUrl, {
         headers: {
@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
     });
     const token = localStorage.getItem('access_token');
+
     if (token) {
         fetch('./php/fetchVideosNames.php')
             .then(response => response.json())
@@ -46,7 +47,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     queryParams.forEach((value, key) => {
                         url.searchParams.append(key, value);
                     });
-                    listItem.innerHTML = `<h3><video id='last-${video.id}' width='300px' height='200px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name}</a></h3>`;
+                    listItem.innerHTML = `<h3 class='videoContainerTemp'><video id='last-${video.id}' width='300px' height='200px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name}</a></h3>`;
                     listItem.id = `video-${video.id}`;
                     fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`);
                     videosList.appendChild(listItem);
