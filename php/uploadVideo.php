@@ -30,7 +30,7 @@ $client->setPrompt('consent');
 if (isset($_SESSION['access_token'])) {
     $client->setAccessToken($_SESSION['access_token']);
 } else {
-    echo json_encode(['success' => false, 'message' => 'Access token missing or expired.']);
+    echo json_encode(['success' => false, 'message' => 'Please log in with your Google account.']);
     exit;
 }
 

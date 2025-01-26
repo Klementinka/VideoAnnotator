@@ -54,8 +54,9 @@ CREATE TABLE `users` (
   `id` int(100) NOT NULL,
   `username` varchar(20) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
-  `password` varchar(20) NOT NULL,
-  `drive_id` int(11) NOT NULL DEFAULT 0
+  `password` varchar(255) NOT NULL,
+  `drive_id` int(11) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
