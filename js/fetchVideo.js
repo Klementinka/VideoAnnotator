@@ -1,6 +1,6 @@
-function fetchVideo(videoId, token, playerId) {
+function fetchVideo(videoId, token, playerId, API_KEY) {
 
-    const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media`;
+    const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media&key=${API_KEY}`;
 
     fetch(videoUrl, {
         headers: {
