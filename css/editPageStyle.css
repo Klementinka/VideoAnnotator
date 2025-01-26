@@ -6,8 +6,12 @@ main {
 
 }
 
-video
-{
+button {
+    font-family: 'Times New Roman', Times, serif;
+    cursor: pointer;
+}
+
+video {
     max-width: 500px;
     max-height: 400px;
 }
@@ -84,9 +88,24 @@ video
 
 #clear-table-button,
 #clear-table-button2 {
+    text-decoration: none;
+    width: 10%;
+    padding: 10px;
+    margin: 20px;
+    background: linear-gradient(180deg, #b2bdfe, #706d8b);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
     display: none;
-    background-color: #FADA7A;
-    margin: 10px;
+}
+
+#clear-table-button:hover,
+#clear-table-button2:hover {
+    background: linear-gradient(0deg, #b2bdfe, #706d8b);
 }
 
 .controls {
@@ -152,9 +171,22 @@ video
 }
 
 .save-timestamp-button {
-    background-color: #FADA7A;
-    height: 50px;
-    border-radius: 10px;
+    text-decoration: none;
+    width: 30%;
+    padding: 10px;
+    margin: 20px;
+    background: linear-gradient(180deg, #b2bdfe, #706d8b);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.save-timestamp-button:hover {
+    background: linear-gradient(0deg, #b2bdfe, #706d8b);
 }
 
 #video-name,
@@ -165,7 +197,6 @@ video
 .divide {
     height: 40px;
     width: 500px;
-    background-color: aquamarine;
     margin: 30px 0;
     display: flex;
     flex-direction: column;
@@ -190,7 +221,7 @@ video
 .videoEditContainer {
     border: 5px solid black;
     border-radius: 10px;
-    border-color: #FADA7A;
+    border-color: white;
     padding: 10px;
     margin: 10px;
     display: flex;
@@ -199,11 +230,24 @@ video
 }
 
 .secondVideoBtn {
-    background: transparent;
+    text-decoration: none;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 50px;
+    background: linear-gradient(180deg, #b2bdfe, #706d8b);
+    color: white;
     border: none;
-    height: 100%;
-    text-shadow: 2px 2px 4px rgba(250, 218, 122, 0.9);
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
 }
+
+.secondVideoBtn:hover {
+    background: linear-gradient(0deg, #b2bdfe, #706d8b);
+}
+
 
 .video-editors
 {

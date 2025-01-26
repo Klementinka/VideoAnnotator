@@ -16,7 +16,7 @@ function createHeader() {
                 </h1>
             </div>
             <div class="header-buttons">
-                <a href="profile.html"><button id="profileBtn">Profile</button></a>
+                <a href="profile.html"><img src="assets/profile.png" class="profile"></a>
             </div>
         </header>
         <ul>
