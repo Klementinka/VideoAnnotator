@@ -13,6 +13,10 @@ document.getElementById('fetchSubtitles').addEventListener('click', () => {
     alert('Please enter a valid subtitle ID.');
     return;
   }
+  fetch('config.json')
+  .then(response => response.json())
+  .then(data => {
+    config = data;
 
   fetch(`subtitles/${subtitleId}.srt`)
     .then(response => {
@@ -29,10 +33,9 @@ document.getElementById('fetchSubtitles').addEventListener('click', () => {
       fetch(`./php/drive_id_by_id_sb.php?id=${subtitleId}`)
         .then(response => response.json())
         .then(data => {
-          console.log(data.drive_id);
           if (data.drive_id) {
-            fetchSubtitleFromDrive(data.drive_id,localStorage.getItem('access_token'));
-          } else {
+            fetchSubtitleFromDrive(data.drive_id,localStorage.getItem('access_token'),API_KEY);
+          } else {  
             alert('No drive_id found for the given subtitle id.');
           }
         })
@@ -45,7 +48,6 @@ document.getElementById('fetchSubtitles').addEventListener('click', () => {
 
 function fetchSubtitleFromDrive(driveId,token,API_KEY) {
   const subtitleUrl = `https://www.googleapis.com/drive/v3/files/${driveId}?alt=media&key=${API_KEY}`;
-
   fetch(subtitleUrl, {
     headers: {
       'Authorization': `Bearer ${token}`,
@@ -107,3 +109,9 @@ function convertTimeToMinutes(time) {
   const totalMinutes = parseInt(hours) * 60 + parseInt(minutes); 
   return `${totalMinutes}:${sec.padStart(2, '0')}`; 
 }
+
+})
+.catch(err => {
+  console.error('Error loading config:', err);
+  alert('Could not load the configuration.');
+});
