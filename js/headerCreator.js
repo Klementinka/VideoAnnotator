@@ -6,7 +6,6 @@
  */
 
 function createHeader() {
-    console.log('creating header');
     return `
     <nav class="navbar">
         <header>
@@ -16,17 +15,15 @@ function createHeader() {
                 </h1>
             </div>
             <div class="header-buttons">
-                <button id="addSubBtn">Add Subtitle</button>
-                <button id="addVideoBtn">Add Video</button>
-                <button id="deleteVideoBtn">Delete Video</button>
-                <button id="profileBtn">Profile</button>
+                <a href="profile.html"><img src="assets/profile.png" class="profile"></a>
             </div>
         </header>
         <ul>
-            <li><a href="explore.html">Explore</a></li>
-            <li><a href="upload.html">Upload</a></li>
-            <li><a href="editSubtitlesLobby.html">Add Subtitles</a></li>
-            <li><a href="editLobby.html">Edit Videos</a></li>
+            <li><button id="addVideoBtn" class="navbar-menu">Upload Video</button></li>
+            <li><button id="deleteVideoBtn" class="navbar-menu">Delete Video</button></li>
+            <li><a href="censorLobby.html">Censor</a></li>
+            <li><button id="subtitlesBtn" class="navbar-menu">Add Subtitles</button></li>
+            <li><button id="editVideoBtn" class="navbar-menu">Edit Video</button></li>
         </ul>
         
         <!-- Video Modal -->
@@ -94,6 +91,14 @@ const headerFragment = document.createRange().createContextualFragment(headerStr
 document.getElementById('title').appendChild(headerFragment);
 
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById("subtitlesBtn").onclick = function () {
+        location.href = "editSubtitlesLobby.html";
+    };
+
+    document.getElementById("editVideoBtn").onclick = function () {
+        location.href = "editLobby.html";
+    };
+
     const videoModal = document.getElementById('videoModal');
     const subtitlesModal = document.getElementById('subtitlesModal');
     const closeModal = document.getElementById('closeModal');
@@ -183,6 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoId = videoIndex.value;
         if (videoId) {
             const storedAccessToken = localStorage.getItem('access_token');
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
             if (storedAccessToken) {
                 fetch('php/deleteVideo.php', {
                     method: 'POST',

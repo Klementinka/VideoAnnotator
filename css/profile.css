@@ -1,0 +1,75 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #B1F0F7, #34ebff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.profile-container {
+    position: relative;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+h2 {
+    margin-top: 0px;
+    margin-bottom: 20px;
+    color: #5b6ed6;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+p {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+strong {
+    color: #4762ff;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #B1F0F7, #34ebff);
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(0deg, #B1F0F7, #34ebff);
+}
+
+.back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    color: #000000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-arrow:hover {
+    color: #4762ff;
+}

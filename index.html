@@ -14,11 +14,13 @@
         const VIDEO_WIDTH = 320;
         const VIDEO_HEIGHT = 240;
     </script>
+    <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
+
 </head>
 
 <body>
 
-    <div id="title"></div>
+    <div id="title" class="title"></div>
 
     <button id="authButton">Authenticate!!!</button>
 
@@ -27,9 +29,7 @@
         fetch('./config.json')
             .then(response => response.json())
             .then(config => {
-                console.log('Config', config);
                 CLIENT_ID = config.CLIENT_ID;
-                console.log('Client ID:', CLIENT_ID);
             })
             .catch(error => console.error('Error loading config:', error));
         document.getElementById('authButton').addEventListener('click', function () {
@@ -37,42 +37,10 @@
         });
     </script>
 
-    <main>
-        <button id="fetchUsersBtn">Fetch Users</button>
-        <ul id="usersList"></ul>
-    </main>
-
-    <script>
-        document.getElementById('fetchUsersBtn').addEventListener('click', function () {
-            fetch('./php/fetchUsers.php')
-                .then(response => response.json())
-                .then(data => {
-                    const usersList = document.getElementById('usersList');
-                    usersList.innerHTML = '';
-                    data.forEach(user => {
-                        const listItem = document.createElement('li');
-                        listItem.textContent = `${user.username} (${user.email})`;
-                        usersList.appendChild(listItem);
-                    });
-                })
-                .catch(error => console.error('Error fetching users:', error));
-        });
-    </script>
-
     <div class="main-content">
         <section class="video-section">
-            <h2>Last Videos</h2>
+            <h2>Videos</h2>
             <div id="lastVideos" class="catalog"></div>
-        </section>
-
-        <section class="video-section">
-            <h2>Best Videos</h2>
-            <div id="bestVideos" class="catalog"></div>
-        </section>
-
-        <section class="video-section">
-            <h2>Most Watched Videos</h2>
-            <div id="mostWatched" class="catalog"></div>
         </section>
     </div>
 

@@ -173,7 +173,7 @@ processButton.addEventListener('click', async () => {
 
     for (let i = 0; i < startTimes.length; i++) {
         for (let time = Math.max(0, startTimes[i]); time < Math.min(endTimes[i], video.duration); time += 1 / frameInterval) {
-            console.log('frame', time);
+            
             if (ids[i] === '1') {
                 video.currentTime = time;
                 await new Promise(resolve => video.addEventListener('seeked', resolve, { once: true }));

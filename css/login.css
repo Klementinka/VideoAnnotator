@@ -1,6 +1,6 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(135deg, #B1F0F7, #34ebff);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -9,42 +9,82 @@ body {
 }
 
 .login-container {
-    background-color: white;
+    background: white;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    width: 300px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 350px;
     text-align: center;
+    animation: fadeIn 1s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
 h2 {
     margin-bottom: 20px;
+    color: #5b6ed6;
+    font-size: 24px;
+    font-weight: bold;
 }
 
 .input-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     text-align: left;
 }
 
+label {
+    font-size: 14px;
+    color: #333;
+}
+
 input[type="text"], input[type="password"] {
-    width: 95%;
-    padding: 8px;
-    margin-top: 5px;
-    border: 3px solid #ccc;
-    border-radius: 4px;
+    width: calc(100% - 16px);
+    padding: 10px;
+    margin-top: 8px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    background: #f9f9f9;
+    transition: border-color 0.3s;
+}
+
+input[type="text"]:focus, input[type="password"]:focus {
+    border-color: #4CAF50;
+    outline: none;
 }
 
 button {
     width: 100%;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #4CAF50;
+    padding: 12px;
+    background: linear-gradient(135deg, #B1F0F7, #34ebff);
     color: white;
+    font-weight: bold;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px;
+    font-size: 16px;
     cursor: pointer;
+    transition: 0.3s;
 }
 
 button:hover {
-    background-color: #45a049;
+    background: linear-gradient(0deg, #B1F0F7, #34ebff);
+}
+
+a {
+    color: #4762ff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+#error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
 }
