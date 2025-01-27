@@ -106,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('cancelBtn');
     const cancelSubBtn = document.getElementById('cancelSubBtn');
     const addVideoBtn = document.getElementById('addVideoBtn');
-    const addSubBtn = document.getElementById('addSubBtn');
+    const addSubBtn = document.getElementById('subtitlesBtn');
     const saveBtn = document.getElementById('saveBtn');
     const saveSubBtn = document.getElementById('saveSubBtn');
     const deleteVideoBtn = document.getElementById('deleteVideoBtn');
@@ -188,10 +188,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoId = videoIndex.value;
         if (videoId) {
             const storedAccessToken = localStorage.getItem('access_token');
-<<<<<<< HEAD
-=======
-
->>>>>>> main
             if (storedAccessToken) {
                 fetch('php/deleteVideo.php', {
                     method: 'POST',
