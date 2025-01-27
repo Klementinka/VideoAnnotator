@@ -101,7 +101,7 @@ document.addEventListener('DOMContentLoaded', () => {
         url.searchParams.delete('token');
         window.history.replaceState({}, '', url);
     }
-    
+
     document.getElementById("subtitlesBtn").onclick = function () {
         location.href = "editSubtitlesLobby.html";
     };
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('cancelBtn');
     const cancelSubBtn = document.getElementById('cancelSubBtn');
     const addVideoBtn = document.getElementById('addVideoBtn');
-    const addSubBtn = document.getElementById('uploadSubtitlesBtn');
+    const addSubBtn = document.getElementById('subtitlesBtn');
     const saveBtn = document.getElementById('saveBtn');
     const saveSubBtn = document.getElementById('saveSubBtn');
     const deleteVideoBtn = document.getElementById('deleteVideoBtn');
