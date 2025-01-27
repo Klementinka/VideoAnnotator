@@ -7,6 +7,7 @@ if (!file_exists($autoloadPath)) {
     exit;
 }
 require_once $autoloadPath;
+
 use Google\Client as Google_Client;
 use Google\Service\Drive as Google_Service_Drive;
 use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
@@ -14,7 +15,7 @@ use Google\Service\Drive\DriveFile as Google_Service_Drive_DriveFile;
 header('Content-Type: application/json');
 
 
-$folderId = "107iWLIPK0Ooydvyr7D281w3eK4g_g3x9"; 
+$folderId = "107iWLIPK0Ooydvyr7D281w3eK4g_g3x9";
 
 $configFilePath = '../config.json';
 
@@ -26,7 +27,7 @@ if (!file_exists($configFilePath)) {
 $config = json_decode(file_get_contents($configFilePath), true);
 
 $client = new Google_Client();
-$client->setClientId($config['CLIENT_ID']); 
+$client->setClientId($config['CLIENT_ID']);
 $client->setClientSecret($config['CLIENT_SECRET']);
 $client->setRedirectUri('http://localhost/VideoAnnotator/oauth2callback.php');
 $client->addScope(Google_Service_Drive::DRIVE);
@@ -69,12 +70,28 @@ if (!$videoId) {
     exit();
 }
 
-$subtitlesTmpPath = $_FILES['subtitlesFile']['tmp_name'];
-$originalName = $_FILES['subtitlesFile']['name'];   
-$fileMimeType = mime_content_type($subtitlesTmpPath); 
 
-if (!in_array($fileMimeType, ['text/plain', 'application/octet-stream', 'text/x-srt', 'text/vtt'])) {
-    echo json_encode(['success' => false, 'message' => 'Invalid subtitle file format. Only .srt, .vtt, or .txt files are allowed.']);
+$subtitlesTmpPath = $_FILES['subtitlesFile']['tmp_name'];
+$originalName = $_FILES['subtitlesFile']['name'];
+$fileMimeType = mime_content_type($subtitlesTmpPath);
+
+$mimeTypeToExtensionMap = [
+    'text/plain' => 'SRT', // For .srt
+    'application/x-subrip' => 'SRT', // Another common .srt MIME type
+    'application/vnd.ms-sub' => 'SUB', // For .sub
+    'text/html' => 'HTML', // For .html
+    'application/xml' => 'XML', // For .xml
+    'text/xml' => 'XML', // Alternative XML type
+    'application/json' => 'JSON', // For .json
+    'text/json' => 'JSON', // Alternative JSON type
+];
+
+$fileExtension = $mimeTypeToExtensionMap[$fileMimeType] ?? null;
+
+$allowedFormats = ['SRT', 'SUB', 'HTML', 'XML', 'JSON'];
+
+if (!in_array($fileExtension, $allowedFormats)) {
+    echo json_encode(['success' => false, 'message' => 'Wrong format!']);
     exit();
 }
 
@@ -115,8 +132,8 @@ try {
         exit();
     }
 
-    $sql = "INSERT INTO subtitles (video_id, subtitle_name, drive_id, created_on)
-            VALUES (?, ?, ?, NOW())";
+    $sql = "INSERT INTO subtitles ( drive_id, video_id, subtitle_name, format, created_on, updated_on)
+            VALUES (?, ?, ?, ?, NOW(), NOW())";
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -128,7 +145,7 @@ try {
         exit();
     }
 
-    $stmt->bind_param("iss", $videoId, $originalName, $fileId);
+    $stmt->bind_param("siss", $fileId, $videoId, $originalName, $fileExtension);
 
     if (!$stmt->execute()) {
         echo json_encode([
@@ -149,7 +166,7 @@ try {
         'success' => true,
         'message' => 'Subtitle uploaded and linked to video successfully.',
         'fileId' => $fileId,
-        'dbId'    => $insertedId, 
+        'dbId'    => $insertedId,
     ]);
 } catch (Exception $e) {
     echo json_encode([

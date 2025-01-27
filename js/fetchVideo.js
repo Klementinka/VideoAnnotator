@@ -7,6 +7,7 @@ function fetchVideo(videoId, token, playerId, API_KEY) {
             'Authorization': `Bearer ${token}`,
         }
     })
+    
         .then(response => {
             if (response.ok) {
                 const videoPlayer = document.getElementById(playerId);

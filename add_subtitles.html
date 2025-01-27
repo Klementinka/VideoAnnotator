@@ -26,65 +26,68 @@
                             <source id="videoSource" type="video/mp4">
                         </video>
                         <script>
-                            let CLIENT_ID;
+                            let CLIENT_ID, API_KEY
                             fetch('./config.json')
                                 .then(response => response.json())
                                 .then(config => {
                                     CLIENT_ID = config.CLIENT_ID;
-                                })
-                                .catch(error => console.error('Error loading config:', error));
-                            const params = new URLSearchParams(window.location.search);
-                            const token = localStorage.getItem('access_token');
-                            const id_db = params.get('id');
-                            let videoId = undefined;
+                                    API_KEY = config.API_KEY;
+                                    const params = new URLSearchParams(window.location.search);
+                                    const token = localStorage.getItem('access_token');
+                                    const id_db = params.get('id');
+                                    let videoId = undefined;
+                                    console.log('Token from localStorage:', token);
         
-                            fetch(`videos/${id_db}.mp4`)
-                                .then(response => {
-                                    if (!response.ok) {
-                                        throw new Error('Video not found');
-                                    }
-                                    return response.blob();
-                                })
-                                .then(blob => {
-                                    const videoPlayer = document.getElementById('videoPlayer');
-                                    const videoSource = document.getElementById('videoSource');
-                                    videoSource.src = URL.createObjectURL(blob);
-                                    videoPlayer.load();
-                                    fetch(`./php/drive_id_by_id.php?id=${id_db}`)
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data.drive_id) {
-                                                document.getElementById('video-name').textContent = data.name
-                                            } else {
-                                                alert('No drive_id found for the given video id.');
+                                    fetch(`videos/${id_db}.mp4`)
+                                        .then(response => {
+                                            if (!response.ok) {
+                                                throw new Error('Video not found');
                                             }
+                                            return response.blob();
                                         })
-                                        .catch(error => {
-                                            alert(error);
-                                        });
-                                })
-                                .catch(error => {
-                                    console.log("Not found locally ");
-                                    fetch(`./php/drive_id_by_id.php?id=${id_db}`)
-                                        .then(response => response.json())
-                                        .then(data => {
-                                            if (data.drive_id) {
-                                                params.set('id', data.drive_id);
-                                                fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer');
-                                                document.getElementById('video-name').textContent = data.name
-                                            } else {
-                                                alert('No drive_id found for the given video id.');
-                                            }
-                                        })
-                                        .catch(error => {
-                                            alert(error);
+                                        .then(blob => {
                                             const videoPlayer = document.getElementById('videoPlayer');
                                             const videoSource = document.getElementById('videoSource');
-                                            videoSource.src = '/videos/not_found.mp4';
+                                            videoSource.src = URL.createObjectURL(blob);
                                             videoPlayer.load();
+                                            fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.drive_id) {
+                                                        console.log("Data name", data.name);
+                                                        document.getElementById('video-name').textContent = data.name
+                                                    } else {
+                                                        alert('No drive_id found for the given video id.');
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    alert(error);
+                                                });
+                                        })
+                                        .catch(error => {
+                                            console.log("Not found locally ");
+                                            fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                                                .then(response => response.json())
+                                                .then(data => {
+                                                    if (data.drive_id) {
+                                                        params.set('id', data.drive_id);
+                                                        fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer', API_KEY);
+                                                    } else {
+                                                        alert('No drive_id found for the given video id.');
+                                                    }
+                                                })
+                                                .catch(error => {
+                                                    alert(error);
+                                                    const videoPlayer = document.getElementById('videoPlayer');
+                                                    const videoSource = document.getElementById('videoSource');
+                                                    videoSource.src = '/videos/not_found.mp4';
+                                                    videoPlayer.load();
+                                                });
                                         });
-                                });
+                                })
+                                .catch(error => console.error('Error loading config:', error));
                         </script>
+        
         
 
             </div>
@@ -150,17 +153,24 @@
                 </select>
                 <button type="button" id="exportButton">Export Subtitles</button>
             </div>
-        
+            
             <div class="right-section">
-                <button type="button" id="uploadSubs">Load Existing Subtitles</button>
-            </div>
+                <button type="button" id="loadSubs">Load Existing Subtitles</button>  
         </div>
-
+    </div>
+    <div id="subtitleModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <h2>Enter Subtitle ID</h2>
+            <input type="text" id="subtitleIdInput" placeholder="Enter Subtitle File ID">
+            <button id="fetchSubtitles">Load Subtitles</button>
+            <button id="closeModal">Cancel</button>
+        </div>
     </div>
 
     <div id="footer"></div>
 
     <script src="js/exportSubtitles.js"></script>
+    <script src="js/fetchSubtitles.js"></script>
     <script src="js/headerCreator.js"></script>
     <script src="js/footerCreator.js"></script>
     <script src="js/mainPageSubtitles.js"></script>
