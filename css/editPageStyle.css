@@ -6,6 +6,11 @@ main {
 
 }
 
+body {
+    padding-top: 80px;
+    padding-bottom: 3.5%;
+}
+
 button {
     font-family: 'Times New Roman', Times, serif;
     cursor: pointer;
@@ -175,8 +180,8 @@ video {
     width: 30%;
     padding: 10px;
     margin: 20px;
-    background: linear-gradient(180deg, #b2bdfe, #706d8b);
-    color: white;
+    background: linear-gradient(180deg, #FADA7A, #ffbf00);
+    color: black;
     border: none;
     border-radius: 6px;
     font-size: 16px;
@@ -186,7 +191,7 @@ video {
 }
 
 .save-timestamp-button:hover {
-    background: linear-gradient(0deg, #b2bdfe, #706d8b);
+    background: linear-gradient(0deg, #FADA7A, #ffbf00);
 }
 
 #video-name,
@@ -221,9 +226,10 @@ video {
 .videoEditContainer {
     border: 5px solid black;
     border-radius: 10px;
-    border-color: white;
+    border-color: #FADA7A;
     padding: 10px;
     margin: 10px;
+    margin-top: 150px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -234,8 +240,8 @@ video {
     width: 100%;
     padding: 10px;
     margin-bottom: 50px;
-    background: linear-gradient(180deg, #b2bdfe, #706d8b);
-    color: white;
+    background: linear-gradient(180deg, #FADA7A, #ffbf00);
+    color: black;
     border: none;
     border-radius: 6px;
     font-size: 16px;
@@ -245,7 +251,7 @@ video {
 }
 
 .secondVideoBtn:hover {
-    background: linear-gradient(0deg, #b2bdfe, #706d8b);
+    background: linear-gradient(0deg, #FADA7A, #ffbf00);
 }
 
 

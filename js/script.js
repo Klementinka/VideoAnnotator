@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     queryParams.forEach((value, key) => {
                         url.searchParams.append(key, value);
                     });
-                    listItem.innerHTML = `<h3 class='videoContainerTemp'><video id='last-${video.id}' width='500px' height='400px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name}</a></h3>`;
+                    listItem.innerHTML = `<h3 class='videoContainerTemp'><video id='last-${video.id}' width='500px' height='400px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name} (ID: ${video.id})</a></h3>`;
                     listItem.id = `video-${video.id}`;
                     fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`);
                     videosList.appendChild(listItem);
