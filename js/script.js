@@ -31,27 +31,34 @@ document.addEventListener('DOMContentLoaded', (event) => {
     const token = localStorage.getItem('access_token');
 
     if (token) {
-        fetch('./php/fetchVideosNames.php')
+        fetch('./config.json')
             .then(response => response.json())
-            .then(data => {
-                const videosList = document.getElementById('lastVideos');
-                videosList.innerHTML = '';
-                data.forEach(video => {
-                    const listItem = document.createElement('li');
-                    const queryParams = new URLSearchParams(window.location.search);
-                    queryParams.forEach((value, key) => {
-                        listItem.dataset[key] = value;
-                    });
-                    const url = new URL(`./VideoAnnotator/edit.html?id=${video.id}`, window.location.origin);
-                    queryParams.forEach((value, key) => {
-                        url.searchParams.append(key, value);
-                    });
-                    listItem.innerHTML = `<h3 class='videoContainerTemp'><video id='last-${video.id}' width='500px' height='400px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name}</a></h3>`;
-                    listItem.id = `video-${video.id}`;
-                    fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`);
-                    videosList.appendChild(listItem);
-                });
+            .then(config => {
+                const API_KEY = config.API_KEY;
+                fetch('./php/fetchVideosNames.php')
+                    .then(response => response.json())
+                    .then(data => {
+                        const videosList = document.getElementById('lastVideos');
+                        videosList.innerHTML = '';
+                        data.forEach(video => {
+                            const listItem = document.createElement('li');
+                            const queryParams = new URLSearchParams(window.location.search);
+                            queryParams.forEach((value, key) => {
+                                listItem.dataset[key] = value;
+                            });
+                            const url = new URL(`./VideoAnnotator/edit.html?id=${video.id}`, window.location.origin);
+                            queryParams.forEach((value, key) => {
+                                url.searchParams.append(key, value);
+                            });
+                            listItem.innerHTML = `<h3 class='videoContainerTemp'><video id='last-${video.id}' width='500px' height='400px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name}</a></h3>`;
+                            listItem.id = `video-${video.id}`;
+                            fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`, API_KEY);
+                            videosList.appendChild(listItem);
+                        });
+                    })
+                    .catch(error => console.error('Error fetching videos:', error));
             })
-            .catch(error => console.error('Error fetching videos:', error));
+            .catch(error => console.error('Error fetching config:', error));
+
     }
 });
