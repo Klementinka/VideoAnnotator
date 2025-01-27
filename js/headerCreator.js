@@ -91,6 +91,17 @@ const headerFragment = document.createRange().createContextualFragment(headerStr
 document.getElementById('title').appendChild(headerFragment);
 
 document.addEventListener('DOMContentLoaded', () => {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const incomingToken = urlParams.get('token');
+
+    if (incomingToken) {
+        localStorage.setItem('access_token', incomingToken);
+        const url = new URL(window.location.href);
+        url.searchParams.delete('token');
+        window.history.replaceState({}, '', url);
+    }
+    
     document.getElementById("subtitlesBtn").onclick = function () {
         location.href = "editSubtitlesLobby.html";
     };
