@@ -10,6 +10,12 @@
     <link rel="stylesheet" href="./css/deleteVideo.css">
     <script src="./js/loadEnv.js"></script>
     <script src="./js/script.js"></script>
+    <script>
+        const VIDEO_WIDTH = 320;
+        const VIDEO_HEIGHT = 240;
+    </script>
+    <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
+
 </head>
 
 <body>
@@ -23,9 +29,7 @@
         fetch('./config.json')
             .then(response => response.json())
             .then(config => {
-                console.log('Config', config);
                 CLIENT_ID = config.CLIENT_ID;
-                console.log('Client ID:', CLIENT_ID);
             })
             .catch(error => console.error('Error loading config:', error));
         document.getElementById('authButton').addEventListener('click', function () {

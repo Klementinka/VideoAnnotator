@@ -6,7 +6,6 @@
  */
 
 function createHeader() {
-    console.log('creating header');
     return `
     <nav class="navbar">
         <header>
@@ -22,6 +21,7 @@ function createHeader() {
         <ul>
             <li><button id="addVideoBtn" class="navbar-menu">Upload Video</button></li>
             <li><button id="deleteVideoBtn" class="navbar-menu">Delete Video</button></li>
+            <li><a href="censorLobby.html">Censor</a></li>
             <li><button id="subtitlesBtn" class="navbar-menu">Add Subtitles</button></li>
             <li><button id="editVideoBtn" class="navbar-menu">Edit Video</button></li>
         </ul>
@@ -114,7 +114,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('addVideoForm');
         const formData = new FormData(form);
         const storedAccessToken = localStorage.getItem('access_token');
-        console.log('Stored access token:', storedAccessToken);
         if (storedAccessToken) {
             formData.append('access_token', storedAccessToken);
         }
@@ -160,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoId = videoIndex.value;
         if (videoId) {
             const storedAccessToken = localStorage.getItem('access_token');
-            console.log('Stored access token:', storedAccessToken);
 
             if (storedAccessToken) {
                 fetch('php/deleteVideo.php', {

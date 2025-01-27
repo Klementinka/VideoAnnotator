@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <link rel="stylesheet" href="css/profile.css">
+    <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
 </head>
 <body>
     <div class="profile-container">
@@ -12,31 +13,17 @@
         <h2>Profile</h2>
         <p><strong>Username:</strong> <span id="username"></span></p>
         <p><strong>Email:</strong> <span id="email"></span></p>
-        <section class="video-section">
-            <h2>Last Videos</h2>
-            <div id="lastVideos" class="catalog"></div>
-        </section>
-    
+
+        <div class="main-content">
+            <section class="video-section">
+                <h2>Your Videos</h2>
+                <div id="yourVideos" class="catalog"></div>
+            </section>
         <form action="php/logout.php" method="POST">
             <button type="submit">Logout</button>
         </form>
     </div>
 
-    <script>
-        fetch('php/profile.php')
-            .then(response => {
-                if (response.ok) {
-                    return response.json();
-                } else {
-                    window.location.href = "login.html";
-                }
-            })
-            .then(data => {
-                // Populate the profile page
-                document.getElementById('username').textContent = data.username;
-                document.getElementById('email').textContent = data.email;
-            })
-            .catch(error => console.error('Error fetching profile data:', error));
-    </script>
+    <script src="js/profile.js"></script>
 </body>
 </html>

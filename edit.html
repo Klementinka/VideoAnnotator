@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="./css/deleteVideo.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script src="./js/fetchVideo.js"></script>
+    <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
 </head>
 
 <body>
@@ -57,7 +58,6 @@
                             const token = localStorage.getItem('access_token');
                             const id_db = params.get('id');
                             let videoId = undefined;
-                            console.log('Token from localStorage:', token);
 
                             fetch(`videos/${id_db}.mp4`)
                                 .then(response => {

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Video Annotator - Censor with Time Ranges</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/uploadVideo.css">
+    <link rel="stylesheet" href="./css/deleteVideo.css">
+    <link rel="stylesheet" href="./css/censor.css">
+    <script src="https://cdn.jsdelivr.net/npm/@ffmpeg/ffmpeg@0.10.1/dist/ffmpeg.min.js"></script>
+    <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script src="./js/fetchVideo.js"></script>
+
+
+</head>
+
+<body>
+
+    <div id="title"></div>
+    <div class="videoEditContainer">
+        <h2 id="video-name" class="bigName"></h2>
+
+        <div class="videoWrapper">
+
+            <video id="videoPlayer" crossOrigin="anonymous">
+                <source id="videoSource" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+
+            <canvas id="overlayCanvas"></canvas>
+        </div>
+
+        <div class="progress-container" id="progress-container">
+            <div class="progress-bar" id="progress-bar"></div>
+            <span id="timestamp">00:00:000</span>
+        </div>
+
+        <div class="controls">
+            <button id="previous-frame-button">&#10508</button>
+            <button id="play-button">&#9654</button>
+            <button id="screenshot-btn" class="download-frame-button">
+                <img src="./assets/screenshot.png" width="40px">
+            </button>
+            <button id="pause-button">&#10073&#10073</button>
+            <button id="next-frame-button">&#10509</button>
+
+            <button id="brushButton">🖌️</button>
+            <div class="playback-container">
+                <label for="size-slider">Brush Size:</label>
+                <input type="range" id="size-slider" min="5" max="100" value="20" step="1">
+                <span id="size-value">20</span>
+            </div>
+
+            <div class="playback-container">
+                <label for="colorPicker">Color:</label>
+                <input type="color" id="colorPicker" value="#ff0000">
+              </div>
+            <button id="saveButton">💾</button>
+
+            <div class="playback-container">
+                <label for="speed-slider">Speed:</label>
+                <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
+                <span id="speed-value">1x</span>
+            </div>
+        </div>
+
+        <div class="time-range-container">
+            <button id="setStartButton">Set Start</button>
+            <button id="setEndButton">Set End</button>
+            <span>Current Start: <span id="startTimeDisplay">0.0</span>s</span>
+            <span>Current End: <span id="endTimeDisplay">0.0</span>s</span>
+            <button id="addRegionButton">Add Blur Region</button>
+        </div>
+
+        <a id="download">Download Censored Video</a>
+    </div>
+
+    <script>
+        let CLIENT_ID;
+        fetch('./config.json')
+            .then(response => response.json())
+            .then(config => {
+                CLIENT_ID = config.CLIENT_ID;
+            })
+            .catch(error => console.error('Error loading config:', error));
+        const params = new URLSearchParams(window.location.search);
+        const token = localStorage.getItem('access_token');
+        const id_db = params.get('id');
+        let videoId = undefined;
+
+        fetch(`videos/${id_db}.mp4`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Video not found');
+                }
+                return response.blob();
+            })
+            .then(blob => {
+                const videoPlayer = document.getElementById('videoPlayer');
+                const videoSource = document.getElementById('videoSource');
+                videoSource.src = URL.createObjectURL(blob);
+                videoPlayer.load();
+                fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.drive_id) {
+                            document.getElementById('video-name').textContent = data.name
+                        } else {
+                            alert('No drive_id found for the given video id.');
+                        }
+                    })
+                    .catch(error => {
+                        alert(error);
+                    });
+            })
+            .catch(error => {
+                console.log("Not found locally ");
+                fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.drive_id) {
+                            params.set('id', data.drive_id);
+                            fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer');
+                            document.getElementById('video-name').textContent = data.name
+                        } else {
+                            alert('No drive_id found for the given video id.');
+                        }
+                    })
+                    .catch(error => {
+                        alert(error);
+                        const videoPlayer = document.getElementById('videoPlayer');
+                        const videoSource = document.getElementById('videoSource');
+                        videoSource.src = '/videos/not_found.mp4';
+                        videoPlayer.load();
+                    });
+            });
+    </script>
+    <div id="footer"></div>
+
+    <script src="./js/censorPageScript.js"></script>
+
+    <script src="./js/headerCreator.js"></script>
+
+    <script src="./js/footerCreator.js"></script>
+</body>
+
+</html>

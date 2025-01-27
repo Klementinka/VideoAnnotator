@@ -4,8 +4,6 @@ function loadConfig() {
         .then(config => {
             window.config = config;
 
-            console.log('API Key:', window.config.API_KEY);
-            console.log('Client ID:', window.config.CLIENT_ID);
         })
         .catch(error => {
             console.error('Error loading config:', error);
@@ -13,5 +11,3 @@ function loadConfig() {
 }
 
 loadConfig();
-
-console.log('loaded environment variables!')

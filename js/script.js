@@ -37,7 +37,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 const videosList = document.getElementById('lastVideos');
                 videosList.innerHTML = '';
                 data.forEach(video => {
-                    console.log(video.name);
                     const listItem = document.createElement('li');
                     const queryParams = new URLSearchParams(window.location.search);
                     queryParams.forEach((value, key) => {
