@@ -1,5 +1,29 @@
+let subtitles = [];
+
 document.getElementById('loadSubs').addEventListener('click', () => {
   document.getElementById('subtitleModal').style.display = 'flex';
+  const select = document.getElementById('subtitleDropdown');
+  const urlParams = new URLSearchParams(window.location.search);
+  const videoId = urlParams.get('id');
+  fetch(`./php/get_subs_by_movie.php?video_id=${videoId}`)
+    .then(response => response.json())
+    .then(data => {
+      Array.from(select.options).forEach(option => {
+        if (!option.disabled) {
+          option.remove();
+        }
+      });
+      data.forEach(subtitle => {
+        const option = document.createElement('option');
+        option.value = subtitle.drive_id;
+        option.textContent = subtitle.subtitle_name;
+        select.appendChild(option);
+      });
+    })
+    .catch(error => {
+      console.error('Error fetching subtitles:', error);
+      alert('Failed to load subtitles.');
+    });
 });
 
 document.getElementById('closeModal').addEventListener('click', () => {
@@ -7,43 +31,16 @@ document.getElementById('closeModal').addEventListener('click', () => {
 });
 
 document.getElementById('fetchSubtitles').addEventListener('click', () => {
-  const subtitleId = document.getElementById('subtitleIdInput').value.trim();
+  const subtitleDriveId = document.getElementById('subtitleDropdown').value;
 
-  if (!subtitleId) {
+  if (!subtitleDriveId) {
     alert('Please enter a valid subtitle ID.');
     return;
   }
-  fetch('../config.json')
+  fetch('./config.json')
     .then(response => response.json())
     .then(data => {
-      config = data;
-
-      fetch(`subtitles/${subtitleId}.srt`)
-        .then(response => {
-          if (!response.ok) {
-            throw new Error('Subtitles not found locally');
-          }
-          return response.text();
-        })
-        .then(subtitleText => {
-          parseAndLoadSubtitles(subtitleText);
-          document.getElementById('subtitleModal').style.display = 'none';
-        })
-        .catch(error => {
-          fetch(`./php/drive_id_by_id_sb.php?id=${subtitleId}`)
-            .then(response => response.json())
-            .then(data => {
-              if (data.drive_id) {
-                fetchSubtitleFromDrive(data.drive_id, localStorage.getItem('access_token'), API_KEY);
-              } else {
-                alert('No drive_id found for the given subtitle id.');
-              }
-            })
-            .catch(err => {
-              console.error('Error fetching drive ID:', err);
-              alert('Failed to fetch subtitle drive ID.');
-            });
-        });
+      const subtitleText = fetchSubtitleFromDrive(subtitleDriveId, localStorage.getItem('access_token'), data.API_KEY);
     });
 
   function fetchSubtitleFromDrive(driveId, token, API_KEY) {
@@ -55,14 +52,15 @@ document.getElementById('fetchSubtitles').addEventListener('click', () => {
     })
       .then(response => {
         if (response.ok) {
-          return response.text();
+          response.body.getReader().read().then(({ value, done }) => {
+            const decoder = new TextDecoder('utf-8');
+            const subtitleText = decoder.decode(value);
+            parseAndLoadSubtitles(subtitleText);
+            document.getElementById('subtitleModal').style.display = 'none';
+          });
         } else {
           throw new Error('Failed to fetch subtitles from Google Drive');
         }
-      })
-      .then(subtitleText => {
-        parseAndLoadSubtitles(subtitleText);
-        document.getElementById('subtitleModal').style.display = 'none';
       })
       .catch(err => {
         console.error('Error fetching subtitles from Google Drive:', err);
@@ -74,29 +72,37 @@ document.getElementById('fetchSubtitles').addEventListener('click', () => {
     const table = document.getElementById('subtitleTable');
     const tbody = table.querySelector('tbody');
     tbody.innerHTML = '';
+    subtitles = [];
 
     const subtitleLines = subtitleText.split('\n\n');
     subtitleLines.forEach(line => {
+      console.log(line)
       const parts = line.split('\n');
       if (parts.length >= 3) {
         const time = parts[1];
         const text = parts.slice(2).join(' ');
 
         const [startTime, endTime] = time.split(' --> ');
-        const startMinutes = convertTimeToMinutes(startTime);
-        const endMinutes = convertTimeToMinutes(endTime);
+
+        const startMinutes = startTime.replace(',000', '');
+        const endMinutes = endTime.replace(',000', '');
 
         const row = document.createElement('tr');
 
-        const timeCell = document.createElement('td');
-        timeCell.setAttribute('contenteditable', 'true');
-        timeCell.textContent = `${startMinutes} --> ${endMinutes}`;
-
+        const startCell = document.createElement('td');
+        const endCell = document.createElement('td');
         const textCell = document.createElement('td');
-        textCell.setAttribute('contenteditable', 'true');
+
+        startCell.textContent = `${startMinutes}`;
+        endCell.textContent = `${endMinutes}`;
         textCell.textContent = text;
 
-        row.appendChild(timeCell);
+        subtitles.push({ startTime, endTime, text });
+
+        displaySubtitles();
+
+        row.appendChild(startCell);
+        row.appendChild(endCell);
         row.appendChild(textCell);
         tbody.appendChild(row);
       }
