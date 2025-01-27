@@ -250,15 +250,17 @@ video {
     text-align: center;
 }
 
+label {
+    font-size: 14px;
+}
+
 .secondVideoBtn:hover {
     background: linear-gradient(0deg, #FADA7A, #ffbf00);
 }
 
 
-.video-editors
-{
+.video-editors {
     display: flex;
     flex-direction: row;
-    align-items: center;
     max-width: 90%;
 }
