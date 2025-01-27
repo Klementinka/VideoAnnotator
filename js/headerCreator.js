@@ -100,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
         url.searchParams.delete('token');
         window.history.replaceState({}, '', url);
     }
+
     document.getElementById("subtitlesBtn").onclick = function () {
         location.href = "editSubtitlesLobby.html";
     };
