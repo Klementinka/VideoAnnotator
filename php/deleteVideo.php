@@ -18,9 +18,19 @@ use Google\Service\Drive as Google_Service_Drive;
 
 session_start();
 
+$configFilePath = '../config.json';
+
+if (!file_exists($configFilePath)) {
+    echo json_encode(['success' => false, 'message' => 'Config file not found.']);
+    exit;
+}
+
+$config = json_decode(file_get_contents($configFilePath), true);
+
 try {
     $client = new Google_Client();
-    $client->setAuthConfig('../config_mine.json');
+    $client->setClientId($config['CLIENT_ID']); 
+    $client->setClientSecret($config['CLIENT_SECRET']);
     $client->addScope(Google_Service_Drive::DRIVE);
     $client->setAccessType('offline');
 

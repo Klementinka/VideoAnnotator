@@ -16,8 +16,18 @@ header('Content-Type: application/json');
 
 $folderId = "107iWLIPK0Ooydvyr7D281w3eK4g_g3x9"; 
 
+$configFilePath = '../config.json';
+
+if (!file_exists($configFilePath)) {
+    echo json_encode(['success' => false, 'message' => 'Config file not found.']);
+    exit;
+}
+
+$config = json_decode(file_get_contents($configFilePath), true);
+
 $client = new Google_Client();
-$client->setAuthConfig('../config_mine.json');
+$client->setClientId($config['CLIENT_ID']); 
+$client->setClientSecret($config['CLIENT_SECRET']);
 $client->setRedirectUri('http://localhost/VideoAnnotator/oauth2callback.php');
 $client->addScope(Google_Service_Drive::DRIVE);
 $client->setAccessType('offline');
