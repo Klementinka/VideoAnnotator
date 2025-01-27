@@ -1,5 +1,3 @@
-let subtitles = [];
-
 document.getElementById('loadSubs').addEventListener('click', () => {
   document.getElementById('subtitleModal').style.display = 'flex';
   const select = document.getElementById('subtitleDropdown');
@@ -87,24 +85,11 @@ document.getElementById('fetchSubtitles').addEventListener('click', () => {
         const startMinutes = startTime.replace(',000', '');
         const endMinutes = endTime.replace(',000', '');
 
-        const row = document.createElement('tr');
+        document.getElementById('startTime').value = startMinutes;
+        document.getElementById('endTime').value = endMinutes;
+        document.getElementById('subtitleText').value = text;
 
-        const startCell = document.createElement('td');
-        const endCell = document.createElement('td');
-        const textCell = document.createElement('td');
-
-        startCell.textContent = `${startMinutes}`;
-        endCell.textContent = `${endMinutes}`;
-        textCell.textContent = text;
-
-        subtitles.push({ startTime, endTime, text });
-
-        displaySubtitles();
-
-        row.appendChild(startCell);
-        row.appendChild(endCell);
-        row.appendChild(textCell);
-        tbody.appendChild(row);
+        document.getElementById('addSubtitle').click();
       }
     });
   }
