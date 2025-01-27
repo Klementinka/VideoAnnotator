@@ -147,53 +147,53 @@ body {
 
 .controls {
     display: flex;
-    justify-content: space-between; /* Spread controls across the container */
-    align-items: center; /* Vertically align controls */
+    justify-content: space-between; 
+    align-items: center; 
     padding: 10px 20px;
-    background-color: #B1F0F7; /* Match your background or leave as needed */
+    background-color: #B1F0F7; 
 }
 
 .control-item {
     display: flex;
-    align-items: center; /* Align label and input on the same row */
-    gap: 10px; /* Add spacing between label, input, and text */
+    align-items: center; 
+    gap: 10px;
 }
 
 .control-item input[type="range"] {
-    flex: 1; /* Make the slider take up available space */
+    flex: 1; 
 }
 
 .control-item label {
-    font-size: 14px; /* Adjust font size for clarity */
+    font-size: 14px;
 }
 
 .control-item select,
 .control-item input[type="color"] {
-    width: 100px; /* Make color input and dropdown consistent in width */
+    width: 100px; 
 }
 
 #fontSizeValue {
-    font-size: 14px; /* Font size for the value displayed next to the slider */
+    font-size: 14px; 
     color: #333;
 }
 
 .export-buttons {
     display: flex;
-    justify-content: space-between; /* Space between left and right sections */
-    align-items: center; /* Align vertically */
-    width: 100%; /* Full-width container */
+    justify-content: space-between; 
+    align-items: center; 
+    width: 100%; 
     margin-top: 20px;
 }
 
 .left-section {
-    display: flex; /* Arrange items horizontally */
-    gap: 10px; /* Space between label, dropdown, and button */
-    align-items: center; /* Align items vertically */
+    display: flex;
+    gap: 10px; 
+    align-items: center; 
 }
 
 .right-section {
-    display: flex; /* Keep Save Subtitles button aligned */
-    justify-content: flex-end; /* Align to the far right */
+    display: flex; 
+    justify-content: flex-end; 
 }
 
 button {

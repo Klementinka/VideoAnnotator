@@ -14,6 +14,7 @@ if (isset($_GET['id'])) {
     $id = intval($_GET['id']);
 
     $stmt = $conn->prepare("SELECT drive_id, subtitle_name FROM subtitles WHERE id = ?");
+    echo $id;
     $stmt->bind_param("i", $id);
 
     $stmt->execute();
