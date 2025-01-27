@@ -79,16 +79,19 @@ function parseAndLoadSubtitles(subtitleText) {
     if (parts.length >= 3) {
       const time = parts[1]; 
       const text = parts.slice(2).join(' ');
-      
+
       const [startTime, endTime] = time.split(' --> '); 
       const startMinutes = convertTimeToMinutes(startTime);
       const endMinutes = convertTimeToMinutes(endTime);
 
       const row = document.createElement('tr');
-      const timeCell = document.createElement('td');
-      const textCell = document.createElement('td');
 
+      const timeCell = document.createElement('td');
+      timeCell.setAttribute('contenteditable', 'true');
       timeCell.textContent = `${startMinutes} --> ${endMinutes}`;
+
+      const textCell = document.createElement('td');
+      textCell.setAttribute('contenteditable', 'true');
       textCell.textContent = text;
 
       row.appendChild(timeCell);
