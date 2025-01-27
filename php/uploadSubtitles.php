@@ -132,8 +132,8 @@ try {
         exit();
     }
 
-    $sql = "INSERT INTO subtitles ( drive_id, video_id, format, created_on, updated_on)
-            VALUES (?, ?, ?, NOW(), NOW())";
+    $sql = "INSERT INTO subtitles ( drive_id, video_id, subtitle_name, format, created_on, updated_on)
+            VALUES (?, ?, ?, ?, NOW(), NOW())";
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -145,7 +145,7 @@ try {
         exit();
     }
 
-    $stmt->bind_param("sis", $fileId, $videoId, $fileExtension);
+    $stmt->bind_param("siss", $fileId, $videoId, $originalName, $fileExtension);
 
     if (!$stmt->execute()) {
         echo json_encode([
