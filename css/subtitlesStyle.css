@@ -3,6 +3,8 @@ body {
     background-color: #B1F0F7;
     margin: 0;
     padding: 0;
+    padding-top: 80px;
+    padding-bottom: 3.5%;
     color: #333;
 }
 .mainTitle{

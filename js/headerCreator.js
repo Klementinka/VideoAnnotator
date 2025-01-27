@@ -12,19 +12,19 @@ function createHeader() {
             <div class="title-container">
                 <h1 class="mainTitle">
                     <a href="http://localhost/VideoAnnotator/index.html${window.location.search}">Video Annotation Tool</a>
-                </h1>
-            </div>
-            <div class="header-buttons">
-                <a href="profile.html"><img src="assets/profile.png" class="profile"></a>
-            </div>
-        </header>
-        <ul>
-            <li><button id="addVideoBtn" class="navbar-menu">Upload Video</button></li>
-            <li><button id="deleteVideoBtn" class="navbar-menu">Delete Video</button></li>
-            <li><a href="censorLobby.html">Censor</a></li>
-            <li><button id="subtitlesBtn" class="navbar-menu">Add Subtitles</button></li>
-            <li><button id="editVideoBtn" class="navbar-menu">Edit Video</button></li>
-        </ul>
+                    </h1>
+                    </div>
+                    <div class="header-buttons">
+                    <a href="profile.html"><img src="assets/profile.png" class="profile"></a>
+                    </div>
+                    </header>
+                    <ul>
+                    <li><button id="addVideoBtn" class="navbar-menu">Upload Video</button></li>
+                    <li><button id="deleteVideoBtn" class="navbar-menu">Delete Video</button></li>
+                    <li><button id="censorBtn" class="navbar-menu">Censor</button></li>
+                    <li><button id="subtitlesBtn" class="navbar-menu">Add Subtitles</button></li>
+                    <li><button id="editVideoBtn" class="navbar-menu">Edit Video</button></li>
+                    </ul>
         
         <!-- Modal -->
         <div id="videoModal" class="modal" style="display: none;">
@@ -77,6 +77,10 @@ document.getElementById('title').appendChild(headerFragment);
 document.addEventListener('DOMContentLoaded', () => {
     document.getElementById("subtitlesBtn").onclick = function () {
         location.href = "editSubtitlesLobby.html";
+    };
+
+    document.getElementById("censorBtn").onclick = function () {
+        location.href = "censorLobby.html";
     };
 
     document.getElementById("editVideoBtn").onclick = function () {

@@ -11,13 +11,11 @@
 .title-container {
     display: flex;
     justify-content: center;
+    margin-top: 20px;
 }
 
 .title {
-    position: sticky;
-    top: 0;
     width: 100%;
-    z-index: 1000;
 }
 
 .navbar-menu {
@@ -37,10 +35,9 @@
     padding-top: 20px;
     padding-bottom: 20px;
 }
-
 .mainTitle a {
     font-size: 40px;
-    font-weight: bold;;
+    font-weight: bold;
     color: #ffbf00;
     text-decoration: none;
 }
@@ -49,8 +46,9 @@ body {
     font-family: 'Arial', sans-serif;
     background-color: #B1F0F7;
     justify-content: center;
-    height: 100vh;
-    margin-bottom: 10;
+    margin: 0;
+    padding: 0;
+    padding-top: 80px;
 }
 
 button {
@@ -83,10 +81,12 @@ button {
     background-color: #81BFDA;
     text-align: center;
     width: 100%;
+    height: 3.5%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     font-size: 20px;
+    margin-top: 20px;
 }
 
 .footer p {
@@ -110,9 +110,12 @@ button {
 }
 
 .navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
     z-index: 1000;
-    border-bottom-left-radius: 40% 20px;
-    border-bottom-right-radius: 40% 20px;
+    border-bottom-left-radius: 50% 20px;
+    border-bottom-right-radius: 50% 20px;
     background-color: #81BFDA;
     padding: 0px;
     padding-bottom: 5px;
@@ -221,4 +224,44 @@ button {
     border-radius: 12px;
     width: 40px;
     text-align: center;
+}
+
+.google-sign-in:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transform: translateY(-2px);
+}
+
+.google-sign-in:active {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+    transform: translateY(0);
+}
+
+.auth-button {
+    width: 24px;
+    height: 24px;
+}
+
+.google-sign-in span {
+    color: #333;
+}
+
+.google-sign-in {
+    position: fixed;
+    bottom: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-left: 20px;;
+    padding: 10px 20px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, transform 0.2s ease;
 }
