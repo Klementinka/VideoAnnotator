@@ -18,6 +18,16 @@ use Google\Service\Drive as Google_Service_Drive;
 
 session_start();
 
+$loggedInUserId = $_SESSION['user']['id'] ?? null;
+
+if (!$loggedInUserId) {
+    echo json_encode([
+        'success' => false,
+        'message' => 'You must be logged in to delete videos.'
+    ]);
+    exit;
+}
+
 $configFilePath = '../config.json';
 
 if (!file_exists($configFilePath)) {
@@ -59,7 +69,7 @@ try {
         exit();
     }
 
-    $fileIdQuery = "SELECT drive_id FROM videos WHERE id = ?";
+    $fileIdQuery = "SELECT drive_id, owner_id FROM videos WHERE id = ?";
     $stmt = $conn->prepare($fileIdQuery);
     if (!$stmt) {
         echo json_encode([
@@ -72,7 +82,7 @@ try {
 
     $stmt->bind_param('i', $videoId);
     $stmt->execute();
-    $stmt->bind_result($fileId);
+    $stmt->bind_result($fileId, $ownerId);
     $stmt->fetch();
     $stmt->close();
 
@@ -80,6 +90,15 @@ try {
         echo json_encode([
             'success' => false,
             'message' => 'No file found with the provided video ID.',
+        ]);
+        $conn->close();
+        exit();
+    }
+
+    if ($ownerId !== $loggedInUserId) {
+        echo json_encode([
+            'success' => false,
+            'message' => 'You do not have permission to delete this video.'
         ]);
         $conn->close();
         exit();
@@ -117,8 +136,7 @@ try {
     $localFilename = $videosDir . $videoId . '.mp4';
 
     if (file_exists($localFilename)) {
-        if (!unlink($localFilename)) {
-        }
+        @unlink($localFilename); 
     }
 
     $conn->close();
