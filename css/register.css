@@ -1,6 +1,6 @@
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #b2bdfe, #706d8b);
+    background: linear-gradient(135deg, #B1F0F7, #34ebff);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -25,7 +25,7 @@ body {
 
 h2 {
     margin-bottom: 20px;
-    color: #4762ff;
+    color: #5b6ed6;
     font-size: 24px;
     font-weight: bold;
 }
@@ -59,7 +59,8 @@ input[type="text"]:focus, input[type="password"]:focus {
 button {
     width: 100%;
     padding: 12px;
-    background: linear-gradient(180deg, #b2bdfe, #706d8b);
+    background: linear-gradient(135deg, #B1F0F7, #34ebff);
+    font-weight: bold;
     color: white;
     border: none;
     border-radius: 6px;
@@ -69,7 +70,7 @@ button {
 }
 
 button:hover {
-    background: linear-gradient(0deg, #b2bdfe, #706d8b);
+    background: linear-gradient(0deg, #B1F0F7, #34ebff);
 }
 
 a {

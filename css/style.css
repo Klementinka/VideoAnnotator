@@ -30,7 +30,6 @@
 
 .main-title {
     color: white;
-    color: #4762ff;
     font-size: 100px;
 }
 
@@ -39,9 +38,16 @@
     padding-bottom: 20px;
 }
 
+.mainTitle a {
+    font-size: 40px;
+    font-weight: bold;;
+    color: #ffbf00;
+    text-decoration: none;
+}
+
 body {
     font-family: 'Arial', sans-serif;
-    background: linear-gradient(135deg, #b2bdfe, #706d8b);
+    background-color: #B1F0F7;
     justify-content: center;
     height: 100vh;
     margin-bottom: 10;
@@ -105,7 +111,9 @@ button {
 
 .navbar {
     z-index: 1000;
-    background-color: #ffffff;
+    border-bottom-left-radius: 40% 20px;
+    border-bottom-right-radius: 40% 20px;
+    background-color: #81BFDA;
     padding: 0px;
     padding-bottom: 5px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -126,8 +134,8 @@ button {
     width: 100%;
     padding: 10px;
     margin-bottom: 15px;
-    background: linear-gradient(180deg, #b2bdfe, #706d8b);
-    color: white;
+    background: linear-gradient(180deg, #FADA7A, #ffbf00);
+    color: black;
     border: none;
     border-radius: 6px;
     font-size: 16px;
@@ -138,16 +146,16 @@ button {
 }
 
 .navbar ul li button:hover {
-    background: linear-gradient(0deg, #b2bdfe, #706d8b);
+    background: linear-gradient(0deg, #FADA7A, #ffbf00);
 }
 
 .video-section {
     margin-bottom: 40px;
-    background: linear-gradient(135deg, #b2bdfe, #706d8b);
+    background-color: #B1F0F7;
 }
 
 .video-section h2 {
-    color: #4762ff;
+    color: #ffbf00;
     font-weight: bold;
     text-decoration: none;
     text-align: center;
@@ -165,7 +173,7 @@ button {
 
 .catalog li {
     list-style-type: none;
-    background-color: #ffffff;
+    background-color: #FADA7A;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -174,6 +182,12 @@ button {
     padding: 20px;
     padding-top: 30px;
     margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.catalog li a {
+    text-decoration: none;
+    color: black;
 }
 
 .catalog li img {
