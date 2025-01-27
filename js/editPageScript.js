@@ -247,7 +247,7 @@ document.getElementById('progress-container2').addEventListener('click', functio
     const rect = progressContainer.getBoundingClientRect();
     const offsetX = e.clientX - rect.left;
     const percentage = offsetX / progressContainer.offsetWidth;
-    videoPlayer2.currentTime = percentage * videoPlayer.duration;
+    videoPlayer2.currentTime = percentage * videoPlayer2.duration;
 });
 
 // document.addEventListener('DOMContentLoaded', function () {
