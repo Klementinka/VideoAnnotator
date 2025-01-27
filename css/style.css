@@ -1,28 +1,56 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
 .title-container {
     display: flex;
     justify-content: center;
 }
 
-#title {
+.title {
     position: sticky;
-    top: -10px;
+    top: 0;
+    width: 100%;
     z-index: 1000;
 }
 
-.mainTitle {
+.navbar-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #b2bdfe;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.main-title {
     color: white;
-    margin: 10px;
+    font-size: 100px;
+}
+
+.mainTitle {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+.mainTitle a {
+    font-size: 40px;
+    font-weight: bold;;
+    color: #ffbf00;
+    text-decoration: none;
 }
 
 body {
-    margin: 0;
+    font-family: 'Arial', sans-serif;
     background-color: #B1F0F7;
-    font-family: 'Times New Roman', Times, serif;
-}
-
-a {
-    text-decoration: none;
-    color: black;
+    justify-content: center;
+    height: 100vh;
+    margin-bottom: 10;
 }
 
 button {
@@ -36,6 +64,10 @@ button {
     align-items: center;
 }
 
+.videoContainerTemp a {
+    margin-top: 10px;
+}
+
 .header-buttons {
     display: flex;
     justify-content: space-between;
@@ -44,28 +76,17 @@ button {
     right: 20px;
 }
 
-.header-buttons button {
-    padding: 5px 10px;
-    margin: 5px;
-    font-size: 12px;
-    background-color: #FADA7A;
-    color: black;
-    border: none;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
 .footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
     background-color: #81BFDA;
-    padding: 10px;
     text-align: center;
     width: 100%;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
     font-size: 20px;
-    padding: 20px 0px;
 }
 
 .footer p {
@@ -88,14 +109,10 @@ button {
     gap: 5px;
 }
 
-.header-buttons button:hover {
-    background-color: #d84315;
-}
-
 .navbar {
     z-index: 1000;
-    border-bottom-left-radius: 50% 20px;
-    border-bottom-right-radius: 50% 20px;
+    border-bottom-left-radius: 40% 20px;
+    border-bottom-right-radius: 40% 20px;
     background-color: #81BFDA;
     padding: 0px;
     padding-bottom: 5px;
@@ -104,7 +121,6 @@ button {
 
 .navbar ul {
     list-style-type: none;
-    padding: 0 50px;
     display: flex;
     justify-content: space-around;
 }
@@ -113,47 +129,65 @@ button {
     display: inline;
 }
 
-.navbar ul li a {
-    color: white;
+.navbar ul li button {
     text-decoration: none;
-    padding: 5px 10px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    background: linear-gradient(180deg, #FADA7A, #ffbf00);
+    color: black;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
     display: block;
-    transition: background-color 0.3s ease;
 }
 
-.navbar ul li a:hover {
-    background-color: #d84315;
-    border-radius: 4px;
-}
-
-.main-content {
-    padding: 20px;
+.navbar ul li button:hover {
+    background: linear-gradient(0deg, #FADA7A, #ffbf00);
 }
 
 .video-section {
     margin-bottom: 40px;
+    background-color: #B1F0F7;
 }
 
 .video-section h2 {
-    color: #004d40;
+    color: #ffbf00;
+    font-weight: bold;
+    text-decoration: none;
     text-align: center;
     margin-bottom: 20px;
+    font-size: 45px;
 }
 
 .catalog {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+    padding-bottom: 60px;
+    padding: 20px;
 }
 
 .catalog li {
     list-style-type: none;
     background-color: #FADA7A;
-    border-radius: 10px;
     text-align: center;
     display: flex;
     flex-direction: column;
     align-items: center;
+    animation: fadeIn 1s ease;
+    padding: 20px;
+    padding-top: 30px;
+    margin-bottom: 20px;
+    border-radius: 10px;
+}
+
+.catalog li a {
+    text-decoration: none;
+    color: black;
 }
 
 .catalog li img {
@@ -177,5 +211,14 @@ button {
     border-radius: 4px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 23%;
+    text-align: center;
+}
+
+.profile {
+    display: absolute;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 12px;
+    width: 40px;
     text-align: center;
 }
