@@ -1,3 +1,8 @@
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(1); }
+    to { opacity: 1; transform: scale(1); }
+}
+
 body {
     font-family: 'Arial', sans-serif;
     background: linear-gradient(135deg, #B1F0F7, #34ebff);
@@ -6,6 +11,21 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    animation: fadeIn 1s ease;
+}
+
+.back-arrow {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    color: #000000;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.back-arrow:hover {
+    color: #4762ff;
 }
 
 .profile-container {
@@ -14,14 +34,40 @@ body {
     padding: 20px;
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    width: 350px;
     text-align: center;
-    animation: fadeIn 1s ease;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow: hidden; /* Prevent overflowing container */
 }
 
-@keyframes fadeIn {
-    from { opacity: 0; transform: scale(0.9); }
-    to { opacity: 1; transform: scale(1); }
+.scrollable-videos {
+    flex: 1; /* Take up remaining space */
+    overflow-y: auto; /* Make videos scrollable */
+    margin-bottom: 20px; /* Add spacing above logout button */
+}
+
+.logout-form {
+    text-align: center;
+}
+
+button {
+    width: 50%;
+    padding: 12px;
+    background: linear-gradient(135deg, #B1F0F7, #34ebff);
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: linear-gradient(0deg, #B1F0F7, #34ebff);
 }
 
 h2 {
@@ -39,37 +85,33 @@ p {
     text-align: left;
 }
 
-strong {
-    color: #4762ff;
+.catalog {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    padding-bottom: 20px;
+    padding: 20px;
 }
 
-button {
+.catalog li {
+    list-style-type: none;
+    background-color: #FADA7A;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 1s ease;
+    padding: 20px;
+    padding-top: 30px;
+    border-radius: 10px;
+}
+
+.catalog video {
     width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #B1F0F7, #34ebff);
-    font-weight: bold;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-size: 16px;
-    cursor: pointer;
-    transition: 0.3s;
+    border-radius: 10px;
 }
 
-button:hover {
-    background: linear-gradient(0deg, #B1F0F7, #34ebff);
-}
-
-.back-arrow {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    font-size: 24px;
-    color: #000000;
+.catalog li a {
     text-decoration: none;
-    font-weight: bold;
-}
-
-.back-arrow:hover {
-    color: #4762ff;
+    color: black;
 }

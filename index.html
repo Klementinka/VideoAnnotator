@@ -24,19 +24,6 @@
 
     <button>Authenticate!!!</button>
 
-    <script>
-        let CLIENT_ID = undefined;
-        fetch('./config.json')
-            .then(response => response.json())
-            .then(config => {
-                CLIENT_ID = config.CLIENT_ID;
-            })
-            .catch(error => console.error('Error loading config:', error));
-        document.getElementById('authButton').addEventListener('click', function () {
-            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
-        });
-    </script>
-
     <div class="main-content">
         <section class="video-section">
             <h2>Videos</h2>
@@ -50,7 +37,19 @@
 
     <div id="footer"></div>
 
-    <!-- <script src="./js/script.js"></script> -->
+    <script>
+        let CLIENT_ID = undefined;
+        fetch('./config.json')
+            .then(response => response.json())
+            .then(config => {
+                CLIENT_ID = config.CLIENT_ID;
+            })
+            .catch(error => console.error('Error loading config:', error));
+        document.getElementById('authButton').addEventListener('click', function () {
+            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
+        });
+    </script>
+
     <script src="./js/headerCreator.js"></script>
     <script src="./js/footerCreator.js"></script>
 </body>
