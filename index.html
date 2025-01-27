@@ -14,7 +14,8 @@
         const VIDEO_WIDTH = 320;
         const VIDEO_HEIGHT = 240;
     </script>
-    <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
+    <link rel="icon" type="image/png"
+        href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
 
 </head>
 
@@ -22,7 +23,20 @@
 
     <div id="title" class="title"></div>
 
-    <button id="authButton">Authenticate!!!</button>
+    <button>Authenticate!!!</button>
+
+    <div class="main-content">
+        <section class="video-section">
+            <h2>Videos</h2>
+            <div id="lastVideos" class="catalog"></div>
+        </section>
+    </div>
+
+    <div id="authButton" class="google-sign-in">
+        <img src="assets/google.png" class="auth-button"><span>Sign in with Google</span>
+    </div>
+
+    <div id="footer"></div>
 
     <script>
         let CLIENT_ID = undefined;
