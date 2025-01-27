@@ -6,7 +6,6 @@
  */
 
 function createHeader() {
-    console.log('creating header');
     return `
     <nav class="navbar">
         <header>
@@ -23,8 +22,8 @@ function createHeader() {
         </header>
         <ul>
             <li><a href="explore.html">Explore</a></li>
-            <li><a href="upload.html">Upload</a></li>
-            <li><a href="editSubtitlesLobby.html">Add Subtitles</a></li>
+            <li><a href="censorLobby.html">Censor</a></li>
+            <li><a href="add_subtitles.html">Add Subtitles</a></li>
             <li><a href="editLobby.html">Edit Videos</a></li>
         </ul>
         

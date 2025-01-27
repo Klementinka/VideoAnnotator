@@ -1,0 +1,154 @@
+  /* Basic resets or body styles if you prefer */
+  body, html {
+    margin: 0;
+    padding: 0;
+    background-color: #B1F0F7;
+    font-family: sans-serif;
+  }
+
+  main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+  }
+
+  .videoEditContainer {
+    border: 5px solid black;
+    border-radius: 10px;
+    border-color: #FADA7A;
+    background-color: #B1F0F7;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative; /* So the overlay canvas can sit on top in the same container */
+  }
+
+  /* Wrap the video and canvas in a relatively positioned container so the canvas is only over the video. */
+  .videoWrapper {
+    position: relative;
+    display: inline-block;
+  }
+
+  video {
+    max-width: 800px;
+    max-height: 600px;
+    width: 800px; /* Keep consistent if you want a fixed size. */
+    height: 600px;
+    border: 5px solid #FADA7A;
+    background: #B1F0F7;
+    display: block;
+  }
+
+  #overlayCanvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none; /* So the clicks go "through" to the video, unless painting. 
+                            If you want painting with mouse clicks, set pointer-events to 'auto' 
+                            only when you are in brush mode. */
+  }
+
+  .bigName {
+    font-size: 50px;
+    text-align: center;
+  }
+
+  .progress-container {
+    width: 100%;
+    max-width: 800px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative; 
+    height: 15px;
+  }
+
+  .progress-bar {
+    height: 15px;
+    transition: width 0.4s ease;
+    border-radius: 10px;
+    width: 0;
+    background-color: #FADA7A;
+    border: none;
+    /* older browsers might require -webkit-appearance: none; or similar */
+  }
+
+  #timestamp {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-shadow: 2px 2px 4px rgba(250, 218, 122, 0.9);
+    pointer-events: none;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    max-width: 800px;
+    justify-content: space-around;
+    margin-top: 20px;
+    flex-wrap: wrap; /* so it wraps on smaller devices */
+    gap: 10px;
+  }
+
+  .controls button {
+    width: 50px;
+    background: transparent;
+    font-size: 30px;
+    height: 50px;
+    padding: 0px;
+    cursor: pointer;
+  }
+
+  .download-frame-button {
+    background-color: transparent;
+    padding: 0;
+    border: none;
+    cursor: pointer;
+  }
+
+  .playback-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    border: 2px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    min-width: 220px;
+    gap: 5px;
+  }
+
+  #speed-value,
+  #size-value {
+    width: 40px;
+    text-align: center;
+  }
+
+  /* Additional styling for the time range input buttons/fields */
+  .time-range-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+
+  #download {
+    display: none;
+    margin-top: 20px;
+    font-size: 18px;
+    text-decoration: none;
+    background: #FADA7A;
+    color: black;
+    padding: 10px 20px;
+    border-radius: 8px;
+  }
