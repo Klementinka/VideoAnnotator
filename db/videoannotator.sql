@@ -23,28 +23,6 @@ SET time_zone = "+00:00";
 
 -- --------------------------------------------------------
 
---
--- Table structure for table `subtitles`
---
-
-CREATE TABLE `subtitles` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `drive_id` varchar(100) NOT NULL,
-  `video_id` varchar(100) NOT NULL,
-  `format` enum('SRT','SUB','HTML','XML','JSON') NOT NULL,
-  `language` varchar(20) DEFAULT NULL,
-  `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
-  `updated_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  PRIMARY KEY (`id`),
-  FOREIGN KEY (`video_id`) REFERENCES `videos`(`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `subtitles`
---
-
-INSERT INTO `subtitles` ( `drive_id`, `video_id`, `format`, `created_on`, `updated_on`) VALUES
-( '1yN0gfEE_f5GduoWpX3q7d4HXqBFZcDWL', '1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc', 'SRT', '2025-01-05 15:46:15', '2025-01-05 15:47:07');
 
 -- --------------------------------------------------------
 
@@ -99,6 +77,28 @@ INSERT INTO `videos` (`name`, `drive_id`, `owner_id`, `created_on`, `updated_on`
 
 
 
+--
+-- Table structure for table `subtitles`
+--
+
+CREATE TABLE `subtitles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `drive_id` varchar(100) NOT NULL,
+  `video_id` int(100) NOT NULL,
+  `format` enum('SRT','SUB','HTML','XML','JSON') NOT NULL,
+  `language` varchar(20) DEFAULT NULL,
+  `created_on` timestamp NOT NULL DEFAULT current_timestamp(),
+  `updated_on` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`video_id`) REFERENCES `videos`(`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `subtitles`
+--
+
+INSERT INTO `subtitles` ( `drive_id`, `video_id`, `format`, `created_on`, `updated_on`) VALUES
+( '1yN0gfEE_f5GduoWpX3q7d4HXqBFZcDWL', '1M0aWsRUBKxhDcloZu2RU1CSzzR7kBeqc', 'SRT', '2025-01-05 15:46:15', '2025-01-05 15:47:07');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

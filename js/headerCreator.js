@@ -24,6 +24,7 @@ function createHeader() {
             <li><a href="censorLobby.html">Censor</a></li>
             <li><button id="subtitlesBtn" class="navbar-menu">Add Subtitles</button></li>
             <li><button id="editVideoBtn" class="navbar-menu">Edit Video</button></li>
+            <li><button id="uploadSubtitlesBtn" class="navbar-menu">Upload Subtitles</button></li>
         </ul>
         
         <!-- Video Modal -->
@@ -106,7 +107,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelBtn = document.getElementById('cancelBtn');
     const cancelSubBtn = document.getElementById('cancelSubBtn');
     const addVideoBtn = document.getElementById('addVideoBtn');
-    const addSubBtn = document.getElementById('subtitlesBtn');
+    const addSubBtn = document.getElementById('uploadSubtitlesBtn');
     const saveBtn = document.getElementById('saveBtn');
     const saveSubBtn = document.getElementById('saveSubBtn');
     const deleteVideoBtn = document.getElementById('deleteVideoBtn');
