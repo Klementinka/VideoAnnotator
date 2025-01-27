@@ -107,7 +107,7 @@ try {
         exit();
     }
 
-    $ownerId = 2; 
+    $ownerId = $_SESSION['user']['id']; 
     $stmt->bind_param("ssib", $videoName, $fileId, $ownerId, $videoType);
 
     if (!$stmt->execute()) {
