@@ -2,12 +2,10 @@
 //  censorPageScript.js
 // ==================================
 
-// Grab references
 const video = document.getElementById('videoPlayer');
 const overlayCanvas = document.getElementById('overlayCanvas');
 const overlayCtx = overlayCanvas.getContext('2d');
 
-// Possibly existing controls
 const playBtn = document.getElementById('play-button');
 const pauseBtn = document.getElementById('pause-button');
 const nextFrameBtn = document.getElementById('next-frame-button');
@@ -17,53 +15,41 @@ const progressContainer = document.getElementById('progress-container');
 const progressBar = document.getElementById('progress-bar');
 const timestampSpan = document.getElementById('timestamp');
 
-// Brush
 const brushButton = document.getElementById('brushButton');
 const sizeSlider = document.getElementById('size-slider');
 const sizeValue = document.getElementById('size-value');
-const colorPicker = document.getElementById('colorPicker'); // <input type="color" id="colorPicker" />
+const colorPicker = document.getElementById('colorPicker'); 
 
-// Time range
 const setStartButton = document.getElementById('setStartButton');
 const setEndButton = document.getElementById('setEndButton');
 const addRegionButton = document.getElementById('addRegionButton');
 const startTimeDisplay = document.getElementById('startTimeDisplay');
 const endTimeDisplay = document.getElementById('endTimeDisplay');
 
-// Save/download
 const saveButton = document.getElementById('saveButton');
 const downloadLink = document.getElementById('download');
 
-// Playback speed
 const speedSlider = document.getElementById('speed-slider');
 const speedValue = document.getElementById('speed-value');
 
-// --- Variables ---
 
-// Whether brush mode is active
 let isBrushing = false;
 
-// Brush size + color
 let brushSize = parseFloat(sizeSlider.value);
-let brushColor = colorPicker.value; // e.g. "#ff0000"
+let brushColor = colorPicker.value; 
 
-// Circles not yet assigned to a region
 let tempCircles = [];
 
-// Final regions: each is {start, end, circles: [ {x,y,size,color}, ... ]}
 let blurRegions = [];
 
-// Current start/end
 let currentStartTime = 0;
 let currentEndTime = 0;
 
-// Show final? (After "Save", we'll set this to true)
+
 let showFinal = false;
 
-// Frame stepping
 const frameRate = 30;
 
-// --- Init ---
 function resizeCanvas() {
     overlayCanvas.width = video.clientWidth;
     overlayCanvas.height = video.clientHeight;
@@ -72,8 +58,6 @@ resizeCanvas();
 window.addEventListener('resize', resizeCanvas);
 
 sizeValue.textContent = brushSize.toString();
-
-// --- Basic Video controls ---
 
 playBtn.onclick = () => video.play();
 pauseBtn.onclick = () => video.pause();
@@ -103,7 +87,6 @@ screenshotBtn.onclick = () => {
     document.body.removeChild(a);
 };
 
-// progress
 video.addEventListener('timeupdate', () => {
     if (!video.duration) return;
     const pct = (video.currentTime / video.duration) * 100;
@@ -125,14 +108,12 @@ progressContainer.addEventListener('click', (e) => {
     video.currentTime = ratio * video.duration;
 });
 
-// speed
 speedSlider.addEventListener('input', () => {
     const spd = parseFloat(speedSlider.value);
     video.playbackRate = spd;
     speedValue.textContent = spd + 'x';
 });
 
-// --- Brush ---
 brushButton.addEventListener('click', () => {
     isBrushing = !isBrushing;
     overlayCanvas.style.pointerEvents = isBrushing ? 'auto' : 'none';
@@ -148,35 +129,31 @@ colorPicker.addEventListener('input', () => {
     brushColor = colorPicker.value;
 });
 
-// Spray frequency in milliseconds (optional)
 const SPRAY_INTERVAL = 30; 
 let isSpraying = false;
-let lastSprayTime = 0; // track the last time we sprayed a circle
+let lastSprayTime = 0; 
 
 overlayCanvas.addEventListener('mousedown', (e) => {
   if (!isBrushing) return;
   isSpraying = true;
 
-  // Immediately place one circle at mousedown location
   const rect = overlayCanvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
 
   tempCircles.push({ x, y, size: brushSize, color: brushColor });
-  drawOverlay(); // re-draw if you want immediate feedback
+  drawOverlay();
 });
 
 overlayCanvas.addEventListener('mousemove', (e) => {
   if (!isSpraying) return;
 
-  // Throttle how often we place circles to avoid excessive events:
   const now = Date.now();
   if (now - lastSprayTime < SPRAY_INTERVAL) {
-    return; // too soon
+    return;
   }
   lastSprayTime = now;
 
-  // Add a circle at the current mouse location
   const rect = overlayCanvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
@@ -190,8 +167,6 @@ overlayCanvas.addEventListener('mouseup', (e) => {
   isSpraying = false;
 });
 
-
-// --- Time Range ---
 setStartButton.addEventListener('click', () => {
     currentStartTime = video.currentTime;
     startTimeDisplay.textContent = currentStartTime.toFixed(2);
@@ -218,24 +193,18 @@ addRegionButton.addEventListener('click', () => {
         circles: [...tempCircles]
     });
 
-    // Clear them
     tempCircles = [];
-    // "Remove" them from the overlay for now
     drawOverlay();
 
     alert(`Region added for [${currentStartTime.toFixed(2)} - ${currentEndTime.toFixed(2)}].`);
 });
 
-// --- Overlay drawing logic ---
 function drawOverlay() {
     overlayCtx.clearRect(0, 0, overlayCanvas.width, overlayCanvas.height);
 
-    // If we haven't "saved" yet, we do NOT show final region circles
-    // After saving, we do show them (only in their time intervals).
     const t = video.currentTime;
 
     if (showFinal) {
-        // Show final region circles in their intervals
         blurRegions.forEach(region => {
             if (t >= region.start && t <= region.end) {
                 region.circles.forEach(circle => {
@@ -249,7 +218,6 @@ function drawOverlay() {
         });
     }
 
-    // Always show temp circles (the user is still deciding what times they'll be assigned)
     tempCircles.forEach(circle => {
         overlayCtx.beginPath();
         overlayCtx.arc(circle.x, circle.y, circle.size / 2, 0, 2 * Math.PI);
@@ -259,21 +227,17 @@ function drawOverlay() {
     });
 }
 
-// --- Save ---
 saveButton.addEventListener('click', async () => {
-    // Once we save, we want to show final region circles, so set the flag
     showFinal = true;
     drawOverlay();
 
     video.currentTime = 0;
-    video.pause(); // optional, if you want it paused
-    // If user still has unsaved circles
+    video.pause(); 
     if (tempCircles.length > 0) {
         const confirmAdd = confirm('You have unsaved circles. Add them as a region first?');
         if (confirmAdd) {
             return;
         } else {
-            // discard
             tempCircles = [];
             drawOverlay();
         }
@@ -284,9 +248,6 @@ saveButton.addEventListener('click', async () => {
         return;
     }
 
-
-    // Optionally do FFmpeg for black boxes
-    // If you want partial blur, you might need a different build or approach.
     const { createFFmpeg, fetchFile } = FFmpeg;
     const ffmpeg = createFFmpeg({ log: true });
     try {
@@ -296,7 +257,6 @@ saveButton.addEventListener('click', async () => {
         return;
     }
 
-    // Write input
     try {
         const response = await fetch(video.src);
         const videoBlob = await response.blob();
@@ -307,7 +267,6 @@ saveButton.addEventListener('click', async () => {
         return;
     }
 
-    // Build delogo filters
     let filterParts = [];
     blurRegions.forEach(region => {
         const { start, end } = region;
@@ -322,7 +281,6 @@ saveButton.addEventListener('click', async () => {
             const wInt = Math.round(w);
             const hInt = Math.round(h);
 
-            // black box
             const delogoCmd = `delogo=x=${xInt}:y=${yInt}:w=${wInt}:h=${hInt}:show=0:enable='between(t,${start},${end})'`;
             filterParts.push(delogoCmd);
         });
@@ -340,7 +298,7 @@ saveButton.addEventListener('click', async () => {
 
         await ffmpeg.run(
             '-i', 'input.mp4',
-            '-vf', newFilter, // now includes both scale and delogo
+            '-vf', newFilter, 
             '-c:a', 'copy',
             'output.mp4'
         );
@@ -349,7 +307,6 @@ saveButton.addEventListener('click', async () => {
         return;
     }
 
-    // read output
     try {
         const data = ffmpeg.FS('readFile', 'output.mp4');
         const blob = new Blob([data.buffer], { type: 'video/mp4' });
@@ -359,8 +316,7 @@ saveButton.addEventListener('click', async () => {
         downloadLink.download = 'censored_video.mp4';
         downloadLink.style.display = 'inline-block';
         downloadLink.textContent = 'Download Censored Video';
-        // Optionally auto-click:
-        // downloadLink.click();
+
     } catch (err) {
         alert('Error reading output: ' + err);
     }

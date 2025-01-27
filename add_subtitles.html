@@ -37,7 +37,6 @@
                             const token = localStorage.getItem('access_token');
                             const id_db = params.get('id');
                             let videoId = undefined;
-                            console.log('Token from localStorage:', token);
         
                             fetch(`videos/${id_db}.mp4`)
                                 .then(response => {

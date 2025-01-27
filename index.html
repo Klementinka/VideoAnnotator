@@ -27,9 +27,7 @@
         fetch('./config.json')
             .then(response => response.json())
             .then(config => {
-                console.log('Config', config);
                 CLIENT_ID = config.CLIENT_ID;
-                console.log('Client ID:', CLIENT_ID);
             })
             .catch(error => console.error('Error loading config:', error));
         document.getElementById('authButton').addEventListener('click', function () {

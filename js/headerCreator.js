@@ -107,7 +107,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const form = document.getElementById('addVideoForm');
         const formData = new FormData(form);
         const storedAccessToken = localStorage.getItem('access_token');
-        console.log('Stored access token:', storedAccessToken);
         if (storedAccessToken) {
             formData.append('access_token', storedAccessToken);
         }
@@ -153,7 +152,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const videoId = videoIndex.value;
         if (videoId) {
             const storedAccessToken = localStorage.getItem('access_token');
-            console.log('Stored access token:', storedAccessToken);
 
             if (storedAccessToken) {
                 fetch('php/deleteVideo.php', {

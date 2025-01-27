@@ -1,4 +1,4 @@
-  /* Basic resets or body styles if you prefer */
+
   body, html {
     margin: 0;
     padding: 0;
@@ -23,10 +23,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative; /* So the overlay canvas can sit on top in the same container */
+    position: relative; 
   }
 
-  /* Wrap the video and canvas in a relatively positioned container so the canvas is only over the video. */
+
   .videoWrapper {
     position: relative;
     display: inline-block;
@@ -35,7 +35,7 @@
   video {
     max-width: 800px;
     max-height: 600px;
-    width: 800px; /* Keep consistent if you want a fixed size. */
+    width: 800px; 
     height: 600px;
     border: 5px solid #FADA7A;
     background: #B1F0F7;
@@ -46,9 +46,7 @@
     position: absolute;
     top: 0;
     left: 0;
-    pointer-events: none; /* So the clicks go "through" to the video, unless painting. 
-                            If you want painting with mouse clicks, set pointer-events to 'auto' 
-                            only when you are in brush mode. */
+    pointer-events: none; 
   }
 
   .bigName {
@@ -75,7 +73,6 @@
     width: 0;
     background-color: #FADA7A;
     border: none;
-    /* older browsers might require -webkit-appearance: none; or similar */
   }
 
   #timestamp {
@@ -94,7 +91,7 @@
     max-width: 800px;
     justify-content: space-around;
     margin-top: 20px;
-    flex-wrap: wrap; /* so it wraps on smaller devices */
+    flex-wrap: wrap; 
     gap: 10px;
   }
 
@@ -132,7 +129,7 @@
     text-align: center;
   }
 
-  /* Additional styling for the time range input buttons/fields */
+ 
   .time-range-container {
     display: flex;
     gap: 10px;
