@@ -30,6 +30,12 @@ button {
     cursor: pointer;
 }
 
+.videoContainerTemp {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .header-buttons {
     display: flex;
     justify-content: space-between;

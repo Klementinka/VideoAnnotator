@@ -5,23 +5,18 @@ $username = "root";
 $password = "";
 $dbname = "videoannotator";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Handle POST request
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    // Validate inputs
     if (!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])) {
         $username = $conn->real_escape_string($_POST['username']);
         $email = $conn->real_escape_string($_POST['email']);
-        $password = $conn->real_escape_string($_POST['password']);
+        $password = $_POST['password'];
 
-        // Check if username or email already exists
         $checkUserQuery = "SELECT * FROM users WHERE username = '$username' OR email = '$email'";
         $checkResult = $conn->query($checkUserQuery);
 
@@ -32,10 +27,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 window.location.href='../register.html';
                 </script>";
         } else {
-            // Insert new user into the database
-            $insertQuery = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$password')";
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+
+            $insertQuery = "INSERT INTO users (username, email, password) VALUES ('$username', '$email', '$hashedPassword')";
             if ($conn->query($insertQuery) === TRUE) {
-                // Redirect to the login page upon successful registration
                 echo "<script>
                     alert('Registration successful! Please log in.');
                     window.location.href='../login.html';
