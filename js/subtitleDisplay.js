@@ -3,7 +3,7 @@ const fontColorInput = document.getElementById('fontColor');
 const fontWeightInput = document.getElementById('fontWeight');
 const videoSection = document.querySelector('.video-section');
 
-const subtitleOverlay = document.createElement('div');
+const subtitleOverlay = document.createElement('section');
 subtitleOverlay.classList.add('subtitle-overlay'); 
 
 videoSection.appendChild(subtitleOverlay);

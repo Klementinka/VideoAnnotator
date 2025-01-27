@@ -18,7 +18,7 @@
 
     <!-- TODO: if owner not matching with current user, alert and go back -->
 
-    <div id="title"></div>
+    <section id="title"></section>
 
     <main>
 
@@ -38,8 +38,8 @@
 
         <button id="process"><img src="./assets/download.png" width="50px"></button>
 
-        <div class="video-editors">
-            <div class="videoEditContainer">
+        <section class="video-editors">
+            <section class="videoEditContainer">
 
                 <h2 id="video-name" class="bigName"></h2>
 
@@ -111,35 +111,35 @@
 
                 <canvas id="canvas" style="display: none;"></canvas>
 
-                <div class="progress-container" style="position: relative;" id="progress-container">
+                <section class="progress-container" style="position: relative;" id="progress-container">
                     <progress class="progress-bar" id="progress-bar"></progress>
                     <span id="timestamp">00:00:000</span>
-                </div>
+                </section>
 
-                <div class="controls">
+                <section class="controls">
                     <button id="previous-frame-button">&#10508</button>
                     <button id="play-button">&#9654</button>
                     <button id="screenshot-btn" class="download-frame-button"><img src="./assets/screenshot.png"
                             width="40px"></button>
                     <button id="pause-button">&#10073&#10073</button>
                     <button id="next-frame-button">&#10509</button>
-                    <div class="playback-container">
+                    <section class="playback-container">
                         <label for="speed-slider">Playback Speed:</label>
                         <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
                         <span id="speed-value">1x</span>
-                    </div>
-                </div>
+                    </section>
+                </section>
 
-                <div class="times-container">
+                <section class="times-container">
 
-                    <div class="time-input-container">
-                        <div class="start-time-container">
+                    <section class="time-input-container">
+                        <section class="start-time-container">
                             <button id="set-start-time-button">Set Timestamp as start time</button>
-                            <div class="start-time-input">
+                            <section class="start-time-input">
                                 <label for="start-time">Start Time (mm:ss:ms):</label>
                                 <input type="text" id="start-time" placeholder="00:00:000">
-                            </div>
-                        </div>
+                            </section>
+                        </section>
 
                         <button id="save-timestamp" class="save-timestamp-button">Save Timestamp</button>
 
@@ -172,17 +172,17 @@
                             };
                         </script>
 
-                        <div class="end-time-container">
+                        <section class="end-time-container">
                             <button id="set-end-time-button">Set Timestamp as end time</button>
-                            <div class="end-time-input">
+                            <section class="end-time-input">
                                 <label for="end-time">End Time (mm:ss:ms):</label>
                                 <input type="text" id="end-time" placeholder="00:00:000">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </section>
+                        </section>
+                    </section>
+                </section>
 
-                <div id="selected-video-container"></div>
+                <section id="selected-video-container"></section>
 
                 <a id="download" style="display: none;">Download Video</a>
 
@@ -199,7 +199,7 @@
                     });
                 </script>
 
-            </div>
+            </section>
 
             <!-- HERE BEGINS VIDEO 2 -->
             <!-- HERE BEGINS VIDEO 2 -->
@@ -210,7 +210,7 @@
             <!-- HERE BEGINS VIDEO 2 -->
 
 
-            <div id="secondVideo" class="videoEditContainer">
+            <section id="secondVideo" class="videoEditContainer">
 
                 <h2 id="video-name2" class="bigName"></h2>
 
@@ -218,49 +218,49 @@
 
                 <canvas id="canvas2" style="display: none;"></canvas>
 
-                <div class="progress-container" style="position: relative;" id="progress-container2">
+                <section class="progress-container" style="position: relative;" id="progress-container2">
                     <progress class="progress-bar" id="progress-bar2"></progress>
                     <span id="timestamp2">00:00:000</span>
-                </div>
+                </section>
 
-                <div class="controls">
+                <section class="controls">
                     <button id="previous-frame-button2">&#10508</button>
                     <button id="play-button2">&#9654</button>
                     <button id="screenshot-btn2" class="download-frame-button"><img src="./assets/screenshot.png"
                             width="40px"></button>
                     <button id="pause-button2">&#10073&#10073</button>
                     <button id="next-frame-button2">&#10509</button>
-                    <div class="playback-container">
+                    <section class="playback-container">
                         <label for="speed-slider2">Playback Speed:</label>
                         <input type="range" id="speed-slider2" min="0.5" max="2" value="1" step="0.1">
                         <span id="speed-value2">1x</span>
-                    </div>
-                </div>
+                    </section>
+                </section>
 
-                <div class="times-container">
+                <section class="times-container">
 
-                    <div class="time-input-container">
-                        <div class="start-time-container">
+                    <section class="time-input-container">
+                        <section class="start-time-container">
                             <button id="set-start-time-button2">Set Timestamp as start time</button>
-                            <div class="start-time-input">
+                            <section class="start-time-input">
                                 <label for="start-time">Start Time (MM:SS:mmm):</label>
                                 <input type="text" id="start-time2" placeholder="00:00:000">
-                            </div>
-                        </div>
+                            </section>
+                        </section>
 
                         <button id="save-timestamp2" class="save-timestamp-button">Save Timestamp</button>
 
-                        <div class="end-time-container">
+                        <section class="end-time-container">
                             <button id="set-end-time-button2">Set Timestamp as end time</button>
-                            <div class="end-time-input">
+                            <section class="end-time-input">
                                 <label for="end-time2">End Time (MM:SS:mmm):</label>
                                 <input type="text" id="end-time2" placeholder="00:00:000">
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </section>
+                        </section>
+                    </section>
+                </section>
 
-                <div id="selected-video-container2"></div>
+                <section id="selected-video-container2"></section>
 
                 <a id="download2" style="display: none;">Download Video</a>
 
@@ -276,17 +276,17 @@
                         timestampContainer2.textContent = formattedTime;
                     });
                 </script>
-            </div>
-        </div>
-        <div class="divide">
+            </section>
+        </section>
+        <section class="divide">
             <button id="add-video" class="secondVideoBtn">Add video</button>
-        </div>
+        </section>
 
     </main>
 
-    <div id="output"></div>
+    <section id="output"></section>
 
-    <div id="footer"></div>
+    <section id="footer"></section>
 
     <script src="./js/editPageScript.js"></script>
 

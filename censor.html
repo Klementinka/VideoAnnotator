@@ -19,11 +19,11 @@
 
 <body>
 
-    <div id="title" class="title"></div>
-    <div class="videoEditContainer">
+    <section id="title" class="title"></section>
+    <section class="videoEditContainer">
         <h2 id="video-name" class="bigName"></h2>
 
-        <div class="videoWrapper">
+        <section class="videoWrapper">
 
             <video id="videoPlayer" crossOrigin="anonymous">
                 <source id="videoSource" type="video/mp4">
@@ -31,14 +31,14 @@
             </video>
 
             <canvas id="overlayCanvas"></canvas>
-        </div>
+        </section>
 
-        <div class="progress-container" id="progress-container">
-            <div class="progress-bar" id="progress-bar"></div>
+        <section class="progress-container" id="progress-container">
+            <section class="progress-bar" id="progress-bar"></section>
             <span id="timestamp">00:00:000</span>
-        </div>
+        </section>
 
-        <div class="controls">
+        <section class="controls">
             <button id="previous-frame-button">&#10508</button>
             <button id="play-button">&#9654</button>
             <button id="screenshot-btn" class="download-frame-button">
@@ -48,35 +48,35 @@
             <button id="next-frame-button">&#10509</button>
 
             <button id="brushButton">🖌️</button>
-            <div class="playback-container">
+            <section class="playback-container">
                 <label for="size-slider">Brush Size:</label>
                 <input type="range" id="size-slider" min="5" max="100" value="20" step="1">
                 <span id="size-value">20</span>
-            </div>
+            </section>
 
-            <div class="playback-container">
+            <section class="playback-container">
                 <label for="colorPicker">Color:</label>
                 <input type="color" id="colorPicker" value="#ff0000">
-              </div>
+              </section>
             <button id="saveButton">💾</button>
 
-            <div class="playback-container">
+            <section class="playback-container">
                 <label for="speed-slider">Speed:</label>
                 <input type="range" id="speed-slider" min="0.5" max="2" value="1" step="0.1">
                 <span id="speed-value">1x</span>
-            </div>
-        </div>
+            </section>
+        </section>
 
-        <div class="time-range-container">
+        <section class="time-range-container">
             <button id="setStartButton">Set Start</button>
             <button id="setEndButton">Set End</button>
             <span>Current Start: <span id="startTimeDisplay">0.0</span>s</span>
             <span>Current End: <span id="endTimeDisplay">0.0</span>s</span>
             <button id="addRegionButton">Add Blur Region</button>
-        </div>
+        </section>
 
         <a id="download">Download Censored Video</a>
-    </div>
+    </section>
 
     <script>
         let CLIENT_ID;
@@ -138,7 +138,7 @@
                     });
             });
     </script>
-    <div id="footer"></div>
+    <section id="footer"></section>
 
     <script src="./js/censorPageScript.js"></script>
 

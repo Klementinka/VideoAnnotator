@@ -1,12 +1,12 @@
 function createFooter() {
 
     return `<footer class="footer">
-        <div class='footer-content'>
+        <section class='footer-content'>
             <p>&copy; 2025 Web Technologies Video Annotator</p>
             <a href='https://github.com/Klementinka/VideoAnnotator' target='_blank'>
                 <img src='assets/github_logo.png' alt='GitHub repository' width='20px'>
             </a>
-        </div>
+        </section>
         <p>With love by team <span>Clementinka &#x2764</span></p>
     </footer>`
 

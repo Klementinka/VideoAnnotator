@@ -8,30 +8,30 @@
     <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
 </head>
 <body>
-    <div class="register-container">
+    <section class="register-container">
         <h2>Create an Account</h2>
         <form id="register-form" action="php/register.php" method="POST">
-            <div class="input-group">
+            <section class="input-group">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" required>
-            </div>
+            </section>
 
-            <div class="input-group">
+            <section class="input-group">
                 <label for="username">Email:</label>
                 <input type="text" id="email" name="email" required>
-            </div>
+            </section>
 
-            <div class="input-group">
+            <section class="input-group">
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" required>
-            </div>
+            </section>
             <button type="submit" id="loginButton">Register</button>
             <p>Already have an account?
                 <a href="login.html" id="registerLink">Log in</a>
             </p>
         </form>
         <p id="error-message" style="color: red;"></p>
-    </div>
+    </section>
     <script src="js/validateRegistration.js"></script>
 </body>
 </html>

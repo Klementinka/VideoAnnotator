@@ -9,14 +9,14 @@ function createHeader() {
     return `
     <nav class="navbar">
         <header>
-            <div class="title-container">
+            <section class="title-container">
                 <h1 class="mainTitle">
                     <a href="http://localhost/VideoAnnotator/index.html${window.location.search}">Video Annotation Tool</a>
                 </h1>
-            </div>
-            <div class="header-buttons">
+            </section>
+            <section class="header-buttons">
                 <a href="profile.html"><img src="assets/profile.png" class="profile"></a>
-            </div>
+            </section>
         </header>
         <ul>
             <li><button id="addVideoBtn" class="navbar-menu">Upload Video</button></li>
@@ -28,8 +28,8 @@ function createHeader() {
         </ul>
         
         <!-- Video Modal -->
-        <div id="videoModal" class="modal" style="display: none;">
-            <div class="modal-content">
+        <section id="videoModal" class="modal" style="display: none;">
+            <section class="modal-content">
                 <span id="closeModal" class="close">&times;</span>
                 <h2>Add New Video</h2>
                 <form id="addVideoForm" enctype="multipart/form-data">
@@ -40,26 +40,26 @@ function createHeader() {
                     <input type="text" id="videoName" name="videoName" placeholder="Enter video name" required />
 
                     <label for="videoType">Video Type:</label>
-                    <div class="slider-container">
+                    <section class="slider-container">
                         <label class="switch">
                             <input type="checkbox" id="videoType" name="videoType" />
                             <span class="slider"></span>
                         </label>
                         <span id="videoTypeLabel">Public</span>
-                    </div>
+                    </section>
 
-                    <div class="modal-buttons">
+                    <section class="modal-buttons">
                         <button type="button" id="saveBtn">Save</button>
                         <button type="button" id="cancelBtn">Cancel</button>
-                    </div>
+                    </section>
 
                 </form>
-            </div>
-        </div>
+            </section>
+        </section>
 
         <!-- Subtitle Modal -->
-        <div id="subtitlesModal" class="modal" style="display: none;">
-            <div class="modal-content">
+        <section id="subtitlesModal" class="modal" style="display: none;">
+            <section class="modal-content">
                 <span id="closeSubtitlesModal" class="close">&times;</span>
                 <h2>Add Subtitles</h2>
                 <form id="addSubtitlesForm" enctype="multipart/form-data">
@@ -69,20 +69,20 @@ function createHeader() {
                     <label for="videoId">Video ID:</label>
                     <input type="text" id="videoId" name="videoId" placeholder="Enter associated Video ID" required />
 
-                    <div class="modal-buttons">
+                    <section class="modal-buttons">
                         <button type="button" id="saveSubBtn">Save</button>
                         <button type="button" id="cancelSubBtn">Cancel</button>
-                    </div>
+                    </section>
                 </form>
-            </div>
-        </div>
+            </section>
+        </section>
 
-        <div id="delete-overlay"></div>
-        <div id="delete" class="delete">
+        <section id="delete-overlay"></section>
+        <section id="delete" class="delete">
             <label for="videoIndex">Enter id of video:</label>
             <input type="number" id="videoIndex" class="idInput">
             <button id="submitIdButton">Delete</button>
-        </div>
+        </section>
     </nav>
     `;
 }

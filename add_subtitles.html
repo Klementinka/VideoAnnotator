@@ -16,15 +16,15 @@
 </head>
 
 <body>
-    <div id="title"></div>
+    <section id="title"></section>
 
-    <div class="main-content">
-        <div class="title-container">
+    <section class="main-content">
+        <section class="title-container">
             <h1 class="mainTitle">Subtitle Editor</h1>
-        </div>
+        </section>
 
-        <div class="content-section">
-            <div class="video-section">
+        <section class="content-section">
+            <section class="video-section">
                 <video id="videoPlayer" controls>
                     <source id="videoSource" type="video/mp4">
                 </video>
@@ -93,9 +93,9 @@
 
 
 
-            </div>
+            </section>
 
-            <div id="subtitleSection" class="subtitle-input-container">
+            <section id="subtitleSection" class="subtitle-input-container">
                 <form id="subtitleForm">
                     <label for="startTime">Start Time (MM:SS):</label>
                     <input type="text" id="startTime" placeholder="MM:SS" required>
@@ -108,10 +108,10 @@
 
                     <button type="button" id="addSubtitle">Add Subtitle</button>
                 </form>
-            </div>
-        </div>
+            </section>
+        </section>
 
-        <div class="subtitle-table-container">
+        <section class="subtitle-table-container">
             <table id="subtitleTable">
                 <thead>
                     <tr>
@@ -124,54 +124,54 @@
                     <!-- Subtitle entries will go here -->
                 </tbody>
             </table>
-        </div>
+        </section>
 
         <!-- Subtitle Controls -->
-        <div class="controls">
-            <div class="control-item">
+        <section class="controls">
+            <section class="control-item">
                 <label for="fontSize">Font Size:</label>
                 <input id="fontSize" type="range" min="10" max="36" step="1" value="24">
-            </div>
-            <div class="control-item">
+            </section>
+            <section class="control-item">
                 <label for="fontColor">Font Color:</label>
                 <input id="fontColor" type="color" value="#FFFFFF">
-            </div>
-            <div class="control-item">
+            </section>
+            <section class="control-item">
                 <label for="fontWeight">Font Weight:</label>
                 <select id="fontWeight">
                     <option value="normal">Normal</option>
                     <option value="bold">Bold</option>
                     <option value="lighter">Lighter</option>
                 </select>
-            </div>
-        </div>
+            </section>
+        </section>
 
-        <div class="export-buttons">
-            <div class="left-section">
+        <section class="export-buttons">
+            <section class="left-section">
                 <label for="exportType">Export as:</label>
                 <select id="exportType">
                     <option value="srt">SRT</option>
                     <option value="sub">SUB</option>
                 </select>
                 <button type="button" id="exportButton">Export Subtitles</button>
-            </div>
+            </section>
 
-            <div class="right-section">
+            <section class="right-section">
                 <button type="button" id="loadSubs">Load Existing Subtitles</button>
-            </div>
-        </div>
-        <div id="subtitleModal" class="modal" style="display: none;">
-            <div class="modal-content">
+            </section>
+        </section>
+        <section id="subtitleModal" class="modal" style="display: none;">
+            <section class="modal-content">
                 <h2>Choose subtitles for the video</h2>
                 <select id="subtitleDropdown" class="selectSubs">
                     <option value="" disabled selected>Select a file</option>
                 </select>
                 <button id="fetchSubtitles">Load Subtitles</button>
                 <button id="closeModal">Cancel</button>
-            </div>
-        </div>
+            </section>
+        </section>
 
-        <div id="footer"></div>
+        <section id="footer"></section>
 
         <script src="js/exportSubtitles.js"></script>
         <script src="js/fetchSubtitles.js"></script>

@@ -8,22 +8,22 @@
     <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
 </head>
 <body>
-    <div class="profile-container">
+    <section class="profile-container">
         <a href="index.html" class="back-arrow">&#8592;</a>
         <h2>Profile</h2>
         <p><strong>Username:</strong> <span id="username"></span></p>
         <p><strong>Email:</strong> <span id="email"></span></p>
 
-        <div class="scrollable-videos">
+        <section class="scrollable-videos">
             <section class="video-section">
                 <h2>Your Videos</h2>
-                <div id="yourVideos" class="catalog"></div>
+                <section id="yourVideos" class="catalog"></section>
              </section>
-        </div>
+        </section>
         <form action="php/logout.php" method="POST">
             <button type="submit">Logout</button>
         </form>
-    </div>
+    </section>
     <script src="js/profile.js"></script>
 </body>
 </html>
