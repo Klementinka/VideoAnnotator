@@ -99,7 +99,7 @@ CREATE TABLE `subtitles` (
 --
 
 INSERT INTO `subtitles` ( `drive_id`, `video_id`,`subtitle_name` , `format`, `created_on`, `updated_on`) VALUES
-( '1yN0gfEE_f5GduoWpX3q7d4HXqBFZcDWL', '1', `test`,'SRT', '2025-01-05 15:46:15', '2025-01-05 15:47:07');
+( '1yN0gfEE_f5GduoWpX3q7d4HXqBFZcDWL', '1', 'test','SRT', '2025-01-05 15:46:15', '2025-01-05 15:47:07');
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

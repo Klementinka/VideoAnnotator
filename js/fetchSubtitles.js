@@ -13,7 +13,7 @@ document.getElementById('fetchSubtitles').addEventListener('click', () => {
     alert('Please enter a valid subtitle ID.');
     return;
   }
-  fetch('config.json')
+  fetch('../config.json')
     .then(response => response.json())
     .then(data => {
       config = data;
