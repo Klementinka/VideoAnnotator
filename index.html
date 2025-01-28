@@ -34,19 +34,21 @@
 
     <script>
         let CLIENT_ID = undefined;
+        let working, not_working;
         fetch('./config.json')
             .then(response => response.json())
             .then(config => {
                 CLIENT_ID = config.CLIENT_ID;
+                const currentPath = window.location.pathname;
+                const relativePath = currentPath.substring(0, currentPath.lastIndexOf('/')).substring(1);
+
+                not_working = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/${relativePath}/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
+
+                document.getElementById('authButton').addEventListener('click', function () {
+                    window.location.href = not_working;
+                });
             })
             .catch(error => console.error('Error loading config:', error));
-
-        const currentPath = window.location.pathname;
-        const relativePath = currentPath.substring(0, currentPath.lastIndexOf('/')).substring(1);
-
-        document.getElementById('authButton').addEventListener('click', function () {
-            window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/${relativePath}/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
-        });
     </script>
 
     <section class="main-content">
