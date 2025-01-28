@@ -223,13 +223,17 @@ video {
     align-items: center;
 }
 
+main {
+    margin-top: 150px;
+}
+
 .videoEditContainer {
     border: 5px solid black;
     border-radius: 10px;
     border-color: #FADA7A;
     padding: 10px;
     margin: 10px;
-    margin-top: 150px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;

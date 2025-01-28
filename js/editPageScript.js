@@ -103,13 +103,13 @@ document.getElementById('screenshot-btn').onclick = function () {
 const canvas = document.getElementById('canvas');
 const canvas2 = document.getElementById('canvas2');
 const ctx = canvas.getContext('2d');
-const ctx2 = canvas.getContext('2d');
+const ctx2 = canvas2.getContext('2d');
 const processButton = document.getElementById('process');
 const downloadLink = document.getElementById('download');
 const startTimeInput = document.getElementById('start-time');
 const endTimeInput = document.getElementById('end-time');
 
-processButton.addEventListener('click', async () => {
+processButton.onclick = async function () {
 
     let startTime = startTimeInput.value.split(':').map(parseFloat);
     startTime = startTime[0] * 60 + startTime[1] + startTime[2] / 1000;
@@ -170,10 +170,10 @@ processButton.addEventListener('click', async () => {
     mediaRecorder.start();
 
     const frameInterval = Math.floor(video.fps || 30);
+    const frameInterval2 = Math.floor(video2.fps || 30);
 
     for (let i = 0; i < startTimes.length; i++) {
-        for (let time = Math.max(0, startTimes[i]); time < Math.min(endTimes[i], video.duration); time += 1 / frameInterval) {
-            
+        for (let time = Math.max(0, startTimes[i]); time < Math.min(endTimes[i], video.duration); time += (ids[i] === '1' ? 1 / frameInterval : 1 / frameInterval2)) {
             if (ids[i] === '1') {
                 video.currentTime = time;
                 await new Promise(resolve => video.addEventListener('seeked', resolve, { once: true }));
@@ -182,13 +182,13 @@ processButton.addEventListener('click', async () => {
             else {
                 video2.currentTime = time;
                 await new Promise(resolve => video2.addEventListener('seeked', resolve, { once: true }));
-                ctx2.drawImage(video2, 0, 0, canvas.width, canvas.height);
+                ctx.drawImage(video2, 0, 0, canvas.width, canvas.height);
             }
         }
     }
 
     mediaRecorder.stop();
-});
+};
 
 const speedSlider = document.getElementById('speed-slider');
 const speedValue = document.getElementById('speed-value');
@@ -303,7 +303,7 @@ document.getElementById('previous-frame-button2').onclick = function () {
 
 document.getElementById('screenshot-btn2').onclick = function () {
     const video = document.getElementById('videoPlayer2');
-    const canvas = document.createElement('canvas2');
+    const canvas = document.createElement('canvas');
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     const context = canvas.getContext('2d');

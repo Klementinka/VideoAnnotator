@@ -5,6 +5,7 @@ function fetchVideo(videoId, token, playerId, API_KEY) {
     fetch(videoUrl, {
         headers: {
             'Authorization': `Bearer ${token}`,
+            'Range': 'bytes=0-5999999'
         }
     })
     
@@ -27,6 +28,11 @@ function fetchVideo(videoId, token, playerId, API_KEY) {
 
 function loadSecondVideo() {
     const id_db = prompt('Enter id of the second video:');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.set('id2', id_db);
+    const newUrl = `${window.location.pathname}?${urlParams.toString()}`;
+    window.history.replaceState(null, '', newUrl);
 
     fetch(`videos/${id_db}.mp4`)
         .then(response => {
