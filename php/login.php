@@ -1,10 +1,12 @@
 <?php
 session_start();
 
-$host = 'localhost';
-$db = 'videoannotator';
-$user = 'root';
-$pass = '';
+$config = json_decode(file_get_contents(__DIR__ . '/../config.json'), true);
+
+$host = $config['db_host'];
+$db = $config['db_name'];
+$user = $config['db_user'];
+$pass = $config['db_pass'];
 
 $conn = new mysqli($host, $user, $pass, $db);
 

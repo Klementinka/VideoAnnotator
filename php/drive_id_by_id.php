@@ -1,8 +1,11 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "videoannotator";
+
+$config = json_decode(file_get_contents(__DIR__ . '/../config.json'), true);
+
+$servername = $config['db_host'];
+$dbname = $config['db_name'];
+$username = $config['db_user'];
+$password = $config['db_pass'];
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 

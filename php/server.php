@@ -1,33 +1,31 @@
 <?php
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "my_database"; // Replace with your database name
+
+$config = json_decode(file_get_contents(__DIR__ . '/../config.json'), true);
+
+$servername = $config['db_host'];
+$dbname = $config['db_name'];
+$username = $config['db_user'];
+$password = $config['db_pass'];
 
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// SQL query to fetch all users
 $sql = "SELECT id, name, email FROM users";
 $result = $conn->query($sql);
 
 $users = [];
 if ($result->num_rows > 0) {
-    // Fetch all users
     while($row = $result->fetch_assoc()) {
         $users[] = $row;
     }
 } else {
-    $users = []; // No users found
+    $users = [];
 }
 
 $conn->close();
 
-// Return the data as JSON
 echo json_encode($users);
 ?>
