@@ -28,7 +28,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `subtitles` (
-  `id` int(11) NOT NULL,
+  `id` int(11) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `drive_id` varchar(100) NOT NULL,
   `video_id` int(100) NOT NULL,
   `format` enum('SRT','SUB','HTML','XML','JSON') NOT NULL,
@@ -42,8 +42,8 @@ CREATE TABLE `subtitles` (
 -- Dumping data for table `subtitles`
 --
 
-INSERT INTO `subtitles` (`id`, `drive_id`, `video_id`, `format`, `subtitle_name`, `language`, `created_on`, `updated_on`) VALUES
-(1, '1cWHltNXyOrAPHEoI4BE_AvmnTZabES22', 1, 'SRT', 'subtitles (1).srt', NULL, '2025-01-27 22:18:40', '2025-01-27 22:18:40');
+INSERT INTO `subtitles` ( `drive_id`, `video_id`, `format`, `subtitle_name`, `language`, `created_on`, `updated_on`) VALUES
+( '1cWHltNXyOrAPHEoI4BE_AvmnTZabES22', 1, 'SRT', 'subtitles (1).srt', NULL, '2025-01-27 22:18:40', '2025-01-27 22:18:40');
 
 -- --------------------------------------------------------
 
@@ -52,7 +52,7 @@ INSERT INTO `subtitles` (`id`, `drive_id`, `video_id`, `format`, `subtitle_name`
 --
 
 CREATE TABLE `users` (
-  `id` int(100) NOT NULL,
+  `id` int(100) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `username` varchar(20) NOT NULL,
   `email` varchar(100) DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -63,9 +63,9 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `username`, `email`, `password`, `drive_id`) VALUES
-(1, 'admin', 'admin@gmail.com', '$2y$10$ABpgODssTYU38OcUGnDWgueu92XW2dXSXPj2XH5nTA88uV0J2bSRe', 0), -- password: admin1
-(2, 'milen123', 'milen@abv.bg', '$2y$10$konTBTE1ROVBqyIUmA101.vOcL7z/KEc654Q6.mnubC5.5ua2sHxy', 0); -- password: milenparola
+INSERT INTO `users` ( `username`, `email`, `password`, `drive_id`) VALUES
+('admin', 'admin@gmail.com', '$2y$10$ABpgODssTYU38OcUGnDWgueu92XW2dXSXPj2XH5nTA88uV0J2bSRe', 0), -- password: admin1
+( 'milen123', 'milen@abv.bg', '$2y$10$konTBTE1ROVBqyIUmA101.vOcL7z/KEc654Q6.mnubC5.5ua2sHxy', 0); -- password: milenparola
 
 -- --------------------------------------------------------
 
@@ -74,7 +74,7 @@ INSERT INTO `users` (`id`, `username`, `email`, `password`, `drive_id`) VALUES
 --
 
 CREATE TABLE `videos` (
-  `id` int(100) NOT NULL,
+  `id` int(100) NOT NULL PRIMARY KEY AUTO_INCREMENT,
   `name` varchar(100) NOT NULL,
   `drive_id` varchar(100) NOT NULL,
   `owner_id` int(100) NOT NULL,
@@ -87,11 +87,11 @@ CREATE TABLE `videos` (
 -- Dumping data for table `videos`
 --
 
-INSERT INTO `videos` (`id`, `name`, `drive_id`, `owner_id`, `created_on`, `updated_on`, `is_private`) VALUES
-(1, 'dosi hbd', '1vcwdviw66B5D2GsaleMfDYdGql4ztxbG', 1, '2025-01-26 14:54:10', '2025-01-26 14:54:10', 0),
-(2, 'video 2', '1qY3mUv9v16yd5qXOBoX4TfD3No2zoRmH', 2, '2025-01-26 14:54:10', '2025-01-26 14:54:10', 0),
-(3, 'rubik cube', '1kf5M-VTsqZlDtwycbG68AEs27f6ehegN', 1, '2025-01-26 14:54:10', '2025-01-26 14:54:10', 0),
-(4, 'sea', '1KHPf3x7uSfPnBXaJx3bH8x7E4AopI5qi', 1, '2025-01-26 14:54:10', '2025-01-26 14:54:10', 0);
+INSERT INTO `videos` ( `name`, `drive_id`, `owner_id`, `created_on`, `updated_on`, `is_private`) VALUES
+( 'dosi hbd', '1vcwdviw66B5D2GsaleMfDYdGql4ztxbG', 1, '2025-01-26 14:54:10', '2025-01-26 14:54:10', 0),
+( 'video 2', '1qY3mUv9v16yd5qXOBoX4TfD3No2zoRmH', 2, '2025-01-26 14:54:10', '2025-01-26 14:54:10', 0),
+( 'rubik cube', '1kf5M-VTsqZlDtwycbG68AEs27f6ehegN', 1, '2025-01-26 14:54:10', '2025-01-26 14:54:10', 0),
+( 'sea', '1KHPf3x7uSfPnBXaJx3bH8x7E4AopI5qi', 1, '2025-01-26 14:54:10', '2025-01-26 14:54:10', 0);
 
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

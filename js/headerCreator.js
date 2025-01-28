@@ -155,6 +155,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then((data) => {
                 if (data.success) {
                     alert(data.message || 'Video uploaded successfully!');
+                    window.location.reload();
                 } else {
                     alert('Error: ' + (data.message || 'Unknown error.'));
                 }
@@ -220,6 +221,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     .then((data) => {
                         if (data.success) {
                             alert(data.message || 'Video deleted successfully!');
+                            window.location.reload();
                         } else {
                             alert('Error: ' + (data.message || 'Unknown error.'));
                         }

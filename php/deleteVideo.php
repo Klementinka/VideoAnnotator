@@ -96,8 +96,10 @@ try {
         $conn->close();
         exit();
     }
+    $ownerId = (string)$ownerId;
+    $loggedInUserId = (string)$loggedInUserId;
 
-    if ($ownerId !== $loggedInUserId) {
+    if ($ownerId != $loggedInUserId) {
         echo json_encode([
             'success' => false,
             'message' => 'You do not have permission to delete this video.'
