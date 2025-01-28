@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="./css/deleteVideo.css">
     <script src="./js/loadEnv.js"></script>
     <script src="./js/script.js"></script>
+    <script src="./js/checkUser.js"></script>
     <script>
         const VIDEO_WIDTH = 320;
         const VIDEO_HEIGHT = 240;
@@ -39,7 +40,7 @@
                 CLIENT_ID = config.CLIENT_ID;
             })
             .catch(error => console.error('Error loading config:', error));
-            
+
         const currentPath = window.location.pathname;
         const relativePath = currentPath.substring(0, currentPath.lastIndexOf('/')).substring(1);
 

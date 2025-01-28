@@ -1,12 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Profile Page</title>
     <link rel="stylesheet" href="css/profile.css">
-    <link rel="icon" type="image/png" href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
+    <script src="./js/checkUser.js"></script>
+    <link rel="icon" type="image/png"
+        href="./assets/DALL·E 2025-01-27 15.13.17 - A modern, high-quality favicon design representing video editing or video annotation. The icon should feature a minimalistic design with a small play .webp" />
 </head>
+
 <body>
     <section class="profile-container">
         <a href="index.html" class="back-arrow">&#8592;</a>
@@ -18,7 +22,7 @@
             <section class="video-section">
                 <h2>Your Videos</h2>
                 <section id="yourVideos" class="catalog"></section>
-             </section>
+            </section>
         </section>
         <form action="php/logout.php" method="POST">
             <button type="submit">Logout</button>
@@ -26,4 +30,5 @@
     </section>
     <script src="js/profile.js"></script>
 </body>
+
 </html>
