@@ -1,4 +1,7 @@
 <?php
+
+$currentPath = dirname(__FILE__);
+$relativePath = explode("htdocs\\", $currentPath, 2)[1];
 session_start();
 
 $autoloadPath = __DIR__ . '/../vendor/autoload.php';
@@ -29,7 +32,7 @@ $config = json_decode(file_get_contents($configFilePath), true);
 $client = new Google_Client();
 $client->setClientId($config['CLIENT_ID']);
 $client->setClientSecret($config['CLIENT_SECRET']);
-$client->setRedirectUri('http://localhost/VideoAnnotator/oauth2callback.php');
+$client->setRedirectUri('http://localhost/'. $relativePath .'/oauth2callback.php');
 $client->addScope(Google_Service_Drive::DRIVE);
 $client->setAccessType('offline');
 $client->setPrompt('consent');

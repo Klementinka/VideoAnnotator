@@ -1,5 +1,8 @@
 <?php
 // oauth2callback.php
+$currentPath = dirname(__FILE__);
+$relativePath = explode("htdocs\\", $currentPath, 2)[1];
+
 session_start();
 
 if (isset($_GET['code'])) {
@@ -8,8 +11,11 @@ if (isset($_GET['code'])) {
     $config = json_decode(file_get_contents('config.json'), true);
     $clientId = $config['CLIENT_ID'];
     $clientSecret = $config['CLIENT_SECRET'];
+
+    $currentPath = __FILE__;
     
-    $redirectUri = 'http://localhost/VideoAnnotator/oauth2callback.php';
+    $redirectUri = 'http://localhost/' . $relativePath . '/oauth2callback.php';
+    // $redirectUri = 'http://localhost/VideoAnnotator/oauth2callback.php';
 
     $postData = [
         'code'          => $authCode,
@@ -54,7 +60,7 @@ if (isset($_GET['code'])) {
         // (Optional) pass the access token back via the URL if you need it client-side
         $accessToken = $data['access_token'];
 
-        header('Location: http://localhost/VideoAnnotator/index.html?token=' . $accessToken);
+        header('Location: http://localhost/' . $relativePath . '/index.html?token=' . $accessToken);
         exit();
     } else {
         // Handle the error if no access token is returned

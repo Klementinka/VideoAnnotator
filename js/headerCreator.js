@@ -6,12 +6,14 @@
  */
 
 function createHeader() {
+    const currentPath = window.location.pathname;
+    const relativePath = currentPath.substring(0, currentPath.lastIndexOf('/')).substring(1);
     return `
     <nav class="navbar">
         <header>
             <section class="title-container">
                 <h1 class="mainTitle">
-                    <a href="http://localhost/VideoAnnotator/index.html${window.location.search}">Video Annotation Tool</a>
+                    <a href="http://localhost/${relativePath}/index.html${window.location.search}">Video Annotation Tool</a>
                 </h1>
             </section>
             <section class="header-buttons">

@@ -14,7 +14,7 @@ fetch('php/profile.php')
 function fetchVideo(videoId, token, playerId, API_KEY) {
 
     const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media&key=${API_KEY}`;
-    
+
     fetch(videoUrl, {
         headers: {
             'Authorization': `Bearer ${token}`,
@@ -36,7 +36,7 @@ function fetchVideo(videoId, token, playerId, API_KEY) {
         });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
     const token = localStorage.getItem('access_token');
     if (token) {
         fetch('./php/fetchVideosNames.php?filterByUser=true')
@@ -50,7 +50,9 @@ document.addEventListener("DOMContentLoaded", function() {
                     queryParams.forEach((value, key) => {
                         listItem.dataset[key] = value;
                     });
-                    const url = new URL(`./VideoAnnotator/edit.html?id=${video.id}`, window.location.origin);
+                    const currentPath = window.location.pathname;
+                    const relativePath = currentPath.substring(0, currentPath.lastIndexOf('/')).substring(1);
+                    const url = new URL(`./${relativePath}/edit.html?id=${video.id}`, window.location.origin);
                     queryParams.forEach((value, key) => {
                         url.searchParams.append(key, value);
                     });

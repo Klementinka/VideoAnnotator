@@ -25,8 +25,11 @@ function fetchVideo(videoId, token, playerId, API_KEY) {
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
+    const currentPath = window.location.pathname;
+    const relativePath = currentPath.substring(0, currentPath.lastIndexOf('/')).substring(1);
+
     document.getElementById('authButton').addEventListener('click', function () {
-        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/VideoAnnotator/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
+        window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/${relativePath}/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
     });
     const token = localStorage.getItem('access_token');
 
@@ -46,7 +49,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             queryParams.forEach((value, key) => {
                                 listItem.dataset[key] = value;
                             });
-                            const url = new URL(`./VideoAnnotator/edit.html?id=${video.id}`, window.location.origin);
+                            const url = new URL(`./${relativePath}/edit.html?id=${video.id}`, window.location.origin);
                             queryParams.forEach((value, key) => {
                                 url.searchParams.append(key, value);
                             });
