@@ -18,7 +18,7 @@ const timestampSpan = document.getElementById('timestamp');
 const brushButton = document.getElementById('brushButton');
 const sizeSlider = document.getElementById('size-slider');
 const sizeValue = document.getElementById('size-value');
-const colorPicker = document.getElementById('colorPicker'); 
+const colorPicker = document.getElementById('colorPicker');
 
 const setStartButton = document.getElementById('setStartButton');
 const setEndButton = document.getElementById('setEndButton');
@@ -36,7 +36,7 @@ const speedValue = document.getElementById('speed-value');
 let isBrushing = false;
 
 let brushSize = parseFloat(sizeSlider.value);
-let brushColor = colorPicker.value; 
+let brushColor = colorPicker.value;
 
 let tempCircles = [];
 
@@ -129,42 +129,42 @@ colorPicker.addEventListener('input', () => {
     brushColor = colorPicker.value;
 });
 
-const SPRAY_INTERVAL = 30; 
+const SPRAY_INTERVAL = 30;
 let isSpraying = false;
-let lastSprayTime = 0; 
+let lastSprayTime = 0;
 
 overlayCanvas.addEventListener('mousedown', (e) => {
-  if (!isBrushing) return;
-  isSpraying = true;
+    if (!isBrushing) return;
+    isSpraying = true;
 
-  const rect = overlayCanvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+    const rect = overlayCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-  tempCircles.push({ x, y, size: brushSize, color: brushColor });
-  drawOverlay();
+    tempCircles.push({ x, y, size: brushSize, color: brushColor });
+    drawOverlay();
 });
 
 overlayCanvas.addEventListener('mousemove', (e) => {
-  if (!isSpraying) return;
+    if (!isSpraying) return;
 
-  const now = Date.now();
-  if (now - lastSprayTime < SPRAY_INTERVAL) {
-    return;
-  }
-  lastSprayTime = now;
+    const now = Date.now();
+    if (now - lastSprayTime < SPRAY_INTERVAL) {
+        return;
+    }
+    lastSprayTime = now;
 
-  const rect = overlayCanvas.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  const y = e.clientY - rect.top;
+    const rect = overlayCanvas.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-  tempCircles.push({ x, y, size: brushSize, color: brushColor });
-  drawOverlay();
+    tempCircles.push({ x, y, size: brushSize, color: brushColor });
+    drawOverlay();
 });
 
 overlayCanvas.addEventListener('mouseup', (e) => {
-  if (!isBrushing) return;
-  isSpraying = false;
+    if (!isBrushing) return;
+    isSpraying = false;
 });
 
 setStartButton.addEventListener('click', () => {
@@ -232,7 +232,7 @@ saveButton.addEventListener('click', async () => {
     drawOverlay();
 
     video.currentTime = 0;
-    video.pause(); 
+    video.pause();
     if (tempCircles.length > 0) {
         const confirmAdd = confirm('You have unsaved circles. Add them as a region first?');
         if (confirmAdd) {
@@ -298,7 +298,7 @@ saveButton.addEventListener('click', async () => {
 
         await ffmpeg.run(
             '-i', 'input.mp4',
-            '-vf', newFilter, 
+            '-vf', newFilter,
             '-c:a', 'copy',
             'output.mp4'
         );
@@ -322,4 +322,66 @@ saveButton.addEventListener('click', async () => {
     }
 
     alert('Done encoding with FFmpeg. Now region circles appear at the correct intervals.');
+});
+
+
+document.addEventListener('DOMContentLoaded', (event) => {
+    let CLIENT_ID;
+    fetch('./config.json')
+        .then(response => response.json())
+        .then(config => {
+            CLIENT_ID = config.CLIENT_ID;
+        })
+        .catch(error => console.error('Error loading config:', error));
+    const params = new URLSearchParams(window.location.search);
+    const token = localStorage.getItem('access_token');
+    const id_db = params.get('id');
+    let videoId = undefined;
+
+    fetch(`videos/${id_db}.mp4`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Video not found');
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const videoPlayer = document.getElementById('videoPlayer');
+            const videoSource = document.getElementById('videoSource');
+            videoSource.src = URL.createObjectURL(blob);
+            videoPlayer.load();
+            fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.drive_id) {
+                        document.getElementById('video-name').textContent = data.name
+                    } else {
+                        alert('No drive_id found for the given video id.');
+                    }
+                })
+                .catch(error => {
+                    alert(error);
+                });
+        })
+        .catch(error => {
+            console.log("Not found locally ");
+            fetch(`./php/drive_id_by_id.php?id=${id_db}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.drive_id) {
+                        params.set('id', data.drive_id);
+                        fetchVideo(data.drive_id, localStorage.getItem('access_token'), 'videoPlayer');
+                        document.getElementById('video-name').textContent = data.name
+                    } else {
+                        alert('No drive_id found for the given video id.');
+                    }
+                })
+                .catch(error => {
+                    alert(error);
+                    const videoPlayer = document.getElementById('videoPlayer');
+                    const videoSource = document.getElementById('videoSource');
+                    videoSource.src = '/videos/not_found.mp4';
+                    videoPlayer.load();
+                });
+        });
 });

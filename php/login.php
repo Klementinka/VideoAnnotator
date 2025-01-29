@@ -40,6 +40,6 @@ if ($conn->connect_error) {
             echo json_encode(['success' => false, 'message' => 'Incorrect password.']);
         }
     } else {
-        echo json_encode(['success' => false, 'message' => 'Userccccc not found.']);
+        echo json_encode(['success' => false, 'message' => 'User not found.']);
     }
 ?>

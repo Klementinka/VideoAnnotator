@@ -26,27 +26,6 @@ function getQueryParam(param) {
     return urlParams.get(param);
 }
 
-// document.addEventListener('DOMContentLoaded', function () {
-//     const videoId = getQueryParam('id');
-//     if (videoId) {
-//         const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media&key=AIzaSyBqb-lZLqa_bSQDFcX89Tu3EVlbU2oyhJY`;
-//         document.getElementById('videoSource').src = videoUrl;
-//         document.getElementById('videoSource').src = videoUrl;
-//         fetch(videoUrl)
-//             .then(response => {
-//                 if (response.status === 403) {
-//                     alert('Access to the video is forbidden. Please check your permissions.');
-//                 }
-//             })
-//             .catch(error => {
-//                 alert('Error fetching the video: ' + error.message);
-//             });
-//         document.getElementById('videoPlayer').load();
-//     } else {
-//         alert('No video ID provided in the query parameters.');
-//     }
-// });
-
 document.getElementById('set-end-time-button').addEventListener('click', function () {
     const video = document.getElementById('videoPlayer');
     const currentTime = video.currentTime;
@@ -249,27 +228,6 @@ document.getElementById('progress-container2').addEventListener('click', functio
     const percentage = offsetX / progressContainer.offsetWidth;
     videoPlayer2.currentTime = percentage * videoPlayer2.duration;
 });
-
-// document.addEventListener('DOMContentLoaded', function () {
-//     const videoId = getQueryParam('id');
-//     if (videoId) {
-//         const videoUrl = `https://www.googleapis.com/drive/v3/files/${videoId}?alt=media&key=AIzaSyBqb-lZLqa_bSQDFcX89Tu3EVlbU2oyhJY`;
-//         document.getElementById('videoSource').src = videoUrl;
-//         document.getElementById('videoSource').src = videoUrl;
-//         fetch(videoUrl)
-//             .then(response => {
-//                 if (response.status === 403) {
-//                     alert('Access to the video is forbidden. Please check your permissions.');
-//                 }
-//             })
-//             .catch(error => {
-//                 alert('Error fetching the video: ' + error.message);
-//             });
-//         document.getElementById('videoPlayer').load();
-//     } else {
-//         alert('No video ID provided in the query parameters.');
-//     }
-// });
 
 document.getElementById('set-end-time-button2').addEventListener('click', function () {
     const currentTime = video2.currentTime;

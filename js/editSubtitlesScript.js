@@ -9,9 +9,20 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById('submitEditIdButton').addEventListener('click', function () {
             const videoId = document.getElementById('videoIdInput').value;
             if (videoId) {
-                params.set('id', videoId);
-                window.location.search = params.toString();
-                window.location.href = 'add_subtitles.html?' + params.toString();
+                fetch(`/videos/${videoId}.mp4`, { method: 'HEAD' })
+                    .then(response => {
+                        if (!response.ok) {
+                            if (localStorage.getItem('offlineMode') == 'true') {
+                                alert('Video not available in offline mode.');
+                                document.getElementById('videoIdInput').focus();
+                            }
+                        }
+                        else {
+                            params.set('id', videoId);
+                            window.location.search = params.toString();
+                            window.location.href = 'add_subtitles.html?' + params.toString();
+                        }
+                    });
             } else {
                 alert('Video id is required.');
             }
