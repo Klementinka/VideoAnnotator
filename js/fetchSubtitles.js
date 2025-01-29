@@ -38,7 +38,28 @@ document.getElementById('fetchSubtitles').addEventListener('click', () => {
   fetch('./config.json')
     .then(response => response.json())
     .then(data => {
-      const subtitleText = fetchSubtitleFromDrive(subtitleDriveId, localStorage.getItem('access_token'), data.API_KEY);
+      const subtitlePath = `subtitles/${subtitleDriveId}.srt`;
+      fetch(subtitlePath)
+        .then(response => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error('Failed to fetch subtitles from Google Drive');
+          }
+        })
+        .then(subtitleText => {
+          parseAndLoadSubtitles(subtitleText);
+          document.getElementById('subtitleModal').style.display = 'none';
+        })
+        .catch(error => {
+          console.log(error);
+          if (localStorage.getItem('offlineMode') == 'true') {
+            fetchSubtitleFromDrive(subtitleDriveId, localStorage.getItem('access_token'), data.API_KEY);
+          }
+          else {
+            alert('These subs are not available in offline mode.');
+          }
+        });
     });
 
   function fetchSubtitleFromDrive(driveId, token, API_KEY) {
