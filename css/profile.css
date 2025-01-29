@@ -1,6 +1,13 @@
 @keyframes fadeIn {
-    from { opacity: 0; transform: scale(1); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(1);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 body {
@@ -28,6 +35,14 @@ body {
     color: #4762ff;
 }
 
+.offline {
+    all: unset;
+    width: 40%;
+    margin: 20px auto;
+    border-radius: 6px;
+    padding: 8px;
+}
+
 .profile-container {
     position: relative;
     background: white;
@@ -40,13 +55,13 @@ body {
     width: 90%;
     max-width: 600px;
     max-height: 90vh;
-    overflow: hidden; /* Prevent overflowing container */
+    overflow: hidden;
 }
 
 .scrollable-videos {
-    flex: 1; /* Take up remaining space */
-    overflow-y: auto; /* Make videos scrollable */
-    margin-bottom: 20px; /* Add spacing above logout button */
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
 }
 
 .logout-form {
@@ -82,7 +97,7 @@ p {
     font-size: 16px;
     color: #333;
     margin-bottom: 15px;
-    text-align: left;
+    text-align: center;
 }
 
 .catalog {

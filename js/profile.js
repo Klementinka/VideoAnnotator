@@ -65,3 +65,16 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error('Error fetching videos:', error));
     }
 });
+
+document.getElementById('offlineModeToggle').addEventListener('click', function () {
+    let offlineMode = localStorage.getItem('offlineMode') === 'true';
+    offlineMode = !offlineMode;
+    localStorage.setItem('offlineMode', offlineMode);
+    this.textContent = offlineMode ? 'Disable Offline Mode' : 'Enable Offline Mode';
+    alert('Offline mode is now ' + (offlineMode ? 'enabled' : 'disabled'));
+});
+
+window.addEventListener('load', function () {
+    let offlineMode = localStorage.getItem('offlineMode') === 'true';
+    document.getElementById('offlineModeToggle').textContent = offlineMode ? 'Disable Offline Mode' : 'Enable Offline Mode';
+});

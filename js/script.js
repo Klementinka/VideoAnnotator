@@ -45,6 +45,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         videosList.innerHTML = '';
                         data.forEach(video => {
                             const listItem = document.createElement('li');
+                            listItem.id = `li-${video.id}`;
                             const queryParams = new URLSearchParams(window.location.search);
                             queryParams.forEach((value, key) => {
                                 listItem.dataset[key] = value;
@@ -53,9 +54,23 @@ document.addEventListener('DOMContentLoaded', (event) => {
                             queryParams.forEach((value, key) => {
                                 url.searchParams.append(key, value);
                             });
-                            listItem.innerHTML = `<h3 class='videoContainerTemp'><video id='last-${video.id}' width='500px' height='400px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name} (ID: ${video.id})</a></h3>`;
+                            listItem.innerHTML = `<h3 class='videoContainerTemp' id="container-${video.id}"><video id='last-${video.id}' width='500px' height='400px' crossorigin='anonymous' controls></video><a href='${url.toString()}'>${video.name} (ID: ${video.id})</a></h3>`;
                             listItem.id = `video-${video.id}`;
-                            fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`, API_KEY);
+                            const videoPath = `./videos/${video.id}.mp4`;
+                            fetch(videoPath, { method: 'HEAD' })
+                                .then(response => {
+                                    if (response.ok) {
+                                        const videoPlayer = document.getElementById(`last-${video.id}`);
+                                        videoPlayer.src = videoPath;
+                                        videoPlayer.load();
+                                    }
+                                    else if (!(localStorage.getItem('offlineMode') == 'true')) {
+                                        fetchVideo(video.drive_id, localStorage.getItem('access_token'), `last-${video.id}`, API_KEY);
+                                    }
+                                    else {
+                                        listItem.style.display = 'none';
+                                    }
+                                })
                             videosList.appendChild(listItem);
                         });
                     })
