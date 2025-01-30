@@ -64,6 +64,32 @@ button {
     cursor: pointer;
 }
 
+.button-container {
+    position: relative;
+    display: inline-block;
+}
+
+.hover-text {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #333;
+    color: #fff;
+    padding: 8px;
+    border-radius: 5px;
+    white-space: nowrap;
+    margin-top: -10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.button-container:hover .hover-text {
+    display: block;
+}
+
+
 .videoContainerTemp {
     display: flex;
     flex-direction: column;

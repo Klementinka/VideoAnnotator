@@ -27,12 +27,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
     const currentPath = window.location.pathname;
     const relativePath = currentPath.substring(0, currentPath.lastIndexOf('/')).substring(1);
+    const token = localStorage.getItem('access_token');
+    const offlineMode = localStorage.getItem('offlineMode');
+    
+    if (offlineMode === 'true' || token) {
+        document.getElementById("google-text").style.visibility = "hidden";
+    } else {
+        document.getElementById("google-text").style.visibility = "visible";
+    }
 
     document.getElementById('authButton').addEventListener('click', function () {
         window.location.href = `https://accounts.google.com/o/oauth2/v2/auth?client_id=${CLIENT_ID}&redirect_uri=http://localhost/${relativePath}/oauth2callback.php&response_type=code&scope=https://www.googleapis.com/auth/drive`;
     });
-    const token = localStorage.getItem('access_token');
-
     if (token) {
         fetch('./config.json')
             .then(response => response.json())

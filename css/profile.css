@@ -36,7 +36,6 @@ body {
 }
 
 .offline {
-    all: unset;
     width: 40%;
     margin: 20px auto;
     border-radius: 6px;

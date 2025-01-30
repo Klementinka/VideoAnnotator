@@ -150,12 +150,22 @@ try {
     } else {
     }
 
-    echo json_encode([
-        'success' => true,
-        'message' => 'Successfully uploaded to Google Drive and saved locally.',
-        'fileId'  => $fileId,
-        'dbId'    => $insertedId, 
-    ]);
+    if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
+        echo json_encode([
+            'success' => true,
+            'message' => 'Successfully uploaded to Google Drive and saved locally.',
+            'fileId'  => $fileId,
+            'dbId'    => $insertedId, 
+        ]);
+    } else {
+        echo json_encode([
+            'success' => true,
+            'message' => 'Successfully uploaded and saved locally.',
+            'fileId'  => $fileId,
+            'dbId'    => $insertedId, 
+        ]);
+    }
+
 } catch (Exception $e) {
     echo json_encode([
         'success' => false,
