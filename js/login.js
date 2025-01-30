@@ -1,5 +1,5 @@
 document.getElementById("login-form").addEventListener("submit", async function (e) {
-    e.preventDefault(); // Prevent default form submission
+    e.preventDefault(); 
 
     const username = document.getElementById("username").value;
     const password = document.getElementById("password").value;
@@ -15,10 +15,12 @@ document.getElementById("login-form").addEventListener("submit", async function 
     const result = await response.json();
 
     if (result.success) {
-        // Redirect to the main page
+        if (localStorage.getItem('offlineMode') === 'false') {
+            localStorage.setItem('offlineMode', 'true');
+        }
+        localStorage.setItem('access_token', '');
         window.location.href = "index.html";
     } else {
-        // Show error message
         document.getElementById("error-message").textContent = result.message;
     }
 });

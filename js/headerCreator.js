@@ -21,7 +21,11 @@ function createHeader() {
             </section>
         </header>
         <ul>
-            <li><button id="addVideoBtn" class="navbar-menu">Upload Video</button></li>
+            <li><div class="button-container">
+                    <button id="addVideoBtn" class="navbar-menu">Upload Video</button>
+                    <div id="google-text" class="hover-text">Sign in with Google to <br> upload a video in online mode</div>
+                </div>    
+            </li>
             <li><button id="deleteVideoBtn" class="navbar-menu">Delete Video</button></li>
             <li><button id="censorBtn" class="navbar-menu">Censor</button></li>
             <li><button id="subtitlesBtn" class="navbar-menu">Add Subtitles</button></li>
@@ -135,7 +139,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const showModal = () => videoModal.style.display = 'block';
     const hideModal = () => videoModal.style.display = 'none';
 
-    addVideoBtn.addEventListener('click', showModal);
+    document.getElementById('addVideoBtn').addEventListener('click', function () {
+        let offlineMode = localStorage.getItem('offlineMode');
+        let token = localStorage.getItem('access_token');
+        if (offlineMode == 'false' && !token) {
+            alert('You need to log in with Google to upload videos in online mode');
+            exit();
+        } else {
+            showModal();
+        }
+    });
+    
     closeModal.addEventListener('click', hideModal);
     cancelBtn.addEventListener('click', hideModal);
 
